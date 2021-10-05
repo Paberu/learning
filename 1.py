@@ -80,25 +80,3 @@ class LinkedList:
                     node.next = newNode
                     return
                 node = node.next
-                    		
-
-n1 = Node(12)
-n2 = Node(55)
-n1.next = n2		
-s_list = LinkedList()
-s_list.add_in_tail(n1)
-s_list.add_in_tail(n2)
-s_list.add_in_tail(Node(128))
-s_list.add_in_tail(Node(12))
-s_list.add_in_tail(Node(56))
-s_list.add_in_tail(Node(128))
-##for n in s_list.find_all(1):
-##    print(str(n.value) + ' -> next')
-##print(s_list.len())
-s_list.print_all_nodes()
-print()
-##s_list.delete(12,all=True)
-n3 = Node(11)
-s_list.insert(n2, n3)
-##s_list.clean()
-s_list.print_all_nodes()
