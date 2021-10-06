@@ -81,3 +81,15 @@ class LinkedList:
                     node.next = newNode
                     return
                 node = node.next
+
+    def compare_to_another_list(self, anotherList):
+        resultList = LinkedList()
+        if (self.len() == anotherList.len()):
+            node = self.head
+            anotherNode = anotherList.head
+            while node is not None:
+                new_node = Node(node.value + anotherNode.value)
+                resultList.add_in_tail(new_node)
+                node = node.next
+                anotherNode = anotherNode.next
+        return resultList
