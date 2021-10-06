@@ -75,11 +75,10 @@ class LinkedList:
             newNode.next = node
         else:
             while node is not None:
-                print('trying...')
                 if node == afterNode:
                     newNode.next = node.next
                     node.next = newNode
-                    return
+                    break
                 node = node.next
 
     def compare_to_another_list(self, anotherList):
