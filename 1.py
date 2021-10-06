@@ -4,6 +4,7 @@ class Node:
         self.value = v
         self.next = None
 
+
 class LinkedList:
 
     def __init__(self):
@@ -19,7 +20,7 @@ class LinkedList:
 
     def print_all_nodes(self):
         node = self.head
-        while node != None:
+        while node is not None:
             print(node.value)
             node = node.next
 
@@ -31,7 +32,7 @@ class LinkedList:
             node = node.next
         return None
 
-    def find_all(self, val): #done
+    def find_all(self, val):
         node = self.head
         result = []
         while node is not None:
@@ -40,7 +41,7 @@ class LinkedList:
             node = node.next
         return result
 
-    def delete(self, val, all=False): #done
+    def delete(self, val, all=False):
         node = self.head
         previous = self.head
         while node is not None:
@@ -51,15 +52,15 @@ class LinkedList:
                     previous.next = node.next
 
                 if not all:
-                    return
+                    break
             previous = node
             node = node.next
 
-    def clean(self): #done
+    def clean(self):
         self.head = None
         self.tail = None
 
-    def len(self): #done
+    def len(self):
         node = self.head
         length = 0
         while node is not None:
@@ -67,7 +68,7 @@ class LinkedList:
             node = node.next
         return length
 
-    def insert(self, afterNode, newNode): #done
+    def insert(self, afterNode, newNode):
         node = self.head
         if not afterNode:
             self.head = newNode
@@ -80,3 +81,15 @@ class LinkedList:
                     node.next = newNode
                     return
                 node = node.next
+	
+	def compare_to_another_list(self, anotherList):
+		resultList = LinkedList()
+		if (self.len() == anotherList.len()):
+			node = self.head
+			anotherNode = anotherList.head
+			while node is not None:
+				new_node = Node(node.value + anotherNode.value)
+				resultList.add_in_tail(new_node)
+				node = node.next
+				anotherNode = anotherNode.next
+		return resultList
