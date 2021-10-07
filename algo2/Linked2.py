@@ -4,6 +4,7 @@ class Node:
         self.value = v
         self.next = None
 
+
 class LinkedList:
 
     def __init__(self):
@@ -19,7 +20,7 @@ class LinkedList:
 
     def print_all_nodes(self):
         node = self.head
-        while node != None:
+        while node is not None:
             print(node.value)
             node = node.next
 
@@ -31,7 +32,7 @@ class LinkedList:
             node = node.next
         return None
 
-    def find_all(self, val): #done
+    def find_all(self, val):
         node = self.head
         result = []
         while node is not None:
@@ -40,7 +41,7 @@ class LinkedList:
             node = node.next
         return result
 
-    def delete(self, val, all=False): #done
+    def delete(self, val, all=False):
         node = self.head
         previous = self.head
         while node is not None:
@@ -51,15 +52,17 @@ class LinkedList:
                     previous.next = node.next
 
                 if not all:
-                    return
+                    break
             previous = node
             node = node.next
+        if self.head is None:
+            self.tail = None
 
-    def clean(self): #done
+    def clean(self):
         self.head = None
         self.tail = None
 
-    def len(self): #done
+    def len(self):
         node = self.head
         length = 0
         while node is not None:
@@ -67,47 +70,27 @@ class LinkedList:
             node = node.next
         return length
 
-    def insert(self, afterNode, newNode): #done
+    def insert(self, afterNode, newNode):
         node = self.head
         if not afterNode:
             self.head = newNode
             newNode.next = node
         else:
             while node is not None:
-                print('trying...')
                 if node == afterNode:
                     newNode.next = node.next
                     node.next = newNode
-                    return
+                    break
                 node = node.next
-                    		
 
-def compare_and_sum_up(list1, list2):
-    if (list1.len() == list2.len()):
-        list3 = LinkedList()
-        node1 = list1.head
-        node2 = list2.head
-        while node1 is not None:
-            new_node = Node(node1.value + node2.value)
-            list3.add_in_tail(new_node)
-            node1 = node1.next
-            node2 = node2.next
-        return list3
-	
-s_list1 = LinkedList()
-s_list1.add_in_tail(Node(5))
-s_list1.add_in_tail(Node(15))
-s_list1.add_in_tail(Node(12))
-s_list2 = LinkedList()
-s_list2.add_in_tail(Node(1))
-s_list2.add_in_tail(Node(6))
-s_list2.add_in_tail(Node(18))
-##s_list2.add_in_tail(Node(18))
-
-##s_list1 = LinkedList()
-##s_list2 = LinkedList()
-
-s_list3 = compare_and_sum_up(s_list1, s_list2)
-if s_list3:
-    s_list3.print_all_nodes()
-
+    def compare_to_another_list(self, anotherList):
+        resultList = LinkedList()
+        if (self.len() == anotherList.len()):
+            node = self.head
+            anotherNode = anotherList.head
+            while node is not None:
+                new_node = Node(node.value + anotherNode.value)
+                resultList.add_in_tail(new_node)
+                node = node.next
+                anotherNode = anotherNode.next
+        return resultList
