@@ -55,7 +55,9 @@ class LinkedList:
                     break
             previous = node
             node = node.next
-
+        if self.head is None:
+            self.tail = None
+        
     def clean(self):
         self.head = None
         self.tail = None

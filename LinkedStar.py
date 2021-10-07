@@ -22,6 +22,17 @@ class TestLinkedList(unittest.TestCase):
         self.list3.add_in_tail(Node(11))
         self.list3.add_in_tail(Node(56))
         self.list3.add_in_tail(Node(1))
+        
+        self.list4 = LinkedList()
+        self.list4.add_in_tail(Node(12))
+        self.list4.add_in_tail(Node(12))
+        self.list4.add_in_tail(Node(12))
+        self.list4.add_in_tail(Node(12))
+        self.list4.add_in_tail(Node(12))
+        self.list4.add_in_tail(Node(12))
+        self.list4.add_in_tail(Node(12))
+        self.list4.add_in_tail(Node(12))
+        self.list4.add_in_tail(Node(12))
 
     def test_find_all(self):
         self.assertEqual(get_values_from_nodes_array(self.list1.find_all(12)), [12, 12])
@@ -40,6 +51,9 @@ class TestLinkedList(unittest.TestCase):
 
         self.list2.delete(12, all=True)
         self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list2), [])
+        
+        self.list4.delete(12, all=True)
+        self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list4), [])
 
     def test_clean(self):
         self.list1.clean()
