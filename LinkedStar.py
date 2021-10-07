@@ -22,7 +22,7 @@ class TestLinkedList(unittest.TestCase):
         self.list3.add_in_tail(Node(11))
         self.list3.add_in_tail(Node(56))
         self.list3.add_in_tail(Node(1))
-        
+
         self.list4 = LinkedList()
         self.list4.add_in_tail(Node(12))
         self.list4.add_in_tail(Node(12))
@@ -51,7 +51,7 @@ class TestLinkedList(unittest.TestCase):
 
         self.list2.delete(12, all=True)
         self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list2), [])
-        
+
         self.list4.delete(12, all=True)
         self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list4), [])
 
