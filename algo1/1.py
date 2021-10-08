@@ -44,19 +44,25 @@ class LinkedList:
     def delete(self, val, all=False):
         node = self.head
         previous = self.head
+        last = self.head
         while node is not None:
             if node.value == val:
                 if node == self.head:
                     self.head = node.next
                 else:
                     previous.next = node.next
+                    last = previous
 
                 if not all:
                     break
             previous = node
             node = node.next
+
         if self.head is None:
             self.tail = None
+
+        if previous.next is None:
+            self.tail = previous
 
     def clean(self):
         self.head = None
