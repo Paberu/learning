@@ -58,8 +58,7 @@ class LinkedList:
 
         if self.head is None:
             self.tail = None
-
-        if previous.next is None:
+        elif previous is None or previous.next is None:
             self.tail = previous
 
     def clean(self):
@@ -79,17 +78,24 @@ class LinkedList:
         if not afterNode:
             self.head = newNode
             newNode.next = node
+            if node is None:
+                self.tail = newNode
         else:
             while node is not None:
                 if node == afterNode:
                     newNode.next = node.next
                     node.next = newNode
-                    break
+                    breakFlag = True
                 node = node.next
+
+                if breakFlag:
+                    if node.next is None:
+                        self.tail = node
+                        break
 
     def compare_to_another_list(self, anotherList):
         resultList = LinkedList()
-        if (self.len() == anotherList.len()):
+        if self.len() == anotherList.len():
             node = self.head
             anotherNode = anotherList.head
             while node is not None:
