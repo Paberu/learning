@@ -6,12 +6,14 @@ class TestLinkedList(unittest.TestCase):
 
     def setUp(self):
         self.list1 = LinkedList()
-        self.list1.add_in_tail(Node(12))
+        self.n_first = Node(12)
+        self.n_last = Node(128)
+        self.list1.add_in_tail(self.n_first)
         self.list1.add_in_tail(Node(55))
         self.list1.add_in_tail(Node(128))
         self.list1.add_in_tail(Node(12))
         self.list1.add_in_tail(Node(56))
-        self.list1.add_in_tail(Node(128))
+        self.list1.add_in_tail(self.n_last)
 
         self.list2 = LinkedList()
 
@@ -44,10 +46,18 @@ class TestLinkedList(unittest.TestCase):
     def test_delete(self):
         self.list1.delete(9)
         self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list1), [12, 55, 128, 12, 56, 128])
+        self.assertEqual(self.list1.head, self.n_first)
+        self.assertEqual(self.list1.tail, self.n_last)
+
         self.list1.delete(12)
         self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list1), [55, 128, 12, 56, 128])
+        self.assertNotEqual(self.list1.head, self.n_first)
+        self.assertEqual(self.list1.tail, self.n_last)
+
         self.list1.delete(128, all=True)
         self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list1), [55, 12, 56])
+        self.assertNotEqual(self.list1.head, self.n_first)
+        self.assertNotEqual(self.list1.tail, self.n_last)
 
         self.list2.delete(12, all=True)
         self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list2), [])
