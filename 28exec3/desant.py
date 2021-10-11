@@ -8,7 +8,7 @@ def ConquestCampaign(N, M, L, battalion):
     for i in range(0, L*2, 2):
         country[battalion[i]-1][battalion[i+1]-1] = 1
 
-    while not noZeros:
+    while any(0 in row for row in country):
         for i in range(N):
             for j in range(M):
                 if country[i][j] != 0:
@@ -25,9 +25,5 @@ def ConquestCampaign(N, M, L, battalion):
                         country[i+1][j] += 1
                     if j < M-1 and country[i][j+1] == 0:
                         country[i][j+1] += 1
-
         day += 1
-        if not any(0 in row for row in country):
-            noZeros = True
-
     return day
