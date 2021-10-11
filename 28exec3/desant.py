@@ -4,7 +4,6 @@ def ConquestCampaign(N, M, L, battalion):
     for i in range(N):
         country[i] = [0]*M
     day = 1
-    noZeros = False
     for i in range(0, L*2, 2):
         country[battalion[i]-1][battalion[i+1]-1] = 1
 
