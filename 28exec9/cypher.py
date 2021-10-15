@@ -17,8 +17,8 @@ def TheRabbitsFoot(s, encode):
                     s_matrix[i][j] = s[i*columns+j]
                 else:
                     break
-                
         reverted_s = [[s_matrix[j][i] for j in range(rows)] for i in range(columns)]
+        s = ' '.join(''.join(x) for x in reverted_s)
     else:
         s = s.replace(' ', '')
         size = len(s)**0.5
@@ -39,12 +39,12 @@ def TheRabbitsFoot(s, encode):
                     s_matrix[i][j] = ''
 
         reverted_s = [[s_matrix[j][i] for j in range(rows)] for i in range(columns)]
-    s = ''.join(''.join(x) for x in reverted_s)
+        s = ''.join(''.join(x) for x in reverted_s)
 
     return s
 
 
-print(TheRabbitsFoot('ahesosl', False))
+print(TheRabbitsFoot('ahe so sl', False))
 print(TheRabbitsFoot('asshole', True))
 print(TheRabbitsFoot('отдай мою кроличью лап', True))
 print(TheRabbitsFoot('омоютоллдюиаакчпйрь', False))
