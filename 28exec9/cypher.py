@@ -32,11 +32,3 @@ def TheRabbitsFoot(s, encode):
         reverted_s = [[s_matrix[j][i] for j in range(rows)] for i in range(columns)]
         s = ''.join(''.join(x) for x in reverted_s)
     return s
-
-print(TheRabbitsFoot('однажды в студеную зимнюю порру', True))
-print(TheRabbitsFoot('оыемр двннр нсуюу атюю жузп ддио', False))
-print(TheRabbitsFoot('а б абв', True))
-print(TheRabbitsFoot('аб бв а', False))
-
-print(TheRabbitsFoot('омоюу толл дюиа акчп йрьк', False))
-print(TheRabbitsFoot('отдай мою кроличью лапку', True))
