@@ -1,5 +1,5 @@
 def PrintingCosts(line):
-    str = '''
+    string = '''
     !   9        "   6        #  24        $  29        %  22
     &  24        '   3        (  12        )  12        *  17        +  13
     ,   7        -   7        .   4        /  10        0  22        1  19
@@ -17,9 +17,9 @@ def PrintingCosts(line):
     t  17        u  17        v  13        w  19        x  13        y  24
     z  19        {  18        |  12        }  18        ~   9
     '''
-    lst = str.split()
+    lst = string.split()
     dct = {}
-    for i in range(0, int(len(lst) / 2), 2):
+    for i in range(0, len(lst)-1, 2):
         dct[lst[i]] = int(lst[i + 1])
 
     costs = 0
@@ -29,4 +29,5 @@ def PrintingCosts(line):
             costs += dct[letter]
         else:
             costs += 23
+
     return costs
