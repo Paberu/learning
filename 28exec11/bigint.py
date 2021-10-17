@@ -1,6 +1,6 @@
 def BigMinus(s1, s2):
     temp_res = ''
-    if len(s1) < len(s2):
+    if len(s1) < len(s2) or (len(s1) == len(s2) and int(s1[0]) < int(s2[0])):
         s1, s2 = s2, s1
 
     temp_len = len(s1) - len(s2)
