@@ -1,7 +1,7 @@
 def TankRush(h1, w1, s1, h2, w2, s2):
     if s1 == '' or s2 == '' or h1 == 0 or h2 == 0 or w1 == 0 or w2 == 0:
         return False
-
+    
     map1 = []
     s1 = s1.split()
     for i in range(h1):
@@ -19,3 +19,8 @@ def TankRush(h1, w1, s1, h2, w2, s2):
                 return True
 
     return False
+
+
+print(TankRush(4, 4, '1234 2345 0987 3562', 2, 2, '34 98'))
+print(TankRush(4, 4, '1234 2345 0987 3562', 4, 4, '1234 2345 0987 3562'))
+print(TankRush(2, 2, '34 98', 2, 2, '34 98'))
