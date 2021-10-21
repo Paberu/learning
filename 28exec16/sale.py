@@ -8,6 +8,5 @@ def MaximumDiscount(n, prices):
                 discount += price
     return discount
 
-print(MaximumDiscount(7, [400, 350, 300, 250, 200, 150, 100]))
 
 
