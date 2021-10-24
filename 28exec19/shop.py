@@ -7,8 +7,10 @@ def ShopOLAP(n, items):
         else:
             new_items[item] += int(total)
 
-    results = []
-    for key in new_items.keys():
-        results.append(key+' '+str(new_items[key]))
+    results = ['']*len(new_items)
+    items = sorted(new_items.values(), reverse=True)
 
-    return sorted(results)
+    for key,value in new_items.items():
+        results[items.index(value)] = key + ' ' + str(value)
+
+    return results
