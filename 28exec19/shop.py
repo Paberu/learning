@@ -7,10 +7,22 @@ def ShopOLAP(n, items):
         else:
             new_items[item] += int(total)
 
-    results = ['']*len(new_items)
-    items = sorted(new_items.values(), reverse=True)
+    sorted_items = [item[0]+' '+str(item[1]) for item in sorted(new_items.items(), key=lambda item: (-item[1], item[0]), reverse = True)]
+    sorted_items.reverse()
 
-    for key,value in new_items.items():
-        results[items.index(value)] = key + ' ' + str(value)
+    return sorted_items
+    
+    bought_comp = dict()
+    for value in new_items.values():
+        if value not in bought_comp:
+            bought_comp[value] = True
+        else:
+            bought_comp[value] = False
+    
+    results = ['']*len(new_items)
+    for key, value in new_items.items():
+        if bought_comp[value]:
+            results[items.index(value)] = key + ' ' + str(value)
+    
 
     return results
