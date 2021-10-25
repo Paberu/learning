@@ -7,7 +7,9 @@ def ShopOLAP(n, items):
         else:
             new_items[item] += int(total)
 
-    sorted_items = [item[0]+' '+str(item[1]) for item in sorted(new_items.items(), key=lambda item: (-item[1], item[0]), reverse = True)]
-    sorted_items.reverse()
+    items = [item[0]+' '+str(item[1])
+             for item in sorted(new_items.items(), key=lambda item: (-item[1], item[0]), reverse=True)]
+    items.reverse()
 
-    return sorted_items
+    return items
+
