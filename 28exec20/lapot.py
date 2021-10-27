@@ -1,13 +1,11 @@
 file = ''
 history = []
 position = 0
-last_command = ''
 
 def BastShoe(command):
     global file, history, position, last_command
-    print('----->',file)
-    print('----->',history)
-    print('----->',last_command)
+    #print('----->',file)
+    #print('----->',history)
     s = file
 
     if command[0] in ('1', '2', '3'):
@@ -23,8 +21,7 @@ def BastShoe(command):
             if index:
                 s = s[:-index]
         file = s
-        history.append(file)
-        last_command = command
+        history.append((command, file))
         position = len(history) - 1
         return s
     elif operation == '3':
@@ -34,19 +31,18 @@ def BastShoe(command):
         else:
             return ''
     elif operation == '4':
-        if last_command[0] in ('1', '2'):
-            s = file = history[position-1]
-            last_command = command
+        if history[position][0][0] in ('1', '2'):
+            position -= 1
+            if position < 0:
+                position = 0
+            s = file = history[position][1]
         return s
     elif operation == '5':
-        current_command += 1
-        current_history += 1
-        if current_command >= len(commands):
-            current_command = len(commands) - 1
-        if current_history >= len(history):
-            current_history = len(history) - 1
-        s = file = history[current_history]
-        commands.append(command)
+        if history[position][0][0] in ('1', '2'):
+            position += 1
+            if position >= len(history):
+                position = len(history) - 1
+            s = file = history[position][1]
         return s
     else:
         return s
