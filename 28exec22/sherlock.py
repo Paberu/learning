@@ -13,17 +13,15 @@ def SherlockValidString(s):
         else:
             check_numbers[number] += 1
 
-    if len(check_numbers.values()) == 1:
+    keys = check_numbers.keys()
+    if len(keys) == 1:
         return True
-    elif len(check_numbers.values()) > 2:
-        return False
-    else:  # len == 2
-        if check_numbers[1] == 1:
-            return True
-        elif 2 in check_numbers.keys():
-            if check_numbers[1] > 1 and check_numbers[2] == 1:
+    elif len(keys) == 2:
+        if min(keys) == max(keys) - 1:
+            if check_numbers[max(keys)] == 1:
                 return True
-            else:
-                return False
-        else:
-            return False
+        if 1 in keys:
+            if check_numbers[1] == 1:
+                return True
+
+    return False
