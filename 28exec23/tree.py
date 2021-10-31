@@ -7,10 +7,8 @@ def TreeOfLife(h, w, n, tree):
         for j in range(w):
             if tree_array[i][j] == '.':
                 tree_array[i][j] = 0
-            elif tree_array[i][j] == '+':
-                tree_array[i][j] = 1
             else:
-                return IOError
+                tree_array[i][j] = 1
 
     coordinates_for_deletion = []
     for year in range(n):
