@@ -1,3 +1,6 @@
+import unittest
+
+
 def MatrixTurn(matrix, m, n, t):
     for i in range(m):
         matrix[i] = list(matrix[i])
@@ -28,9 +31,14 @@ def MatrixTurn(matrix, m, n, t):
     for i in range(m):
         matrix[i] = ''.join(matrix[i])
 
-matr = ['123456','234567','345678','456789']
 
-MatrixTurn(matr,4,6,1)
+class TestLinkedList(unittest.TestCase):
 
-for i in range(4):
-    print(matr[i])
+    def setUp(self):
+        self.matr1 = ['123456','234567','345678','456789']
+
+    def test_turning(self):
+        MatrixTurn(self.matr1, 4, 6, 1)
+        self.assertEqual(self.matr1, ['212345', '343456', '456767', '567898'])
+
+unittest.main()
