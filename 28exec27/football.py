@@ -14,9 +14,10 @@ def Football(f, n):
     if len(temp):
         down_count.append(temp)
 
-    if len(down_count) <= 1:
+    if len(down_count) == 1:
         return True
     elif len(down_count) == 2:
         return all(len(inner) == 2 for inner in down_count)
     else:
         return False
+
