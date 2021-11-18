@@ -36,6 +36,16 @@ class TestLinkedList(unittest.TestCase):
         self.list4.add_in_tail(Node(12))
         self.list4.add_in_tail(Node(12))
 
+        self.list5 = LinkedList()
+        self.list5.add_in_tail(Node(12))
+
+        self.list6 = LinkedList()
+        self.list6.add_in_tail(Node(10))
+        self.list6.add_in_tail(Node(11))
+        self.list6.add_in_tail(Node(12))
+        self.list6.add_in_tail(Node(13))
+        self.list6.add_in_tail(Node(14))
+
     def test_find_all(self):
         self.assertEqual(get_values_from_nodes_array(self.list1.find_all(12)), [12, 12])
         self.assertEqual(get_values_from_nodes_array(self.list1.find_all(55)), [55])
@@ -61,9 +71,30 @@ class TestLinkedList(unittest.TestCase):
 
         self.list2.delete(12, all=True)
         self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list2), [])
+        self.assertEqual(self.list2.head, None)
+        self.assertEqual(self.list2.tail, None)
 
         self.list4.delete(12, all=True)
         self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list4), [])
+        self.assertEqual(self.list4.head, None)
+        self.assertEqual(self.list4.tail, None)
+
+        self.list5.delete(12)
+        self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list5), [])
+        self.assertEqual(self.list5.head, None)
+        self.assertEqual(self.list5.tail, None)
+
+        self.n_first = self.list6.head
+        self.n_last = self.list6.tail
+        self.list6.delete(12)
+        self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list6), [10, 11, 13, 14])
+        self.assertEqual(self.list6.head, self.n_first)
+        self.assertEqual(self.list6.tail, self.n_last)
+
+        self.list6.delete(14)
+        self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list6), [10, 11, 13])
+        self.assertEqual(self.list6.head, self.n_first)
+        self.assertNotEqual(self.list6.tail, self.n_last)
 
     def test_clean(self):
         self.list1.clean()
