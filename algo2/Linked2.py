@@ -2,6 +2,7 @@ class Node:
 
     def __init__(self, v):
         self.value = v
+        self.prev = None
         self.next = None
 
 
@@ -14,8 +15,11 @@ class LinkedList:
     def add_in_tail(self, item):
         if self.head is None:
             self.head = item
+            item.prev = None
+            item.next = None
         else:
             self.tail.next = item
+            item.prev = self.tail
         self.tail = item
 
     def print_all_nodes(self):
@@ -43,24 +47,22 @@ class LinkedList:
 
     def delete(self, val, all=False):
         node = self.head
-        previous = self.head
         while node is not None:
             if node.value == val:
                 if node == self.head:
-                    self.head = node.next
+                    self.head = self.head.next
+                    self.head.prev = None
                 elif node == self.tail:
-                    previous.next = None
-                    self.tail = previous
+                    self.tail = self.tail.prev
+                    self.tail.next = None
                 else:
-                    previous.next = node.next
+                    node.prev.next = node.next
+                    node.next.prev = node.prev
 
                 if not all:
                     break
-                else:
-                    node = node.next
-            else:
-                previous = node
-                node = node.next
+
+            node = node.next
 
         if self.head is None:
             self.tail = None
@@ -80,27 +82,27 @@ class LinkedList:
     def insert(self, afterNode, newNode):
         node = self.head
         if not afterNode:
-            self.head = newNode
-            newNode.next = node
-            if node is None:
+            if not self.head:
+                self.head = newNode
+                self.head.prev = None
+                self.head.next = None
                 self.tail = newNode
+            else:
+                self.add_in_tail(newNode)
         else:
             while node is not None:
                 if node == afterNode:
-                    newNode.next = node.next
-                    node.next = newNode
-                    if newNode.next is None:
+                    newNode.prev = afterNode
+                    newNode.next = afterNode.next
+                    if newNode.next == None:
                         self.tail = newNode
+                    else:
+                        newNode.next.prev = newNode
+                    newNode.prev.next = newNode
                 node = node.next
 
-    def compare_to_another_list(self, anotherList):
-        resultList = LinkedList()
-        if self.len() == anotherList.len():
-            node = self.head
-            anotherNode = anotherList.head
-            while node is not None:
-                new_node = Node(node.value + anotherNode.value)
-                resultList.add_in_tail(new_node)
-                node = node.next
-                anotherNode = anotherNode.next
-        return resultList
+    def add_in_head(self, newNode):
+        node = self.head
+        node.prev = newNode
+        newNode.next = node
+        self.head = node
