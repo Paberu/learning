@@ -145,8 +145,8 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(self.list2.len(), 0)
 
     def test_compare(self):
-        self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list1.compare_to_another_list(self.list3)), [23, 110, 129, 23, 112, 129])
-        self.assertEqual(get_values_from_nodes_array_from_linked_list(self.list1.compare_to_another_list(self.list2)), [])
+        self.assertEqual(get_values_from_nodes_array_from_linked_list(compare_two_lists(self.list1, self.list3)), [23, 110, 129, 23, 112, 129])
+        self.assertEqual(get_values_from_nodes_array_from_linked_list(compare_two_lists(self.list1, self.list2)), [])
 
 
 def get_values_from_nodes_array_from_linked_list(list_to_values):
@@ -164,5 +164,17 @@ def get_values_from_nodes_array(array_of_values):
         values.append(node.value)
     return values
 
+
+def compare_two_lists(oneList, anotherList):
+        resultList = LinkedList()
+        if oneList.len() == anotherList.len():
+            oneNode = oneList.head
+            anotherNode = anotherList.head
+            while oneNode is not None:
+                new_node = Node(oneNode.value + anotherNode.value)
+                resultList.add_in_tail(new_node)
+                oneNode = oneNode.next
+                anotherNode = anotherNode.next
+        return resultList
 
 unittest.main()
