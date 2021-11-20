@@ -5,6 +5,10 @@ class Node:
         self.prev = None
         self.next = None
 
+class Dummy(Node):
+    def __init__(self):
+        
+
 
 class LinkedList:
 
