@@ -7,14 +7,15 @@ class Node:
 
 class Dummy(Node):
     def __init__(self):
-        
+        self.prev = None
+        self.next = None
 
 
 class LinkedList:
 
     def __init__(self):
-        self.head = None
-        self.tail = None
+        self.head = Dummy()
+        self.tail = Dummy()
 
     def add_in_tail(self, item):
         if self.head is None:
