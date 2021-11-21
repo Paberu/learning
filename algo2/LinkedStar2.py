@@ -1,11 +1,11 @@
-from Linked import Node, LinkedList
+from Linked2 import Node, LinkedList2
 import unittest
 
 
 class TestLinkedList(unittest.TestCase):
 
     def setUp(self):
-        self.list1 = LinkedList()
+        self.list1 = LinkedList2()
         self.n_first = Node(12)
         self.n_last = Node(128)
         self.list1.add_in_tail(self.n_first)
@@ -15,9 +15,9 @@ class TestLinkedList(unittest.TestCase):
         self.list1.add_in_tail(Node(56))
         self.list1.add_in_tail(self.n_last)
 
-        self.list2 = LinkedList()
+        self.list2 = LinkedList2()
 
-        self.list3 = LinkedList()
+        self.list3 = LinkedList2()
         self.list3.add_in_tail(Node(11))
         self.list3.add_in_tail(Node(55))
         self.list3.add_in_tail(Node(1))
@@ -25,7 +25,7 @@ class TestLinkedList(unittest.TestCase):
         self.list3.add_in_tail(Node(56))
         self.list3.add_in_tail(Node(1))
 
-        self.list4 = LinkedList()
+        self.list4 = LinkedList2()
         self.list4.add_in_tail(Node(12))
         self.list4.add_in_tail(Node(12))
         self.list4.add_in_tail(Node(12))
@@ -36,10 +36,10 @@ class TestLinkedList(unittest.TestCase):
         self.list4.add_in_tail(Node(12))
         self.list4.add_in_tail(Node(12))
 
-        self.list5 = LinkedList()
+        self.list5 = LinkedList2()
         self.list5.add_in_tail(Node(12))
 
-        self.list6 = LinkedList()
+        self.list6 = LinkedList2()
         self.list6.add_in_tail(Node(10))
         self.list6.add_in_tail(Node(11))
         self.list6.add_in_tail(Node(12))

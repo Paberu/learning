@@ -6,7 +6,7 @@ class Node:
         self.next = None
 
 
-class LinkedList:
+class LinkedList2:
 
     def __init__(self):
         self.head = None
@@ -51,10 +51,12 @@ class LinkedList:
             if node.value == val:
                 if node == self.head:
                     self.head = self.head.next
-                    self.head.prev = None
+                    if self.head is not None:
+                        self.head.prev = None
                 elif node == self.tail:
                     self.tail = self.tail.prev
-                    self.tail.next = None
+                    if self.tail is not None:
+                        self.tail.next = None
                 else:
                     node.prev.next = node.next
                     node.next.prev = node.prev
@@ -105,4 +107,4 @@ class LinkedList:
         node = self.head
         node.prev = newNode
         newNode.next = node
-        self.head = node
+        self.head = newNode
