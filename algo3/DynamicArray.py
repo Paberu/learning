@@ -33,8 +33,33 @@ class DynArray:
         self.count += 1
 
     def insert(self, i, itm):
-
-    # добавляем объект itm в позицию i, начиная с 0
+        if i < 0 or i > self.count:
+            raise IndexError('Index is out of bounds')
+        elif i == self.count:
+            self.append(itm)
+        else:
+            if self.count == self.capacity:
+                self.capacity *= 2
+            new_array = self.make_array(self.capacity)
+            for j in range(i):
+                new_array[j] = self.array[j]
+            new_array[i] = itm
+            for j in range(i, self.count):
+                new_array[j+1] = self.array[j]
+            self.array = new_array
+            self.count += 1
 
     def delete(self, i):
-# удаляем объект в позиции i
+        if i < 0 or i >= self.count:
+            raise IndexError('Index is out of bounds')
+        else:
+            if self.count-1 < self.capacity/2:
+                self.capacity = int(self.capacity/1.5)
+            new_array = self.make_array(self.capacity)
+            if i > 0:
+                for j in range(i):
+                    new_array[j] = self.array[j]
+            for j in range(i+1, self.count):
+                new_array[j-1] = self.array[j]
+        self.array = new_array
+        self.count -= 1
