@@ -16,22 +16,26 @@ class FortranLike:
             symbol = self.s1.pop()
             if symbol.isdigit():
                 self.s2.push(int(symbol))
-            elif symbol == '+':
-                self.s2.push(self.s2.pop() + self.s2.pop())
-            elif symbol == '-':
-                self.s2.push(self.s2.pop() - self.s2.pop())
-            elif symbol == '/':
-                self.s2.push(self.s2.pop() / self.s2.pop())
-            elif symbol == '*':
-                self.s2.push(self.s2.pop() * self.s2.pop())
-            elif symbol == '=':
-                return self.s2.peek()
             else:
-                return 'Wrong symbol!'
-        return self.s2.pop()
+                x1 = self.s2.pop()
+                x2 = self.s2.pop()
+                if symbol == '+':
+                    self.s2.push(x1 + x2)
+                elif symbol == '-':
+                    self.s2.push(x1 - x2)
+                elif symbol == '/':
+                    self.s2.push(x1 / x2)
+                elif symbol == '*':
+                    self.s2.push(x1 * x2)
+                elif symbol == '=':
+                    return x1
+                else:
+                    return 'Wrong symbol!'
+        return self.s2.peek()
 
 fl = FortranLike()
 fl.fill('1 2 + 3 *')
 print(fl.calculate())
+f1 = FortranLike()
 fl.fill('8 2 + 5 * 9 + =')
 print(fl.calculate())
