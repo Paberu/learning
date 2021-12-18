@@ -8,7 +8,9 @@ class OrderedList:
     def __init__(self, asc):
         self.head = None
         self.tail = None
+        self.middle = None
         self.__ascending = asc
+        self.size = 0
 
     def compare(self, v1, v2):
         if v1 < v2:
@@ -19,8 +21,11 @@ class OrderedList:
 
     def add(self, value):
         node = Node(value)
+        size += 1
+        if size % 2 == 0:
+            self.middle = self.middle.next
         if self.head is None:
-            self.head = self.tail = node
+            self.head = self.tail = self.middle = node
         else:
             if self.__ascending:
                 if value <= self.head.value:
@@ -92,6 +97,7 @@ class OrderedList:
                 else:
                     node.prev.next = node.next
                     node.next.prev = node.prev
+                size -= 1
                 break
             else:
                 node = node.next
@@ -102,14 +108,10 @@ class OrderedList:
         self.__ascending = asc
         self.head = None
         self.tail = None
+        self.size = 0
 
     def len(self):
-        node = self.head
-        length = 0
-        while node is not None:
-            length += 1
-            node = node.next
-        return length
+        return self.size
 
     def get_all(self):
         r = []
@@ -124,5 +126,8 @@ class OrderedStringList(OrderedList):
         super(OrderedStringList, self).__init__(asc)
 
     def compare(self, v1, v2):
-        # переопределённая версия для строк
+        if v1 < v2:
+            return -1
+        elif v1 > v2:
+            return 1
         return 0
