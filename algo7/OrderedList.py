@@ -21,9 +21,13 @@ class OrderedList:
 
     def add(self, value):
         node = Node(value)
-        size += 1
-        if size % 2 == 0:
-            self.middle = self.middle.next
+        self.size += 1
+        if self.size > 2 and self.size % 2 == 0:
+            if value < self.middle.value:
+                self.middle = self.middle.prev
+            else:
+                self.middle = self.middle.next
+
         if self.head is None:
             self.head = self.tail = self.middle = node
         else:
@@ -75,11 +79,12 @@ class OrderedList:
                     node.prev.next = node
 
     def find(self, val):
-        node = self.head
-        while node is not None:
-            if node.value == val:
-                return node
-            node = node.next
+        node = self.middle
+        if val > self.head.value and val < self.middle.value:
+            while node is not None:
+                if node.value == val:
+                    return node
+                node = node.prev
         return None
 
     def delete(self, val):
@@ -97,7 +102,12 @@ class OrderedList:
                 else:
                     node.prev.next = node.next
                     node.next.prev = node.prev
-                size -= 1
+                self.size -= 1
+                if self.size > 2 and self.size % 2 == 0:
+                    if value < self.middle.value:
+                        self.middle = self.middle.next
+                    else:
+                        self.middle = self.middle.prev
                 break
             else:
                 node = node.next
@@ -106,8 +116,7 @@ class OrderedList:
 
     def clean(self, asc):
         self.__ascending = asc
-        self.head = None
-        self.tail = None
+        self.head = self.middle = self.tail = None
         self.size = 0
 
     def len(self):
@@ -126,8 +135,8 @@ class OrderedStringList(OrderedList):
         super(OrderedStringList, self).__init__(asc)
 
     def compare(self, v1, v2):
-        if v1 < v2:
+        if v1.split() < v2.split():
             return -1
-        elif v1 > v2:
+        elif v1.split > v2.split():
             return 1
         return 0
