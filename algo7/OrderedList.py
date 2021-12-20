@@ -8,7 +8,6 @@ class OrderedList:
     def __init__(self, asc):
         self.head = None
         self.tail = None
-        self.middle = None
         self.__ascending = asc
         self.size = 0
 
@@ -21,15 +20,8 @@ class OrderedList:
 
     def add(self, value):
         node = Node(value)
-        self.size += 1
-        if self.size > 2 and self.size % 2 == 0:
-            if value < self.middle.value:
-                self.middle = self.middle.prev
-            else:
-                self.middle = self.middle.next
-
         if self.head is None:
-            self.head = self.tail = self.middle = node
+            self.head = self.tail = node
         else:
             if self.__ascending:
                 if value <= self.head.value:
@@ -77,14 +69,14 @@ class OrderedList:
                         node.next = right
                     node.next.prev = node
                     node.prev.next = node
+        self.size += 1
 
     def find(self, val):
-        node = self.middle
-        if val > self.head.value and val < self.middle.value:
-            while node is not None:
-                if node.value == val:
-                    return node
-                node = node.prev
+        node = self.head
+        while node is not None:
+            if node.value == val:
+                return node
+            node = node.prev
         return None
 
     def delete(self, val):
@@ -103,11 +95,6 @@ class OrderedList:
                     node.prev.next = node.next
                     node.next.prev = node.prev
                 self.size -= 1
-                if self.size > 2 and self.size % 2 == 0:
-                    if value < self.middle.value:
-                        self.middle = self.middle.next
-                    else:
-                        self.middle = self.middle.prev
                 break
             else:
                 node = node.next
@@ -116,7 +103,7 @@ class OrderedList:
 
     def clean(self, asc):
         self.__ascending = asc
-        self.head = self.middle = self.tail = None
+        self.head = self.tail = None
         self.size = 0
 
     def len(self):
