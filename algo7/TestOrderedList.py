@@ -17,6 +17,17 @@ class TestOrderedList(unittest.TestCase):
         self.ol1.add(10)
         self.ol2 = OrderedList(True)
         self.ol3 = OrderedList(False)
+        self.ol4 = OrderedList(True)
+        self.ol4.add(1)
+        self.ol4.add(2)
+        self.ol4.add(3)
+        self.ol4.add(4)
+        self.ol4.add(5)
+        self.ol4.add(6)
+        self.ol4.add(7)
+        self.ol4.add(8)
+        self.ol4.add(9)
+        self.ol4.add(10)
 
     def test_add1(self):
         self.ol2.add(2)
@@ -116,5 +127,7 @@ class TestOrderedList(unittest.TestCase):
         self.assertEqual(self.ol3.tail.prev.value, 2)
         self.assertEqual(self.ol3.tail.value, 1)
         self.assertEqual(self.ol3.len(), 10)
+
+
 
 unittest.main()

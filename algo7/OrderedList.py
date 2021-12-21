@@ -24,47 +24,47 @@ class OrderedList:
             self.head = self.tail = node
         else:
             if self.__ascending:
-                if value <= self.head.value:
+                if self.compare(value, self.head.value) in (0, -1):
                     self.head.prev = node
                     node.next = self.head
                     self.head = node
-                elif value >= self.tail.value:
+                elif self.compare(value, self.tail.value) in (0, 1):
                     self.tail.next = node
                     node.prev = self.tail
                     self.tail = node
                 else:
                     left = self.head
                     right = self.tail
-                    while left.next.value <= value and right.prev.value >= value:
+                    while self.compare(left.next.value, value) in (0, -1) and self.compare(right.prev.value, value) in (0, 1):
                         left = left.next
                         right = right.prev
-                    if left.next.value > value:
+                    if self.compare(left.next.value, value) in (0, 1):
                         node.next = left.next
                         node.prev = left
-                    elif right.prev.value < value:
+                    elif self.compare(right.prev.value, value) in (0, -1):
                         node.prev = right.prev
                         node.next = right
                     node.next.prev = node
                     node.prev.next = node
             else:
-                if value <= self.tail.value:
+                if self.compare(value, self.tail.value) in (0, -1):
                     self.tail.next = node
                     node.prev = self.tail
                     self.tail = node
-                elif value >= self.head.value:
+                elif self.compare(value, self.head.value) in (0, 1):
                     self.head.prev = node
                     node.next = self.head
                     self.head = node
                 else:
                     left = self.head
                     right = self.tail
-                    while left.next.value >= value and right.prev.value <= value:
+                    while self.compare(left.next.value, value) in (0, 1) and self.compare(right.prev.value, value) in (0, -1):
                         left = left.next
                         right = right.prev
-                    if left.next.value < value:
+                    if self.compare(left.next.value, value) in (0, -1):
                         node.next = left.next
                         node.prev = left
-                    elif right.prev.value > value:
+                    elif self.compare(right.prev.value, value) in (0, 1):
                         node.prev = right.prev
                         node.next = right
                     node.next.prev = node
@@ -72,11 +72,31 @@ class OrderedList:
         self.size += 1
 
     def find(self, val):
-        node = self.head
-        while node is not None:
-            if node.value == val:
-                return node
-            node = node.prev
+        asc = 1 if self.__ascending else -1
+        if self.__ascending:
+            if self.compare(val, self.head.value) == -1 or self.compare(val, self.tail.value) == 1:
+                return None
+            else:
+                node = self.head
+                while node is not None:
+                    if self.compare(val, node.value) == 1:
+                        node = node.next
+                    if self.compare(val, node.value) == 0:
+                        return node
+                    else:
+                        return None
+        else:
+            if self.compare(val, self.head.value) == 1 or self.compare(val, self.tail.value) == -1:
+                return None
+            else:
+                node = self.head
+                while node is not None:
+                    if self.compare(val, node.value) == -1:
+                        node = node.next
+                    if self.compare(val, node.value) == 0:
+                        return node
+                    else:
+                        return None
         return None
 
     def delete(self, val):
