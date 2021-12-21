@@ -23,6 +23,7 @@ class OrderedList:
         if self.head is None:
             self.head = self.tail = node
         else:
+            asc = 1 if self.__ascending else -1
             if self.__ascending:
                 if self.compare(value, self.head.value) in (0, -1):
                     self.head.prev = node
@@ -73,30 +74,17 @@ class OrderedList:
 
     def find(self, val):
         asc = 1 if self.__ascending else -1
-        if self.__ascending:
-            if self.compare(val, self.head.value) == -1 or self.compare(val, self.tail.value) == 1:
-                return None
-            else:
-                node = self.head
-                while node is not None:
-                    if self.compare(val, node.value) == 1:
-                        node = node.next
-                    if self.compare(val, node.value) == 0:
-                        return node
-                    else:
-                        return None
+        if self.compare(val, self.head.value) == -asc or self.compare(val, self.tail.value) == asc:
+            return None
         else:
-            if self.compare(val, self.head.value) == 1 or self.compare(val, self.tail.value) == -1:
-                return None
-            else:
-                node = self.head
-                while node is not None:
-                    if self.compare(val, node.value) == -1:
-                        node = node.next
-                    if self.compare(val, node.value) == 0:
-                        return node
-                    else:
-                        return None
+            node = self.head
+            while node is not None:
+                if self.compare(val, node.value) == asc:
+                    node = node.next
+                elif self.compare(val, node.value) == 0:
+                    return node
+                else:
+                    return None
         return None
 
     def delete(self, val):
