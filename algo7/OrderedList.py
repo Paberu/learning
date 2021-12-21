@@ -24,52 +24,28 @@ class OrderedList:
             self.head = self.tail = node
         else:
             asc = 1 if self.__ascending else -1
-            if self.__ascending:
-                if self.compare(value, self.head.value) in (0, -1):
-                    self.head.prev = node
-                    node.next = self.head
-                    self.head = node
-                elif self.compare(value, self.tail.value) in (0, 1):
-                    self.tail.next = node
-                    node.prev = self.tail
-                    self.tail = node
-                else:
-                    left = self.head
-                    right = self.tail
-                    while self.compare(left.next.value, value) in (0, -1) and self.compare(right.prev.value, value) in (0, 1):
-                        left = left.next
-                        right = right.prev
-                    if self.compare(left.next.value, value) in (0, 1):
-                        node.next = left.next
-                        node.prev = left
-                    elif self.compare(right.prev.value, value) in (0, -1):
-                        node.prev = right.prev
-                        node.next = right
-                    node.next.prev = node
-                    node.prev.next = node
+            if self.compare(value, self.head.value) in (0, -asc):
+                self.head.prev = node
+                node.next = self.head
+                self.head = node
+            elif self.compare(value, self.tail.value) in (0, asc):
+                self.tail.next = node
+                node.prev = self.tail
+                self.tail = node
             else:
-                if self.compare(value, self.tail.value) in (0, -1):
-                    self.tail.next = node
-                    node.prev = self.tail
-                    self.tail = node
-                elif self.compare(value, self.head.value) in (0, 1):
-                    self.head.prev = node
-                    node.next = self.head
-                    self.head = node
-                else:
-                    left = self.head
-                    right = self.tail
-                    while self.compare(left.next.value, value) in (0, 1) and self.compare(right.prev.value, value) in (0, -1):
-                        left = left.next
-                        right = right.prev
-                    if self.compare(left.next.value, value) in (0, -1):
-                        node.next = left.next
-                        node.prev = left
-                    elif self.compare(right.prev.value, value) in (0, 1):
-                        node.prev = right.prev
-                        node.next = right
-                    node.next.prev = node
-                    node.prev.next = node
+                left = self.head
+                right = self.tail
+                while self.compare(left.next.value, value) in (0, -asc) and self.compare(right.prev.value, value) in (0, asc):
+                    left = left.next
+                    right = right.prev
+                if self.compare(left.next.value, value) in (0, asc):
+                    node.next = left.next
+                    node.prev = left
+                elif self.compare(right.prev.value, value) in (0, -asc):
+                    node.prev = right.prev
+                    node.next = right
+                node.next.prev = node
+                node.prev.next = node
         self.size += 1
 
     def find(self, val):
