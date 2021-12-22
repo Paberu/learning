@@ -28,6 +28,7 @@ class TestOrderedList(unittest.TestCase):
         self.ol4.add(8)
         self.ol4.add(9)
         self.ol4.add(10)
+        self.ol_str = OrderedList(True)
 
     def test_add1(self):
         self.ol2.add(2)
@@ -148,6 +149,24 @@ class TestOrderedList(unittest.TestCase):
         self.assertEqual(self.ol3.tail.prev.value, 2)
         self.assertEqual(self.ol3.tail.value, 1)
         self.assertEqual(self.ol3.len(), 10)
+
+    def test_add3(self):
+        self.ol_str.add('abc')
+        self.assertEqual(self.ol_str.head.value, 'abc')
+        self.assertEqual(self.ol_str.tail.value, 'abc')
+        self.assertEqual(self.ol_str.len(), 1)
+        self.ol_str.add('abc')
+        self.assertEqual(self.ol_str.head.value, 'abc')
+        self.assertEqual(self.ol_str.tail.value, 'abc')
+        self.assertEqual(self.ol_str.len(), 2)
+        self.ol_str.add('abcd')
+        self.assertEqual(self.ol_str.head.value, 'abc')
+        self.assertEqual(self.ol_str.tail.value, 'abcd')
+        self.assertEqual(self.ol_str.len(), 3)
+        self.ol_str.add('acbd')
+        self.assertEqual(self.ol_str.head.value, 'abc')
+        self.assertEqual(self.ol_str.tail.value, 'acbd')
+        self.assertEqual(self.ol_str.len(), 4)
 
     def test_find1(self):
         self.assertEqual(self.ol1.find(-1), None)
