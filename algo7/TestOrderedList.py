@@ -1,6 +1,6 @@
 import unittest
 
-from OrderedList import OrderedList
+from OrderedList import OrderedList, OrderedStringList
 
 class TestOrderedList(unittest.TestCase):
     def setUp(self):
@@ -28,7 +28,7 @@ class TestOrderedList(unittest.TestCase):
         self.ol4.add(8)
         self.ol4.add(9)
         self.ol4.add(10)
-        self.ol_str = OrderedList(True)
+        self.ol_str = OrderedStringList(True)
 
     def test_add1(self):
         self.ol2.add(2)

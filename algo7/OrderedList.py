@@ -106,8 +106,8 @@ class OrderedStringList(OrderedList):
         super(OrderedStringList, self).__init__(asc)
 
     def compare(self, v1, v2):
-        if v1.split() < v2.split():
+        if v1.strip() < v2.strip():
             return -1
-        elif v1.split > v2.split():
+        elif v1.strip() > v2.strip():
             return 1
         return 0
