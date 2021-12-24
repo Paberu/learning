@@ -5,27 +5,74 @@ class TestHashTable(unittest.TestCase):
 
     def setUp(self):
         self.hash1 = HashTable(17, 3)
+        self.test_string = '''
+            Python is an interpreted high-level general-purpose programming language.
+            Its design philosophy emphasizes code readability with its use of significant indentation.
+            Its language constructs as well as its object-oriented approach aim to help programmers
+            write clear, logical code for small and large-scale projects.
+
+            Python is dynamically-typed and garbage-collected. It supports multiple programming paradigms,
+            including structured (particularly, procedural), object-oriented and functional programming.
+            It is often described as a "batteries included" language due to its comprehensive standard library.
+            '''
+        self.hash2 = HashTable(17,3)
+        str_list = self.test_string.split()
+        for every_str in str_list:
+            slot = self.hash2.put(every_str)
+            if slot is None:
+                break
 
     def test_hash_fun(self):
-        str_list = '''
-Когда мы будем знакомиться с алгоритмами поиска, то узнаем, что в общем случае сложность поиска нужного элемента в упорядоченном массиве (когда есть возможность обращаться к произвольным элементам по индексу) можно снизить с O(n) до O(log n). Однако существуют структуры данных, которые ориентированы на максимально быстрый поиск нужной информации (проверку её наличия в хранилище), буквально за время O(1). Такие структуры называются хэш-таблицы.
-
-Идея хэш-таблицы в том, что по значению содержимого i-го элемента таблицы мы можем быстро и однозначно определить сам индекс i (говорят - слот). Такое вычисление слота выполняет специальная хэш-функция.
-
-Если диапазон значений, хранимых в таблице, не превышает её размер, то хэш-функция элементарна. Например, мы хотим хранить байты (значения от 0 до 255) в таблице размером 256 элемента. В таком случае хэш-функция f(x) = x : само значение элемента и есть его индекс в таблице. Мы просто смотрим, имеется ли значение N в таблице по индексу N.
-
-Но идея хэш-таблиц в другом: мы хотим хранить значения потенциально очень широкого диапазона (например, строки) в таблице маленького размера (например, 128 элементов). При этом мы исходим из того, что и хранимые данные по своей уникальности примерно близки своим количеством размеру хэш-таблицы. Мы можем, например, суммировать байты каждой строки, брать остаток от деления суммы на 128, и таким образом получать уникальный индекс.
-
-Большая проблема в том, что идеальную хэш-функцию придумать подчас очень трудно или невозможно. В нашем случае самые разные строки могут выдавать один и тот же слот -- такая ситуация называется коллизией. Решается эта проблема, во-первых, подбором оптимальной хэш-функции, которая минимизирует количество коллизий, и во-вторых, так называемым разрешением коллизий, когда несколько разных значений претендуют на один слот.
-'''.split()
-        result = [0]*17
+        str_list = self.test_string.split()
         for every_str in str_list:
-            index = self.hash1.hash_fun(every_str)
-            result[index] += 1
+            self.assertEqual(self.hash1.hash_fun('Python'), 13)
+            self.assertEqual(self.hash1.hash_fun('is'), 16)
+            self.assertEqual(self.hash1.hash_fun('an'), 3)
+            self.assertEqual(self.hash1.hash_fun('interpreted'), 0)
+            self.assertEqual(self.hash1.hash_fun('high-level'), 11)
+            self.assertEqual(self.hash1.hash_fun('general-purpose'), 14)
+            self.assertEqual(self.hash1.hash_fun('programming'), 14)
+            self.assertEqual(self.hash1.hash_fun('language.'), 15)
+            self.assertEqual(self.hash1.hash_fun('Its'), 15)
+            self.assertEqual(self.hash1.hash_fun('design'), 5)
+            self.assertEqual(self.hash1.hash_fun('philosophy'), 15)
+            self.assertEqual(self.hash1.hash_fun('emphasizes'), 10)
+            self.assertEqual(self.hash1.hash_fun('code'), 3)
+            self.assertEqual(self.hash1.hash_fun('readability'), 6)
+            self.assertEqual(self.hash1.hash_fun('with'), 2)
+            self.assertEqual(self.hash1.hash_fun('its'), 13)
+            self.assertEqual(self.hash1.hash_fun('use'), 10)
 
-        for i in range(len(result)):
-            print(result[i])
+    def test_seek_slot(self):
+        str_list = self.test_string.split()
+        for i in range(6):
+            self.hash1.put(str_list[i])
+        self.assertEqual(self.hash1.seek_slot('programming'), 6)
+        self.assertEqual(self.hash1.seek_slot('language.'), 15)
+        self.assertEqual(self.hash1.seek_slot('code'), 6)
 
+
+    def test_put(self):
+        self.assertEqual(self.hash1.put('Python'), 13)
+        self.assertEqual(self.hash1.put('is'), 16)
+        self.assertEqual(self.hash1.put('an'), 3)
+        self.assertEqual(self.hash1.put('interpreted'), 0)
+        self.assertEqual(self.hash1.put('high-level'), 11)
+        self.assertEqual(self.hash1.put('general-purpose'), 14)
+        self.assertEqual(self.hash1.put('programming'), 6)
+        self.assertEqual(self.hash1.put('language.'), 15)
+        self.assertEqual(self.hash1.put('Its'), 1)
+        self.assertEqual(self.hash1.put('design'), 5)
+        self.assertEqual(self.hash1.put('philosophy'), 4)
+        self.assertEqual(self.hash1.put('emphasizes'), 10)
+
+    def test_find(self):
+        self.assertEqual(self.hash2.find('readability'), 12)
+        self.assertEqual(self.hash2.find('programming'), 6)
+        self.assertEqual(self.hash2.find('language.'), 15)
+        self.assertEqual(self.hash2.find('interpreted'), 0)
+        self.assertEqual(self.hash2.find('Python'), 13)
+        self.assertEqual(self.hash2.find('code'), 9)
 
 unittest.main()
         

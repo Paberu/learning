@@ -12,17 +12,39 @@ class HashTable:
         return sum_value % self.size
 
     def seek_slot(self, value):
-         # находит индекс пустого слота для значения, или None
+         basic_index = self.hash_fun(value)
+         if self.slots[basic_index] is None:
+             return basic_index
+         else:
+             index = self.increase_index(basic_index)
+             while index != basic_index:
+                 if self.slots[index] is None:
+                     return index
+                 else:
+                     index = self.increase_index(index)
          return None
 
     def put(self, value):
-         # записываем значение по хэш-функции
-         
-         # возвращается индекс слота или None,
-         # если из-за коллизий элемент не удаётся
-         # разместить 
-         return None
+         index = self.seek_slot(value)
+         if index is not None:
+             self.slots[index] = value
+         return index
 
     def find(self, value):
-         # находит индекс слота со значением, или None
-         return None
+        basic_index = self.hash_fun(value)
+        if self.slots[basic_index] == value:
+            return basic_index
+        else:
+            index = self.increase_index(basic_index)
+            while index != basic_index:
+                if self.slots[index] == value:
+                    return index
+                else:
+                    index = self.increase_index(index)
+        return None
+
+    def increase_index(self, index):
+        index += self.step
+        if index >= self.size:
+            index -= self.size
+        return index
