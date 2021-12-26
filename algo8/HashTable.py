@@ -1,4 +1,5 @@
 class HashTable:
+
     def __init__(self, sz, stp):
         self.size = sz
         self.step = stp
@@ -12,23 +13,23 @@ class HashTable:
         return sum_value % self.size
 
     def seek_slot(self, value):
-         basic_index = self.hash_fun(value)
-         if self.slots[basic_index] is None:
-             return basic_index
-         else:
-             index = self.increase_index(basic_index)
-             while index != basic_index:
-                 if self.slots[index] is None:
-                     return index
-                 else:
-                     index = self.increase_index(index)
-         return None
+        basic_index = self.hash_fun(value)
+        if self.slots[basic_index] is None:
+            return basic_index
+        else:
+            index = self.increase_index(basic_index)
+            while index != basic_index:
+                if self.slots[index] is None:
+                    return index
+                else:
+                    index = self.increase_index(index)
+        return None
 
     def put(self, value):
-         index = self.seek_slot(value)
-         if index is not None:
-             self.slots[index] = value
-         return index
+        index = self.seek_slot(value)
+        if index is not None:
+            self.slots[index] = value
+        return index
 
     def find(self, value):
         basic_index = self.hash_fun(value)

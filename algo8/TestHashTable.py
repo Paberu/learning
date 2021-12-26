@@ -1,6 +1,7 @@
 import unittest
 from HashTable import HashTable
 
+
 class TestHashTable(unittest.TestCase):
 
     def setUp(self):
@@ -15,7 +16,7 @@ class TestHashTable(unittest.TestCase):
             including structured (particularly, procedural), object-oriented and functional programming.
             It is often described as a "batteries included" language due to its comprehensive standard library.
             '''
-        self.hash2 = HashTable(17,3)
+        self.hash2 = HashTable(17, 3)
         str_list = self.test_string.split()
         for every_str in str_list:
             slot = self.hash2.put(every_str)
@@ -51,7 +52,6 @@ class TestHashTable(unittest.TestCase):
         self.assertEqual(self.hash1.seek_slot('language.'), 15)
         self.assertEqual(self.hash1.seek_slot('code'), 6)
 
-
     def test_put(self):
         self.assertEqual(self.hash1.put('Python'), 13)
         self.assertEqual(self.hash1.put('is'), 16)
@@ -75,4 +75,3 @@ class TestHashTable(unittest.TestCase):
         self.assertEqual(self.hash2.find('code'), 9)
 
 unittest.main()
-        
