@@ -1,6 +1,7 @@
 import unittest
 from NativeDictionary import NativeDictionary
 
+
 class TestNativeDictionary(unittest.TestCase):
 
     def setUp(self):
