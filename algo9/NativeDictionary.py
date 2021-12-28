@@ -14,29 +14,37 @@ class NativeDictionary:
         return sum_value % self.size
 
     def is_key(self, key):
+        return self.get(key) is not None
+
+    def get(self, key):
         basic_key_hash = self.hash_fun(key)
         if self.slots[basic_key_hash] == key:
-            return True
+            return self.values[basic_key_hash]
         else:
             key_hash = self.increase_key_hash(basic_key_hash)
             while key_hash != basic_key_hash:
                 if self.slots[key_hash] == key:
-                    return True
+                    return self.values[key_hash]
                 else:
                     key_hash = self.increase_key_hash(key_hash)
-        return False
-
-    # def put(self, key, value):
-    #     if self.is_key(key):
-    #     key_hash = self.seek_slot(value)
-    #     if index is not None:
-    #         self.slots[index] = value
-    #     return index
-
-    def get(self, key):
-        if self.is_key(key):
-            key_hash =
         return None
+
+    def put(self, key, value):
+        basic_key_hash = self.hash_fun(key)
+        if self.slots[basic_key_hash] in (key, None):
+            self.slots[basic_key_hash] = key
+            self.values[basic_key_hash] = value
+            return basic_key_hash
+        else:
+            key_hash = self.increase_key_hash(basic_key_hash)
+            while key_hash != basic_key_hash:
+                if self.slots[key_hash] in (key, None):
+                    self.slots[key_hash] = key
+                    self.values[key_hash] = value
+                    return key_hash
+                else:
+                    key_hash = self.increase_key_hash(key_hash)
+        return -1
 
     def increase_key_hash(self, index):
         index += self.step
