@@ -1,8 +1,8 @@
-class PowerSet(HashTable):
+class PowerSet():
 
     def __init__(self):
-        self.size = 29
-        self.insides = [None] * self.size
+        self.inner_size = 29
+        self.insides = [None] * self.inner_size
         self.length = 0
 
     def size(self):
@@ -15,29 +15,29 @@ class PowerSet(HashTable):
                 sum_value += ord(letter)
         elif isinstance(value, int):
             sum_value = value
-        return sum_value % self.size
+        return sum_value % self.inner_size
 
     def put(self, value):
         index = self.hash_fun(value)
         if self.insides[index] is None:
             self.insides[index] = [value]
-            size += 1
+            self.length += 1
         else:
             if value not in self.insides[index]:
                 self.insides[index].append(value)
-                size += 1
+                self.length += 1
 
     def get(self, value):
         index = self.hash_fun(value)
-        if value in self.insides[index]:
+        if self.insides[index] is not None and value in self.insides[index]:
             return True
         return False
 
     def remove(self, value):
         index = self.hash_fun(value)
-        if value in self.insides[index]:
+        if self.insides[index] is not None and value in self.insides[index]:
             self.insides[index].remove(value)
-            size -= 1
+            self.length -= 1
             return True
         return False
 
@@ -59,11 +59,12 @@ class PowerSet(HashTable):
         return union_set
 
     def difference(self, set2):
-        diff_set = self.copy()
-        for each in set2.insides:
+        diff_set = PowerSet()
+        for each in self.insides:
             if each is not None:
                 for value in each:
-                    diff_set.remove(value)
+                    if not set2.get(value):
+                        diff_set.put(value)
         return diff_set
 
     def issubset(self, set2):
