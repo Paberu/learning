@@ -10,8 +10,11 @@ class NativeCache:
 
     def hash_fun(self, key):
         sum_value = 0
-        for letter in key:
-            sum_value += ord(letter)
+        if type(key) == str:
+            for letter in key:
+                sum_value += ord(letter)
+        elif type(key) == int or float:
+            sum_value = int(key)
         return sum_value % self.size
 
     def is_key(self, key):
@@ -21,7 +24,7 @@ class NativeCache:
         basic_key_hash = self.hash_fun(key)
         if self.slots[basic_key_hash] is not None:
             key_hash = self.increase_key_hash(basic_key_hash)
-            key_min_hit = basic_key_hash if self.hits[basic_key_hash] < self.hits[key_hash] else key_hash
+            key_min_hit = basic_key_hash if self.hits[basic_key_hash] <= self.hits[key_hash] else key_hash
             while key_hash != basic_key_hash:
                 if self.slots[key_hash] is not None:
                     key_hash = self.increase_key_hash(key_hash)
@@ -37,11 +40,13 @@ class NativeCache:
     def get(self, key):
         basic_key_hash = self.hash_fun(key)
         if self.slots[basic_key_hash] == key:
+            self.hits[basic_key_hash] += 1
             return self.values[basic_key_hash]
         else:
             key_hash = self.increase_key_hash(basic_key_hash)
             while key_hash != basic_key_hash:
                 if self.slots[key_hash] == key:
+                    self.hits[key_hash] += 1
                     return self.values[key_hash]
                 else:
                     key_hash = self.increase_key_hash(key_hash)
