@@ -65,6 +65,9 @@ class LinkedList2:
     def clean(self):
         self.head = DummyNode()
         self.tail = DummyNode()
+        self.tail.prev = self.head
+        self.head.next = self.tail
+        self.length = 0
 
     def len(self):
         return self.length
