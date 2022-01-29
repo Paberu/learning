@@ -1,0 +1,5 @@
+LinkedList2 - BidirectionalLinkedList
+//из задания 2 курса по структурам данных. Можно назвать LinkedListBidirectional, мол, сначала что, потом какое. Но не так, как обозвал впопыхах.
+
+EasyDownloader - YoutubeChannelsDownloader
+//из прог
