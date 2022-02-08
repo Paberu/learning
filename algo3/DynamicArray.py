@@ -3,10 +3,15 @@ import ctypes
 
 class DynArray:
 
-    def __init__(self):
+    def __init__(self, capacity = 16):
         self.count = 0
-        self.capacity = 16
+        self.capacity = capacity
         self.array = self.make_array(self.capacity)
+
+    @staticmethod
+    def create_dynamic_array(capacity):
+        dyn_array = DynArray(capacity)
+        return dyn_array
 
     def __len__(self):
         return self.count

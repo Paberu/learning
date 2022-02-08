@@ -6,10 +6,17 @@ class Node:
 
 class OrderedList:
     def __init__(self, asc):
-        self.head = None
-        self.tail = None
+        self.head = self.tail = None
         self.__ascending = asc
         self.size = 0
+
+    @staticmethod
+    def create_ascending_list():
+        return OrderedList(True)
+
+    @staticmethod
+    def create_descending_list():
+        return OrderedList(False)
 
     def compare(self, v1, v2):
         if v1 < v2:
@@ -111,3 +118,6 @@ class OrderedStringList(OrderedList):
         elif v1.strip() > v2.strip():
             return 1
         return 0
+
+ord1 = OrderedList.create_ascending_list()
+ord2 = OrderedList.create_descending_list()

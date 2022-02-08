@@ -1,11 +1,11 @@
 import unittest
-from BloomFilter import BloomFilter
+from BloomFilter2 import BloomFilter
 
 
 class TestBloomFilter(unittest.TestCase):
 
     def setUp(self):
-        self.bloomFilter = BloomFilter(32)
+        self.bloomFilter = BloomFilter.createBloomFilter(32, 17, 223)
         self.test_strings = []
         self.test_strings.append('0123456789')
         self.test_strings.append('1234567890')

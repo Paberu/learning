@@ -1,0 +1,61 @@
+3.1 // создание объекта класса OrderedList:
+
+ordered_list = OrderedList.create_ascending_list()
+// или
+ordered_list = OrderedList.create_ascending_list()
+
+// А соответственно в теле класса OrderedList создать две функции:
+@staticmethod
+def create_ascending_list():
+	return OrderedList(True)
+
+@staticmethod
+def create_descending_list():
+	return OrderedList(False)
+	
+
+// изменить структуру BloomFilter:
+class BloomFilter:
+
+	def __init__(self, f_len, hash_code1, hash_code2):
+        self.filter_len = f_len
+        self.filter = 0b0
+        self.hash_code1 = hash_code1
+        self.hash_code2 = hash_code2
+
+    @staticmethod
+    def createBloomFilter(f_len, hash_code1, hash_code2):
+        return BloomFilter(f_len, hash_code1, hash_code2)
+
+    def get_hash(self, value, hash_code):
+        code = 0
+        for c in value:
+            code = (code * hash_code + ord(c)) % self.filter_len
+        return int(code)
+
+    def add(self, str1):
+        self.filter |= 1 << self.get_hash(value, self.hash_code1)
+        self.filter |= 1 << self.get_hash(value, self.hash_code2)
+
+    def is_value(self, str1):
+        mask = 0b0 | (1 << self.get_hash(value, self.hash_code1)) | (1 << self.get_hash(value, self.hash_code2))
+        result = mask & self.filter
+        return mask == result
+		
+// создание динамического массива (класс DynArray)
+// пришлось изменить конструктор, чтобы создавался массива с объёмом по умолчанию (16), но была возможность
+изменить размер массива в момент инициализации:
+
+    def __init__(self, capacity = 16):
+        self.count = 0
+        self.capacity = capacity
+        self.array = self.make_array(self.capacity)
+
+    @staticmethod
+    def create_dynamic_array(capacity):
+        dyn_array = DynArray(capacity)
+		return dyn_array
+
+3.2 использование интерфейсов или абстрактных методов пока не нашёл, но если бы писал игру по "GDD" из старой тетрадки,
+создал бы абстрактный класс AbstractHuman. Возможно, корни этого наименования из учебника по Java 15-летней давности,
+но такое имя кажется мне более говорящим, нежели HumanBeing или HumanFactory. Хотя последнее не лишено изящества.
