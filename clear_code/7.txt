@@ -53,8 +53,7 @@ class BloomFilter:
 
     @staticmethod
     def create_dynamic_array(capacity):
-        dyn_array = DynArray(capacity)
-		return dyn_array
+	return DynArray(capacity)
 
 3.2 использование интерфейсов или абстрактных методов пока не нашёл, но если бы писал игру по "GDD" из старой тетрадки,
 создал бы абстрактный класс AbstractHuman. Возможно, корни этого наименования из учебника по Java 15-летней давности,
