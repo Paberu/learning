@@ -1,0 +1,106 @@
+// Класс LinkedList:
+// В функцию find добавить проверку значения val:
+	if val is None:
+		return None
+//на случай, если нечаянно передать None вместо значения
+
+// Класс DynArray
+// методы insert, delete и __getitem__
+// проверка значения индекса на попадание в границы
+	if i < 0 or i > self.count:
+		raise IndexError('Index is out of bounds')
+	
+// Класс HashTable
+// метод hashfun
+// проверка, что в функцию передана строка
+// + явная инициализация локальной переменной перед использованием
+	sum_value = 0
+	if isinstance(value, str):
+		for letter in value:
+			sum_value += ord(letter)
+	return sum_value % self.size
+	
+// Класс BloomFilter2
+// функция get_hash, оптимизированная под организацию множества хэш-функций	
+// явная инициализация локальной переменной перед использованием
+    def get_hash(self, value, hash_code):
+        code = 0
+        for c in value:
+            code = (code * hash_code + ord(c)) % self.filter_len
+        return int(code)
+		
+// Класс NativeCache
+// "умная" инициализация переменной класса step с целью обеспечения прохода по всем ячейкам хэша
+    def __init__(self, sz):
+        self.size = sz
+        self.step = 3
+        while self.size % self.step == 0:
+            self.step += 2
+        self.slots = [None] * self.size
+        self.values = [None] * self.size
+        self.hits = [0] * self.size
+// тот же класс, проверка того, что в функцию передана строка или число
+// + явная инициализация локальной переменной перед использованием
+    def hash_fun(self, key):
+        sum_value = 0
+        if type(key) == str:
+            for letter in key:
+                sum_value += ord(letter)
+        elif type(key) == int or float:
+            sum_value = int(key)
+        return sum_value % self.size
+		
+// из скрипта по выборке пользователей из нашей рабочей ActiveDirectory. Домен на всю страну, плюс на серверах бывают локальные пользователи.
+// Проверка пользователя на вхождение в регион по коду региона в имени пользователя
+	def get_ad_pskov_users():
+		//...
+		for user in ad_users:
+			if user[0:2] is not '58':
+				continue
+		//...
+				
+// из скрипта по выборке ПК из нашей рабочей ActiveDirectory. Получить список ПК, которые не обращались к AD более полугода.
+// Проверка компьютера на вхождение в регион по коду региона в имени компьютера. Проверка сущности по имени (это ПК, а не сервер)
+	def get_pskov_dead_pcs():
+		//...
+		for pc in ad_pcs:
+			if pc[0] is not 'd': // имя ПК начинается с d, имя сервера начинается с s
+				continue
+			if pc[1:3] is not '58: // ПК не из нашего региона
+				continue
+			//...
+				
+// Программа по скачиванию видео с Youtube. Объявление переменной одновременно с инициализацией непосредственно перед использованием.
+	def get_time_from_last(self):
+        f = open(last, 'r')
+        prev_time = datetime.utcfromtimestamp(float(f.read()))
+        f.close()
+        return prev_time
+
+    def set_time_to_last(self, message='', set_time=datetime.utcnow()):
+        f = open(last, 'w')
+        f.write(str(set_time.timestamp()))
+        if message:
+            print(message)
+        f.close()
+			
+// Программа по работе с книгами. Объявление переменной одновременно с инициализацией непосредственно перед использованием.
+	def take_unread(filename: str) -> list:
+		//...
+		books = []
+		for row in csv_reader:
+			books.append(row)
+		return books
+		
+	def get_books(cursor):
+		books_lst = []
+		for book in cursor.execute(requests['get_books']).fetchall():
+			books_lst.append(book)
+		return books_lst
+
+
+	def get_titles(cursor):
+		titles_lst = []
+		for title in cursor.execute(requests['get_titles']).fetchall():
+			titles_lst.append(title)
+		return titles_lst
