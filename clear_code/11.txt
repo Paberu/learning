@@ -1,0 +1,27 @@
+// Класс NativeCache
+// Выделение повторяющихся строк в функцию увеличения хэш-кода на шаг, заданный в конструкторе. Снижает время жизни временной переменной index.
+    def increase_key_hash(self, index):
+        index += self.step
+        if index >= self.size:
+            index -= self.size
+        return index
+		
+// Приложение по выкачиванию видео с Youtube
+// Разбиение инициилизирующего кода на функции
+def __init__(self):
+	initialize_last_if_needed()
+	self.channels = dict()
+	for subscription in opml.parse(_SUBS)[_TOP_OUTLINE_LEVEL]:
+		self.channels[subscription.text] = subscription.xmlUrl
+	self.previous_time = get_time_from_last()
+	self.next_time = datetime.utcnow()
+	make_dirs()
+// Надеюсь, сойдёт сразу за 5 случаев. :)
+
+// Оттуда же
+def choose_videos_from_channel(self, channel_name, channel_url):
+	videos = []
+	# <...>
+	show_videos_parsing_result(videos)
+	return videos
+// В функцию show_videos_parsing_result вынесены лишние (с точки зрения "чистого" функционала) переменные и строки кода.
