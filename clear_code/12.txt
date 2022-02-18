@@ -1,0 +1,33 @@
+// 1. Часть конструктора класса NativeCache:
+    def __init__(self, sz):
+        self.size = sz
+        self.step = 3
+        while self.size % self.step == 0:
+            self.step += 2
+	# <...>
+// Величина шага, с которым будет обходиться список слотов задаётся минимальным нечётным простым числом, потом проверяется
+делимость размера списка на величину шага. Если делится нацело, то полного обхода не получится, надо изменить величину шага
+и проверить ещё раз. Выносить 3 и 2 в отдельные константы нет смысла.
+
+// 2. Из программы по скачиванию видео с Youtube. Все строковые и числовые константы заданы единожды в начале файла, это
+значительно повышает читабельность программы.
+_TOP_OUTLINE_LEVEL = 0
+_LAST = 'last.txt'
+_SUBS = 'subs.xml'
+_JSON = 'subs.json'
+_MAIN_DIR = 'G:\\youtube-dl-subscriptions'
+_CHANNEL_XML_PREFIX = 'https://www.youtube.com/feeds/videos.xml?channel_id='
+_CHANNEL_HTTP_PREFIX = 'https://www.youtube.com/channel/'
+_DEFAULT_DAYS_SUBTRACT = 3
+
+// 3. Часть файла config.py из фитнес-приложения, разработку которого прикрыли. Большая часть конфигурационных параметров записана
+в системные переменные. И из соображений безопасности, и из соображений удобства.
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    MAIL_SERVER = os.environ.get('MAIL_SERVER')
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    UPLOADED_FILES_ALLOW = set(['png', 'jpg', 'jpeg', 'gif', 'mp4', 'webm', 'flv', 'f4v', 'mkv', '.mov'])
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://pydevel:pydevelpass@localhost/fitness_app'
+    LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
