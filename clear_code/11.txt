@@ -25,3 +25,5 @@ def choose_videos_from_channel(self, channel_name, channel_url):
 	show_videos_parsing_result(videos)
 	return videos
 // В функцию show_videos_parsing_result вынесены лишние (с точки зрения "чистого" функционала) переменные и строки кода.
+
+// Больше случаев не набирается, только 7.
