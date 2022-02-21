@@ -1,0 +1,35 @@
+// Из программы по скачиванию видео с Youtube:
+for subscription in opml.parse(_SUBS)[_TOP_OUTLINE_LEVEL]:
+	channels[subscription.text] = subscription.xmlUrl
+
+// можно выделить opml.parse(_SUBS)[_TOP_OUTLINE_LEVEL] в отдельный массив, потом пройти по нему с помощью индекса,
+// но именованный итератор - идеальное решение
+
+
+// Оттуда же. Итератор вместо индекса.
+for item in parsed_channel_info['items']:
+	if get_published_time(item['published_parsed']) > previous_time:
+		videos.append(item['link'])
+		
+
+// Из программы по учету прочитанных книг. Итератор вместо индекса.
+csv_reader = csv.DictReader(csvfile, dialect='excel', delimiter=';')
+books = []
+for row in csv_reader:
+	books.append(row)
+		
+
+// Оттуда же. Итератор вместо индекса.		
+cursor.execute(requests['create'])
+books = take_unread(filename)
+for book in books:
+	cursor.execute(requests['add'].format(book['ID'], book['Title'], book['Author'], book['FNONF'],
+										 str(time.strftime("%Y-%m-%d %H:%M")), '', ''))
+
+
+// Ого! Из старого java-файла:
+for (DrWebZip zip : drWebZipArray) {
+	System.out.println(zip)
+}
+// Видимо, кусочек дебажного кода. Отрадно, что ещё на предпредыдущей версии Java я пытался отойти
+// от перебора по индексу к перебору по итератору.
