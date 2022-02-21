@@ -1,0 +1,13 @@
+// Из класса BloomFilter2:
+def add(self, value): # поместить 1 в бит в позициях, полученных из get_hash
+	self.filter |= 1 << self.get_hash(value, self.hash_code1)
+	self.filter |= 1 << self.get_hash(value, self.hash_code2)
+	
+def is_value(self, value): # создать маску, как описано выше, и сравнить её с имеющимся значением фильтра
+	mask = 0b0 | (1 << self.get_hash(value, self.hash_code1)) | (1 << self.get_hash(value, self.hash_code2))
+	result = mask & self.filter
+	return mask == result
+
+// Из программы, скачивающей видео с Youtube
+def get_published_time(item_published_parsed):
+	return datetime.fromtimestamp(mktime(item_published_parsed)) # не utcfromtimestamp(), потому что Youtube уже отдаёт время в UTC
