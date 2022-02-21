@@ -39,7 +39,7 @@ class Deque:
     def removeTail(self):
         node = self.tail
         if node:
-            if self.depth == 1:
+            if  self.depth == 1:
                 self.__init__()
             else:
                 self.tail = self.tail.prev
