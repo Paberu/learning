@@ -1,3 +1,4 @@
+// 3.1
 // Из класса BloomFilter2:
 def add(self, value): # поместить 1 в бит в позициях, полученных из get_hash
 	self.filter |= 1 << self.get_hash(value, self.hash_code1)
@@ -11,3 +12,62 @@ def is_value(self, value): # создать маску, как описано в
 // Из программы, скачивающей видео с Youtube
 def get_published_time(item_published_parsed):
 	return datetime.fromtimestamp(mktime(item_published_parsed)) # не utcfromtimestamp(), потому что Youtube уже отдаёт время в UTC
+	
+// Из фитнес-приложения, разработку которого прикрыли.
+@admin.route('/exercises/show', methods = ['GET', 'POST'])
+@login_required
+def show_exercise():
+    # redirect to home if no images to display
+    if "file_urls" not in session or session['file_urls'] == []:
+        return redirect(url_for('admin.index'))
+
+    # set the file_urls and remove the session variable
+    file_urls = session['file_urls']
+    session.pop('file_urls', None)
+
+    exercise_id = session['exercise_id']
+    session.pop('exercise_id', None)
+    exercise = Exercise.query.get_or_404(exercise_id)
+    return render_template('/admin/show_exercise.html', file_urls=file_urls, name=exercise.name, description=exercise.description)
+// два примера, когда код некуда делать более читаемым, но комментарий пригодился
+	
+	
+// Нашёл 5 идеальных мест под комментарии. В BloomFilter добавил, потому что потом можно и не разобрать, что и зачем происходит.
+// Из программы про Youtube нашёлся комментарий крайне к месту.
+
+// 3.2 Из фитнес-приложения, разработку которого прикрыли.
+media_folder = os.path.join(os.path.abspath(os.path.dirname(os.path.dirname(__file__))), 'static', 'media') #возможно, можно проще
+// Нужно проще! Нужно было найти, как сделать проще, а не оставлять в стиле "И так сойдёт!".
+
+// нужно заменить число на говорящее имя константы и нужда в комментарии отпадёт
+def get_token(self, expires_in=2678400): # не протухает один месяц
+	now = datetime.utcnow()
+	if self.token and self.token_expiration > now + timedelta(seconds=60):
+		return self.token
+	self.token = base64.b64encode(os.urandom(24)).decode('utf-8')
+	self.token_expiration = now + timedelta(seconds=expires_in)
+	db.session.add(self)
+	return self.token
+
+// можно каждые 3-4 строки разделять комментарием, описывающим, что делают следующая пачка строк. Но лучше написать 11 функций.
+// Со значащими именами. Тогда комментарии не нужны.
+def test_user():
+    test_result = 0
+    user = g.current_user
+    data = request.get_json() or {}
+
+    if data['test_size'] == 11:
+        #11-шаговый тест
+        #1. возраст
+        age = data['age']
+        user.age = age
+        test_result += age
+        #1.2. рост
+        height = data['height']
+        user.height = height
+        #2. вес
+        weight = data['weight']
+        user.weight = weight
+		# и ещё много-много строк кода
+		
+// Последний пример особенно ярок. Он может сойти за 1 пример, а может за 20. Чистейший shit-code в моём исполнении, даже капельку стыдно.
