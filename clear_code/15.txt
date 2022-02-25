@@ -1,0 +1,60 @@
+// 1. Информативные комментарии.
+// Из класса BloomFilter2:
+def add(self, value): # поместить 1 в бит в позициях, полученных из get_hash
+	self.filter |= 1 << self.get_hash(value, self.hash_code1)
+	self.filter |= 1 << self.get_hash(value, self.hash_code2)
+	
+def is_value(self, value): # создать маску, как описано выше, и сравнить её с имеющимся значением фильтра
+	mask = 0b0 | (1 << self.get_hash(value, self.hash_code1)) | (1 << self.get_hash(value, self.hash_code2))
+	result = mask & self.filter
+	return mask == result
+
+// 3. Прояснение.
+// Из фитнес-приложения, разработку которого прикрыли.
+# не все видео- и графические файлы принимаются приложением
+UPLOADED_FILES_ALLOW = set(['png', 'jpg', 'jpeg', 'gif', 'mp4', 'webm', 'flv', 'f4v', 'mkv', '.mov'])
+
+// 2. Представление намерений.
+# Настройки загрузки на сервер. Пока нет точной уверенности, под какой ОС будет запущен сервер, учитываем оба варианты.
+    if os.name == 'nt':
+        UPLOADED_MEDIAS_DEST = os.path.join(os.path.dirname(__file__), 'app\static\media')
+        UPLOADED_USERPHOTOS_DEST = os.path.join(os.path.dirname(__file__), 'app\static\media', 'users')
+    else:
+        UPLOADED_MEDIAS_DEST = os.path.join(os.path.dirname(__file__), 'app/static/media')
+        UPLOADED_USERPHOTOS_DEST = os.path.join(os.path.dirname(__file__), 'app/static/media', 'users')
+
+// 4. Предупреждение о последствиях.
+// Из программы, скачивающей видео с Youtube. Предупреждает желание поиграться с разными функциями времени. Всё уже прочитано
+// и проверено,
+def get_published_time(item_published_parsed):
+	return datetime.fromtimestamp(mktime(item_published_parsed)) # не utcfromtimestamp(), потому что Youtube уже отдаёт время в UTC
+	
+// 5. Усиление. Код понятный, но дополнительное разъяснение не повредит. По неясным причинам, в тот период любил чередовать комментарии
+// на русском и английском языках
+// Из фитнес-приложения, разработку которого прикрыли.
+@admin.route('/exercises/show', methods = ['GET', 'POST'])
+@login_required
+def show_exercise():
+    # redirect to home if no images to display
+    if "file_urls" not in session or session['file_urls'] == []:
+        return redirect(url_for('admin.index'))
+
+    # set the file_urls and remove the session variable
+    file_urls = session['file_urls']
+    session.pop('file_urls', None)
+
+    exercise_id = session['exercise_id']
+    session.pop('exercise_id', None)
+    exercise = Exercise.query.get_or_404(exercise_id)
+    return render_template('/admin/show_exercise.html', file_urls=file_urls, name=exercise.name, description=exercise.description)
+
+// 6. Комментарии TODO.
+// Из фитнес-приложения, разработку которого прикрыли.
+// Превращение плохого комментария в хороший:
+// было:
+media_folder = os.path.join(os.path.abspath(os.path.dirname(os.path.dirname(__file__))), 'static', 'media') #возможно, можно проще
+// стало:
+# TODO - Исправить сборку пути к папке (написать отдельную функцию, найти более адекватные способы в os.path, что угодно, только не этот кошмар).
+media_folder = os.path.join(os.path.abspath(os.path.dirname(os.path.dirname(__file__))), 'static', 'media')
+
+// 12 примеров не набралось, слишком малая кодовая база.
