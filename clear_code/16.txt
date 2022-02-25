@@ -1,0 +1,141 @@
+// Ситуация 2. Исправить сборку пути к папке (написать отдельную функцию, найти более адекватные способы в os.path, что угодно, только не этот кошмар.
+media_folder = os.path.join(os.path.abspath(os.path.dirname(os.path.dirname(__file__))), 'static', 'media') #возможно, можно проще
+
+// Ситуация 12. Лучше написать 11 функций со значащими именами. Тогда комментарии не нужны.
+def test_user():
+    test_result = 0
+    user = g.current_user
+    data = request.get_json() or {}
+
+    if data['test_size'] == 11:
+        #11-шаговый тест
+        #1. возраст
+        age = data['age']
+        user.age = age
+        test_result += age
+        #1.2. рост
+        height = data['height']
+        user.height = height
+        #2. вес
+        weight = data['weight']
+        user.weight = weight
+		# и ещё много-много строк кода
+
+// Ситуация 7. И так очевидно, что это запросы к СУБД. Зачем комментарий?
+# DB functions
+requests = {
+    'create': 'CREATE TABLE books (id INTEGER, title TEXT, author TEXT, genre TEXT, rating TEXT, comment TEXT, '
+              'date TEXT)',
+    'add': """INSERT INTO books(id, title, author, genre, date, rating, comment) VALUES ({0},'{1}','{2}','{3}','{4}','{5}','{6}')""",
+    'get_books': 'SELECT id, title, author, genre, rating, comment, date FROM books',
+    'get_unreads': 'SELECT id, title, author, genre, rating, comment, date FROM books where rating = \'\'',
+    'get_reads': 'SELECT id, title, author, genre, rating, comment, date FROM books where rating != \'\'',
+    'get_titles': 'SELECT title FROM books',
+    'get_book_by_title': """SELECT id, title, author, genre, rating, comment, date FROM books WHERE title = '{title}'""",
+    'get_book_by_id': """SELECT id, title, author, genre, rating, comment, date FROM books WHERE id = '{id}'""",
+    'rate_book': 'UPDATE books SET rating = {rating}, comment=\'{comment}\' WHERE id = {id}',
+    'drop': 'DROP TABLE books'
+}
+
+//Ситуация 11.
+# def get_by_id(cursor, id):
+#     print(get_book_by_id(cursor, id), sep=' | ')
+#
+#
+# def rate(cursor, id, rating, comment):
+#     rate_book(cursor, id, rating, comment)
+
+//Ситуация 11. 
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    MAIL_SERVER = os.environ.get('MAIL_SERVER')
+    MAIL_PORT = int(os.environ.get('MAIL_PORT') or '587')
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    ADMINS = ['paberu.tocador@gmail.com']
+    #UPLOAD_FOLDER = os.path.join(basedir, 'app/static/media/')
+    #UPLOADS_DEFAULT_DEST = os.path.join(basedir, 'app/static/media/')
+    UPLOADED_FILES_ALLOW = set(['png', 'jpg', 'jpeg', 'gif', 'mp4', 'webm', 'flv', 'f4v', 'mkv', '.mov'])
+    #FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky-fit-app]'
+    #FLASKY_MAIL_SENDER = 'Developer <Python.dev.60@gmail.com>'
+    #FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    #SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://pydevel:pydevelpass@127.0.0.1/fitness_app_dev'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'postgresql://pydevel:pydevelpass@localhost/fitness_app2'
+    #WHOOSH_BASE = 'postgresql://pydevel:pydevelpass@localhost/search_fit'
+    #WHOOSH_BASE = os.path.join(basedir, 'whoosh_index','search.db')
+    LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
+	
+//Ситуация 11.	
+filename = medias.save(file, name=file.filename)
+#media_path = medias.path(filename)
+train_cat = TrainProgCategory(name=form.name.data,
+							  description=form.description.data,
+							  media_path=filename)
+							  
+//Ситуация 11.	
+for f in files:
+file = request.files.get(f)
+filename = medias.save(file, name=file.filename)
+file_urls.append(medias.url(filename))
+type = get_media_type(filename)
+media = Media(media_path=filename,
+			  media_type=type,
+			  #exercise_id=exercise.id)
+			  exercise_id=exercise_id)
+db.session.add(media)
+db.session.commit()
+#flash(exercise.name+' was inserted to the base')
+session['exercise_id'] = exercise_id
+return 'OK'
+
+//Ситуация 11.	
+#y, m, d = str.split(data['date'], '-')
+#train_date = date(int(y), int(m), int(d))
+#h, m = str.split(data['time'], ':')
+#train_time = time(int(h), int(m), 0)
+train_date = data['date']
+train_time = data['time'] + ':00'
+
+//Ситуация 11.	
+from datetime import date, time
+#from sqlalchemy.dialects.postgresql import DATE, TIME
+
+//Ситуация 11. Перенёс - убери за собой.
+# перенес в models.py
+# def get_media_type(filename):
+#     file_ext = filename.rsplit('.', 1)[1]
+#     if file_ext in ['gif', 'jpg', 'jpeg', 'png', 'tif', 'tiff']:
+#         return 'IMAGE'
+#     else:
+#         return 'VIDEO'
+
+//Ситуация 11.	
+#    def validate_email(self, field):
+#        if User.query.filter_by(gplus=field.data).first():
+#            raise ValidationError('Email already registered.')
+
+    def validate_login(self, field):
+        if User.query.filter_by(login=field.data).first():
+            raise ValidationError('Username already in use.')
+			
+//Ситуация 11.	
+# def generate_confirmation_token(self, expiration=3600):
+#     s = Serializer(current_app.config['SECRET_KEY'], expiration)
+#     return s.dumps({'confirm': self.id}).decode('utf-8')
+
+//Ситуация 11.	
+# def confirm(self, token):
+#     s = Serializer(current_app.config['SECRET_KEY'])
+#     try:
+#         data = s.loads(token.encode('utf-8'))
+#     except:
+#         return False
+#     if data.get('confirm') != self.id:
+#         return False
+#     self.confirmed = True
+#     db.session.add(self)
+#     return True
+
+//И ещё с десятка два могу найти примеров под ситуацию номер 11. Под остальные не вышло.
