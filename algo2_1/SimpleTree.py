@@ -33,63 +33,59 @@ class SimpleTreeNode:
                 nodes.extend(child_node.get_all_Descendantes())
         return nodes
 
+    def move(self, parent):
+        self.Parent.Children.remove(self)
+        parent.Children.append(self)
+        self.Parent = parent
 
+    def get_descendantes_by_value(self, value):
+        nodes = []
+        if self.NodeValue == value:
+            nodes.append(self)
+        if not self.Children:
+            return []
+        else:
+            for child_node in self.Children:
+                nodes.extend(child_node.get_all_Descendantes())
+        return nodes
 
 class SimpleTree:
 
     def __init__(self, root):
         self.Root = root  # корень, может быть None
 
-    # def AddChild(self, ParentNode, NewChild):
-    #     NewChild.Parent = ParentNode
-    #     ParentNode.Children.append(NewChild)
-
     def AddChild(self, ParentNode, NewChild):
         ParentNode.add_child(NewChild)
 
-    # def DeleteNode(self, NodeToDelete):
-    #     for node in NodeToDelete.Children:
-    #         self.DeleteNode(node)
-    #     NodeToDelete.Parent.Children.remove(NodeToDelete)
-    #     del NodeToDelete
-
     def DeleteNode(self, NodeToDelete):
-        if NodeToDelete.Parent is None: # удаляем дерево с корнем
-            new_root = SimpleTreeNode(None, None)
-            self.AddChild(new_root, NodeToDelete) # создаём мнимый корень уровнем выше
-            self.Root = new_root
+        delete_from_the_root = NodeToDelete.Parent is None
+        if delete_from_the_root: # удаляем дерево с корнем
+            self.Root = SimpleTreeNode(None, None)
+            self.AddChild(self.Root, NodeToDelete) # создаём мнимый корень уровнем выше
         NodeToDelete.Parent.delete_child(NodeToDelete)
+        if delete_from_the_root:
+            self.Root = None
 
     def GetAllNodes(self):
+        if not self.Root:
+            return []
         return self.Root.get_all_Descendantes()
 
-    # def getAllDescendantes(self, node):
-    #     nodes = []
-    #     if not node.Children:
-    #         return [node]
-    #     else:
-    #         nodes.append(node)
-    #         for child_node in node.Children:
-    #             if not child_node.Children:
-    #                 nodes.append(child_node)
-    #             else:
-    #                 nodes.extend(self.getAllDescendantes(child_node))
-    #     return nodes
-
-
     def FindNodesByValue(self, val):
-        # ваш код поиска узлов по значению
-        return []
+        if not self.Root:
+            return []
+        return self.Root.get_descendantes_by_value(val)
 
     def MoveNode(self, OriginalNode, NewParent):
-        # ваш код перемещения узла вместе с его поддеревом --
-        # в качестве дочернего для узла NewParent
-        pass
+        OriginalNode.move(NewParent)
 
     def Count(self):
-        # количество всех узлов в дереве
-        return 0
+        return len(self.GetAllNodes())
 
     def LeafCount(self):
-        # количество листьев в дереве
-        return 0
+        nodes = self.GetAllNodes()
+        leafs = 0
+        for node in nodes:
+            if not node.Children:
+                leafs += 1
+        return leafs
