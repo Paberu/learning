@@ -4,6 +4,8 @@ class SimpleTreeNode:
         self.NodeValue = val  # значение в узле
         self.Parent = parent  # родитель или None для корня
         self.Children = []  # список дочерних узлов
+        if parent:
+            parent.Children.append(self)
         
     def add_child(self, child):
         self.Children.append(child)
@@ -42,11 +44,12 @@ class SimpleTreeNode:
         nodes = []
         if self.NodeValue == value:
             nodes.append(self)
+
         if not self.Children:
-            return []
+            return nodes
         else:
             for child_node in self.Children:
-                nodes.extend(child_node.get_all_Descendantes())
+                nodes.extend(child_node.get_descendantes_by_value(value))
         return nodes
 
 class SimpleTree:
