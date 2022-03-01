@@ -34,5 +34,14 @@ class TestSimpleTree(unittest.TestCase):
             values.append(node.NodeValue)
         self.assertEqual(values, [11, 15])
 
+    def test_delete_child2(self):
+        self.tree2.DeleteNode(self.root_node2)
+        nodes = self.tree2.GetAllNodes()
+        values = []
+        for node in nodes:
+            values.append(node.NodeValue)
+            print(node.NodeValue)
+        self.assertEqual(values, [None]) # null в пустом корне дерева
+
 
 unittest.main()
