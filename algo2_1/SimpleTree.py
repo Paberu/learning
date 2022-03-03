@@ -6,7 +6,7 @@ class SimpleTreeNode:
         self.Children = []  # список дочерних узлов
         if parent:
             parent.Children.append(self)
-        
+
     def add_child(self, child):
         self.Children.append(child)
         child.set_parent(self)
@@ -52,19 +52,20 @@ class SimpleTreeNode:
                 nodes.extend(child_node.get_descendantes_by_value(value))
         return nodes
 
+
 class SimpleTree:
 
     def __init__(self, root=None):
-        self.Root = root  # корень, может быть None
+        self.Root = root   # корень, может быть None
 
     def AddChild(self, ParentNode, NewChild):
         ParentNode.add_child(NewChild)
 
     def DeleteNode(self, NodeToDelete):
         delete_from_the_root = NodeToDelete.Parent is None
-        if delete_from_the_root: # удаляем дерево с корнем
+        if delete_from_the_root:   # удаляем дерево с корнем
             self.Root = SimpleTreeNode(None, None)
-            self.AddChild(self.Root, NodeToDelete) # создаём мнимый корень уровнем выше
+            self.AddChild(self.Root, NodeToDelete)   # создаём мнимый корень уровнем выше
         NodeToDelete.Parent.delete_child(NodeToDelete)
         if delete_from_the_root:
             self.Root = None
