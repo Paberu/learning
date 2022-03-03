@@ -29,7 +29,7 @@ class TestSimpleTree(unittest.TestCase):
             values.append(node.NodeValue)
         self.assertEqual(values, [11, 13, 17, 15])
 
-    def test_get_all_nodes(self):
+    def test_get_all_nodes2(self):
         temp_tree = SimpleTree()
         self.assertEqual(temp_tree.GetAllNodes(), [])
 
