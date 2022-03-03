@@ -4,8 +4,8 @@ from SimpleTree import SimpleTreeNode, SimpleTree
 
 class TestSimpleTree(unittest.TestCase):
     def setUp(self):
-        root_node = SimpleTreeNode(12, None)
-        self.tree1 = SimpleTree(root_node)
+        self.root_node = SimpleTreeNode(12, None)
+        self.tree1 = SimpleTree(self.root_node)
 
         self.root_node2 = SimpleTreeNode(11, None)
         self.tree2 = SimpleTree(self.root_node2)
@@ -32,6 +32,16 @@ class TestSimpleTree(unittest.TestCase):
     def test_get_all_nodes2(self):
         temp_tree = SimpleTree()
         self.assertEqual(temp_tree.GetAllNodes(), [])
+
+    def test_get_all_nodes3(self):
+        tmp_node = SimpleTreeNode(42, None)
+        self.tree1.AddChild(self.root_node, tmp_node)
+        nodes = self.tree1.GetAllNodes()
+        self.assertEqual(len(nodes), 2)
+        values = []
+        for node in nodes:
+            values.append(node.NodeValue)
+        self.assertEqual(values, [12, 42])
 
     def test_delete_child(self):
         self.tree2.DeleteNode(self.node_to_delete2)
