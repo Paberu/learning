@@ -29,6 +29,10 @@ class TestSimpleTree(unittest.TestCase):
             values.append(node.NodeValue)
         self.assertEqual(values, [11, 13, 17, 15])
 
+    def test_get_all_nodes(self):
+        temp_tree = SimpleTree()
+        self.assertEqual(temp_tree.GetAllNodes(), [])
+
     def test_delete_child(self):
         self.tree2.DeleteNode(self.node_to_delete2)
         nodes = self.tree2.GetAllNodes()

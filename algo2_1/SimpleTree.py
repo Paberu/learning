@@ -54,7 +54,7 @@ class SimpleTreeNode:
 
 class SimpleTree:
 
-    def __init__(self, root):
+    def __init__(self, root=None):
         self.Root = root  # корень, может быть None
 
     def AddChild(self, ParentNode, NewChild):
