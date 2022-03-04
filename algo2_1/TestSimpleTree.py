@@ -4,21 +4,20 @@ from SimpleTree import SimpleTreeNode, SimpleTree
 
 class TestSimpleTree(unittest.TestCase):
     def setUp(self):
-        self.root_node = SimpleTreeNode(12, None)
+        self.root_node = SimpleTreeNode(12)
         self.tree1 = SimpleTree(self.root_node)
 
-        self.root_node2 = SimpleTreeNode(11, None)
+        self.root_node2 = SimpleTreeNode(11)
         self.tree2 = SimpleTree(self.root_node2)
-        self.node_to_delete2 = SimpleTreeNode(13, None)
-        self.tree2.AddChild(self.root_node2, self.node_to_delete2)
-        self.tree2.AddChild(self.root_node2, SimpleTreeNode(15, None))
-        self.tree2.AddChild(self.node_to_delete2, SimpleTreeNode(17, None))
+        self.node_to_delete2 = SimpleTreeNode(13, self.root_node2)
+        self.tree2.AddChild(self.root_node2, SimpleTreeNode(15))
+        self.tree2.AddChild(self.node_to_delete2, SimpleTreeNode(17))
 
-        self.node_11 = SimpleTreeNode(11, None)
-        self.tree3 = SimpleTree(SimpleTreeNode(1, None))
+        self.node_11 = SimpleTreeNode(11)
+        self.tree3 = SimpleTree(SimpleTreeNode(1))
 
     def test_add_child(self):
-        self.tree1.AddChild(self.tree1.Root, SimpleTreeNode(9, None))
+        self.tree1.AddChild(self.tree1.Root, SimpleTreeNode(9))
         self.assertEqual(len(self.tree1.Root.Children), 1)
         self.assertEqual(self.tree1.Root.Children[0].NodeValue, 9)
 
@@ -34,7 +33,7 @@ class TestSimpleTree(unittest.TestCase):
         self.assertEqual(temp_tree.GetAllNodes(), [])
 
     def test_get_all_nodes3(self):
-        tmp_node = SimpleTreeNode(42, None)
+        tmp_node = SimpleTreeNode(42)
         self.tree1.AddChild(self.root_node, tmp_node)
         nodes = self.tree1.GetAllNodes()
         self.assertEqual(len(nodes), 2)
