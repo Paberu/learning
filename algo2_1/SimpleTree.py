@@ -90,3 +90,4 @@ class SimpleTree:
             if not node.Children:
                 leafs += 1
         return leafs
+

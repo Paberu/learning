@@ -83,5 +83,13 @@ class TestSimpleTree(unittest.TestCase):
         self.tree2.AddChild(self.root_node2, self.node_11)
         self.assertEqual(self.tree2.LeafCount(), 3)
 
+    def test_two_node_tree(self):
+        tree = SimpleTree(SimpleTreeNode(1))
+        self.assertEqual(tree.Count(), 1)
+        self.assertEqual(tree.LeafCount(), 1)
+        tree.AddChild(tree.Root, SimpleTreeNode(2))
+        self.assertEqual(tree.Count(), 2)
+        self.assertEqual(tree.LeafCount(), 1)        
+
 
 unittest.main()
