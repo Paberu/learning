@@ -10,14 +10,15 @@ class TestSimpleTree(unittest.TestCase):
         self.root_node2 = SimpleTreeNode(11, None)
         self.tree2 = SimpleTree(self.root_node2)
         self.node_to_delete2 = SimpleTreeNode(13, self.root_node2)
-        self.tree2.AddChild(self.root_node2, SimpleTreeNode(15, None))
-        self.tree2.AddChild(self.node_to_delete2, SimpleTreeNode(17, None))
+        self.tree2.AddChild(self.root_node2, self.node_to_delete2)
+        self.tree2.AddChild(self.root_node2, SimpleTreeNode(15, self.root_node2))
+        self.tree2.AddChild(self.node_to_delete2, SimpleTreeNode(17, self.node_to_delete2))
+        self.node_11 = SimpleTreeNode(11, self.root_node2)
 
-        self.node_11 = SimpleTreeNode(11, None)
         self.tree3 = SimpleTree(SimpleTreeNode(1, None))
 
     def test_add_child(self):
-        self.tree1.AddChild(self.tree1.Root, SimpleTreeNode(9, None))
+        self.tree1.AddChild(self.tree1.Root, SimpleTreeNode(9, self.tree1.Root))
         self.assertEqual(len(self.tree1.Root.Children), 1)
         self.assertEqual(self.tree1.Root.Children[0].NodeValue, 9)
 
@@ -34,6 +35,7 @@ class TestSimpleTree(unittest.TestCase):
 
     def test_get_all_nodes3(self):
         tmp_node = SimpleTreeNode(42, self.root_node1)
+        self.tree1.AddChild(self.tree1.Root, tmp_node)
         nodes = self.tree1.GetAllNodes()
         self.assertEqual(len(nodes), 2)
         values = []
@@ -87,6 +89,7 @@ class TestSimpleTree(unittest.TestCase):
         self.assertEqual(tree.Count(), 1)
         self.assertEqual(tree.LeafCount(), 1)
         second_node = SimpleTreeNode(2, tree.Root)
+        tree.AddChild(tree.Root, second_node)
         self.assertEqual(tree.Count(), 2)
         self.assertEqual(tree.LeafCount(), 1)
 
@@ -95,7 +98,7 @@ class TestSimpleTree(unittest.TestCase):
         tree = SimpleTree(tmp_root)
         self.assertEqual(tree.Count(), 1)
         self.assertEqual(tree.LeafCount(), 1)
-        tree.AddChild(tree.Root, SimpleTreeNode(4, None))
+        tree.AddChild(tree.Root, SimpleTreeNode(4, tree.Root))
         self.assertEqual(tree.Count(), 2)
         self.assertEqual(tree.LeafCount(), 1)
         crazy_node = SimpleTreeNode(5, tree.Root)

@@ -4,13 +4,6 @@ class SimpleTreeNode:
         self.NodeValue = val  # значение в узле
         self.Parent = parent  # родитель или None для корня
         self.Children = []  # список дочерних узлов
-        if parent:
-            parent.Children.append(self)
-
-    def set_parent(self, parent):
-        if self not in parent.Children:
-            parent.Children.append(self)
-        self.Parent = parent
 
     def delete_child(self, child):
         self.Children.remove(child)
@@ -58,7 +51,8 @@ class SimpleTree:
         self.Root = root   # корень, может быть None
 
     def AddChild(self, ParentNode, NewChild):
-        NewChild.set_parent(ParentNode)
+        ParentNode.Children.append(NewChild)
+        NewChild.Parent = ParentNode
 
     def DeleteNode(self, NodeToDelete):
         delete_from_the_root = NodeToDelete.Parent is None
