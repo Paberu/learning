@@ -90,5 +90,18 @@ class TestSimpleTree(unittest.TestCase):
         self.assertEqual(tree.Count(), 2)
         self.assertEqual(tree.LeafCount(), 1)
 
+    def test_three_node_tree2(self):
+        tmp_root = SimpleTreeNode(3, None)
+        tree = SimpleTree(tmp_root)
+        self.assertEqual(tree.Count(), 1)
+        self.assertEqual(tree.LeafCount(), 1)
+        tree.AddChild(tree.Root, SimpleTreeNode(4, None))
+        self.assertEqual(tree.Count(), 2)
+        self.assertEqual(tree.LeafCount(), 1)
+        crazy_node = SimpleTreeNode(5, tree.Root)
+        tree.AddChild(tree.Root, crazy_node)
+        self.assertEqual(tree.Count(), 3)
+        self.assertEqual(tree.LeafCount(), 2)
+
 
 unittest.main()

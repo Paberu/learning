@@ -8,8 +8,9 @@ class SimpleTreeNode:
             parent.Children.append(self)
 
     def set_parent(self, parent):
+        if self not in parent.Children:
+            parent.Children.append(self)
         self.Parent = parent
-        parent.Children.append(self)
 
     def delete_child(self, child):
         self.Children.remove(child)
