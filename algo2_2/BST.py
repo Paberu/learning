@@ -79,8 +79,12 @@ class BST:
         return node
 
     def DeleteNodeByKey(self, key):
-        # удаляем узел по ключу
-        return False  # если узел не найден
+        node = self.FindNodeByKey(key)
+        if not node:
+            return False
+        else:
+            if not node.RightChild:
+
 
     def Count(self):
         return 0  # количество узлов в дереве
