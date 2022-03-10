@@ -128,7 +128,8 @@ class BST:
             node_for_replace.Parent = node_to_delete.Parent
         else:
             self.Root = node_for_replace
-            node_for_replace.Parent = None
+            if node_for_replace:
+                node_for_replace.Parent = None
 
     def Count(self):
         if not self.Root:

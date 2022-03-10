@@ -69,15 +69,23 @@ class TestSimpleTree(unittest.TestCase):
         self.assertFalse(bst.DeleteNodeByKey(11))
 
     def test_delete1(self):
-        self.bst2.DeleteNodeByKey(15)
+        self.assertTrue(self.bst2.DeleteNodeByKey(15))
         self.bst2.AddKeyValue(16, 16)
         self.assertEqual(self.bst2.FindNodeByKey(16).Node.Parent.NodeValue, 13)
 
     def test_delete_root(self):
-        self.bst2.DeleteNodeByKey(11)
+        self.assertTrue(self.bst2.DeleteNodeByKey(11))
+        self.assertEqual(self.bst2.Root.LeftChild.NodeValue, 9)
+        self.assertEqual(self.bst2.Root.RightChild.NodeValue, 15)
 
     def test_delete2(self):
         self.bst3.DeleteNodeByKey(11)
         self.assertEqual(self.bst3.Root.NodeValue, 13)
+
+    def test_delete_empty_tree(self):
+        test_bst = BST(BSTNode(1, 1, None))
+        self.assertTrue(test_bst.DeleteNodeByKey(1))
+        self.assertEqual(test_bst.Root, None)
+
 
 unittest.main()
