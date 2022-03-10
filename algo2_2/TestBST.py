@@ -87,5 +87,13 @@ class TestSimpleTree(unittest.TestCase):
         self.assertTrue(test_bst.DeleteNodeByKey(1))
         self.assertEqual(test_bst.Root, None)
 
+    def test_root_leaf_tree(self):
+        test_bst = BST(BSTNode(5, 5, None))
+        test_bst.AddKeyValue(2, 2)
+        self.assertTrue(test_bst.DeleteNodeByKey(5))
+        self.assertEqual(test_bst.Root.NodeValue, 2)
+        self.assertEqual(test_bst.Root.Parent, None)
+        self.assertEqual(test_bst.Root.LeftChild, None)
+        self.assertEqual(test_bst.Root.RightChild, None)
 
 unittest.main()
