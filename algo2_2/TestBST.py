@@ -71,12 +71,12 @@ class TestSimpleTree(unittest.TestCase):
     def test_delete1(self):
         self.bst2.DeleteNodeByKey(15)
         self.bst2.AddKeyValue(16, 16)
-        self.assertEqual(self.bst2.FindNodeByKey(13).Node.Parent.NodeValue, 16)
+        self.assertEqual(self.bst2.FindNodeByKey(16).Node.Parent.NodeValue, 13)
 
     def test_delete_root(self):
         self.bst2.DeleteNodeByKey(11)
 
-    def test_delete1(self):
+    def test_delete2(self):
         self.bst3.DeleteNodeByKey(11)
         self.assertEqual(self.bst3.Root.NodeValue, 13)
 

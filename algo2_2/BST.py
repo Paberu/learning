@@ -107,9 +107,15 @@ class BST:
             self.replace_node(node_to_delete, node_for_replace)
 
             if node_to_delete is not ex_parent:
-                ex_parent.LeftChild = node_for_replace.RightChild
-                node_for_replace.LeftChild = node_to_delete.LeftChild
+                if not node_for_replace.RightChild:
+                    ex_parent.LeftChild = None
+                else:
+                    ex_parent.LeftChild = node_for_replace.RightChild
+                    ex_parent.LeftChild.Parent = ex_parent
                 node_for_replace.RightChild = node_to_delete.RightChild
+                node_for_replace.RightChild.Parent = node_for_replace
+            node_for_replace.LeftChild = node_to_delete.LeftChild
+            node_for_replace.LeftChild.Parent = node_for_replace
         return True
 
     def replace_node(self, node_to_delete, node_for_replace):
