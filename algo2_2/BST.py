@@ -87,27 +87,42 @@ class BST:
 
     def DeleteNodeByKey(self, key):
         find_result = self.FindNodeByKey(key)
+        # если нет узла с указанным ключом, выходим
         if not find_result or not find_result.NodeHasKey:
             return False
         else:
-            node = find_result.Node
-            if not node.RightChild:
-                replacement_node = node.LeftChild
-                parent = node.Parent
-                replacement_node.Parent = parent
-                parent.LeftChild = replacement_node
+            node_to_delete = find_result.Node
+            if node_to_delete.RightChild:
+                node_for_replace = node_to_delete.RightChild
+                while node_for_replace.LeftChild:
+                    node_for_replace = node_for_replace.LeftChild
             else:
-                replacement_node = node.RightChild
-                while replacement_node.LeftChild:
-                    replacement_node = replacement_node.LeftChild
-                parent = node.Parent
-                replacement_node.Parent.LeftChild = None
-                replacement_node.Parent = parent
-                parent.LeftChild = replacement_node
-                replacement_node.LefChild = node.LeftChild
-                replacement_node.RightChild = node.RightChild
-        del node
+                node_for_replace = node_to_delete.LeftChild
+
+            if not node_for_replace:
+                self.replace_node(node_to_delete, node_for_replace)  # удаление листа
+                return True
+            ex_parent = node_for_replace.Parent
+
+            self.replace_node(node_to_delete, node_for_replace)
+
+            if node_to_delete is not ex_parent:
+                ex_parent.LeftChild = node_for_replace.RightChild
+                node_for_replace.LeftChild = node_to_delete.LeftChild
+                node_for_replace.RightChild = node_to_delete.RightChild
         return True
+
+    def replace_node(self, node_to_delete, node_for_replace):
+        parent_node = node_to_delete.Parent
+        if parent_node:
+            if parent_node.LeftChild == node_to_delete:
+                parent_node.LeftChild = node_for_replace
+            else:  # parent_node.RightChild == node_to_delete
+                parent_node.RightChild = node_for_replace
+            node_for_replace.Parent = node_to_delete.Parent
+        else:
+            self.Root = node_for_replace
+            node_for_replace.Parent = None
 
     def Count(self):
         if not self.Root:
