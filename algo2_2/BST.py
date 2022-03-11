@@ -18,6 +18,9 @@ class BSTNode:
                 count += self.RightChild.count_children()
         return count
 
+    def clear_node(self):
+        self.Parent = self.LeftChild = self.RightChild = None
+
 
 class BSTFind:  # промежуточный результат поиска
 
@@ -101,6 +104,7 @@ class BST:
 
             if not node_for_replace:
                 self.replace_node(node_to_delete, node_for_replace)  # удаление листа
+                node_to_delete.clear_node()
                 return True
             ex_parent = node_for_replace.Parent
 
@@ -114,8 +118,12 @@ class BST:
                     ex_parent.LeftChild.Parent = ex_parent
                 node_for_replace.RightChild = node_to_delete.RightChild
                 node_for_replace.RightChild.Parent = node_for_replace
-            node_for_replace.LeftChild = node_to_delete.LeftChild
-            node_for_replace.LeftChild.Parent = node_for_replace
+                node_for_replace.LeftChild = node_to_delete.LeftChild
+                node_for_replace.LeftChild.Parent = node_for_replace
+            else:  # удалили родителя
+                node_for_replace.LeftChild = node_to_delete.LeftChild
+                node_for_replace.LeftChild.Parent = node_for_replace
+        node_to_delete.clear_node()
         return True
 
     def replace_node(self, node_to_delete, node_for_replace):
@@ -125,8 +133,10 @@ class BST:
                 parent_node.LeftChild = node_for_replace
             else:  # parent_node.RightChild == node_to_delete
                 parent_node.RightChild = node_for_replace
-            node_for_replace.Parent = node_to_delete.Parent
-        else:
+
+            if node_for_replace:
+                node_for_replace.Parent = node_to_delete.Parent
+        else:  # удаляем корень
             self.Root = node_for_replace
             if node_for_replace:
                 node_for_replace.Parent = None
