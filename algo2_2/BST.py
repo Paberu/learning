@@ -121,8 +121,9 @@ class BST:
                 node_for_replace.LeftChild = node_to_delete.LeftChild
                 node_for_replace.LeftChild.Parent = node_for_replace
             else:  # удалили родителя
-                node_for_replace.LeftChild = node_to_delete.LeftChild
-                node_for_replace.LeftChild.Parent = node_for_replace
+                if node_to_delete.LeftChild is not node_for_replace and node_to_delete.LeftChild is not None:
+                    node_for_replace.LeftChild = node_to_delete.LeftChild
+                    node_for_replace.LeftChild.Parent = node_for_replace
         node_to_delete.clear_node()
         return True
 
