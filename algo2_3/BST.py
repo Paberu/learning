@@ -18,6 +18,28 @@ class BSTNode:
                 count += self.RightChild.count_children()
         return count
 
+    def get_all_descendantes(self, order):
+        nodes_for_return = []
+        if order not in (0, 1, 2):
+            return ValueError
+        else:
+            if self.RightChild is None and self.LeftChild is None:
+                return [self]
+            else:
+                if order == 0:
+                    nodes_for_return.extend(self.LeftChild)
+                    nodes_for_return.append(self)
+                    nodes_for_return.extend(self.RightChild)
+                elif order == 1:
+                    nodes_for_return.extend(self.LeftChild)
+                    nodes_for_return.extend(self.RightChild)
+                    nodes_for_return.append(self)
+                if order == 0:
+                    nodes_for_return.append(self)
+                    nodes_for_return.extend(self.LeftChild)
+                    nodes_for_return.extend(self.RightChild)
+        return nodes
+
 
 class BSTFind:  # промежуточный результат поиска
 
@@ -147,7 +169,16 @@ class BST:
                     nodes_for_return.append(node.LeftChild)
                     tmp_nodes.append(node.LeftChild)
                 if node.RightChild:
-                    nodes_for_return.append()
+                    nodes_for_return.append(node.RightChild)
                     tmp_nodes.append(node.RightChild)
             nodes_for_look_through = tmp_nodes
         return tuple(nodes_for_return)
+
+    def DeepAllNodes(self, order):
+        if order not in (0, 1, 2):
+            return ValueError
+        elif:
+            if
+            nodes_for_look_through = [self.Root]
+            nodes_for_return = [self.Root]
+
