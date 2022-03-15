@@ -20,25 +20,31 @@ class BSTNode:
 
     def get_all_descendantes(self, order):
         nodes_for_return = []
-        if order not in (0, 1, 2):
-            return ValueError
+        if self.RightChild is None and self.LeftChild is None:
+            return [self]
         else:
-            if self.RightChild is None and self.LeftChild is None:
-                return [self]
+            if order == 0:
+                if self.LeftChild:
+                    nodes_for_return.extend(self.LeftChild.get_all_descendantes(order))
+                nodes_for_return.append(self)
+                if self.RightChild:
+                    nodes_for_return.extend(self.RightChild.get_all_descendantes(order))
+            elif order == 1:
+                if self.LeftChild:
+                    nodes_for_return.extend(self.LeftChild.get_all_descendantes(order))
+                if self.RightChild:
+                    nodes_for_return.extend(self.RightChild.get_all_descendantes(order))
+                nodes_for_return.append(self)
+            elif order == 2:
+                nodes_for_return.append(self)
+                if self.LeftChild:
+                    nodes_for_return.extend(self.LeftChild.get_all_descendantes(order))
+                if self.RightChild:
+                    nodes_for_return.extend(self.RightChild.get_all_descendantes(order))
+
             else:
-                if order == 0:
-                    nodes_for_return.extend(self.LeftChild)
-                    nodes_for_return.append(self)
-                    nodes_for_return.extend(self.RightChild)
-                elif order == 1:
-                    nodes_for_return.extend(self.LeftChild)
-                    nodes_for_return.extend(self.RightChild)
-                    nodes_for_return.append(self)
-                if order == 0:
-                    nodes_for_return.append(self)
-                    nodes_for_return.extend(self.LeftChild)
-                    nodes_for_return.extend(self.RightChild)
-        return nodes
+                return ValueError
+        return nodes_for_return
 
 
 class BSTFind:  # промежуточный результат поиска
@@ -177,8 +183,5 @@ class BST:
     def DeepAllNodes(self, order):
         if order not in (0, 1, 2):
             return ValueError
-        elif:
-            if
-            nodes_for_look_through = [self.Root]
-            nodes_for_return = [self.Root]
-
+        else:
+            return tuple(self.Root.get_all_descendantes(order))

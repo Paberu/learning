@@ -57,7 +57,12 @@ class TestSimpleTree(unittest.TestCase):
         self.assertEqual(self.bst2.Count(), 5)
 
     def test_wide_all_nodes(self):
-        for each in self.bst3.WideAllNodes():
+        # for each in self.bst3.WideAllNodes():
+        #     print(each.NodeValue)
+        pass
+
+    def test_deep_all_nodes(self):
+        for each in self.bst3.DeepAllNodes(3):
             print(each.NodeValue)
 
 unittest.main()
