@@ -20,6 +20,9 @@ class aBST:
 
     def AddKey(self, key):
         index = self.FindKeyIndex(key)
+        if self.Tree[index] == key:
+            return index
+
         if index < 0:
             self.Tree[-index] = key
             return -index

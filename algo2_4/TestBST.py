@@ -18,6 +18,7 @@ class TestSimpleTree(unittest.TestCase):
         self.assertEqual(self.bst1.AddKey(5), 0)
         self.assertEqual(self.bst1.AddKey(3), 1)
         self.assertEqual(self.bst1.AddKey(7), 2)
+        self.assertEqual(self.bst1.AddKey(5), 0)
 
 
 unittest.main()
