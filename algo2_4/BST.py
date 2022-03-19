@@ -30,8 +30,6 @@ class aBST:
         elif index > 0:
             return index
         else:  # index == 0
-            if self.Tree[0] == key:  # Tree[0] has a key
-                return 0
-            elif not self.Tree[0]:  # Tree == [None] * depth
+            if not self.Tree[0]:  # Tree == [None] * depth
                 self.Tree[0] = key
-                return 0
+            return 0
