@@ -7,30 +7,31 @@ class aBST:
     def FindKeyIndex(self, key):
         index = 0
         tree_size = len(self.Tree)
-        while self.Tree[index] is not None and index < tree_size:
+        while index < tree_size and self.Tree[index] is not None:
             if self.Tree[index] > key:
                 index = 2*index + 1
             elif self.Tree[index] < key:
                 index = 2*index + 2
             else:  # == key
                 return index
-        if self.Tree[index] is None:
+        if index > tree_size:
+            return None
+        else:  # self.Tree[index] is not None
             return -index
-        return None  # не найден
 
     def AddKey(self, key):
         index = self.FindKeyIndex(key)
-        if self.Tree[index] == key:
-            return index
+        if index is None:
+            return -1
 
         if index < 0:
             self.Tree[-index] = key
             return -index
         elif index > 0:
             return index
-        else:
-            if not self.Tree[0]:
+        else:  # index == 0
+            if self.Tree[0] == key:  # Tree[0] has a key
+                return 0
+            elif not self.Tree[0]:  # Tree == [None] * depth
                 self.Tree[0] = key
                 return 0
-            else:
-                return -1
