@@ -7,6 +7,24 @@ class BSTNode:
         self.RightChild = None  # правый потомок
         self.Level = 0  # уровень узла
 
+        if parent is not None:
+            if key < parent.NodeKey:
+                parent.LeftChild = self
+            else:
+                parent.RightChild = self
+            self.Level = parent.Level + 1
+
+    def find_leaves(self):
+        leaves = []
+        if self.LeftChild is None and self.RightChild is None:
+            return [self]
+        else:
+            if self.LeftChild is not None:
+                leaves.extend(self.LeftChild.find_leaves())
+            if self.RightChild is not None:
+                leaves.extend(self.RightChild.find_leaves())
+        return leaves
+
 
 class BalancedBST:
 
@@ -17,39 +35,42 @@ class BalancedBST:
         sorted_array = sorted(a)
         size = len(sorted_array)
         middle = int((size - 1) / 2)
-        current_node = BSTNode(sorted_array[middle], None)
-
-        if self.Root is None:
-            self.Root = current_node
-        current_node.LeftChild = BSTNode(self.GenerateTree(a[]))
-
-
-    def IsBalanced(self, root_node):
-        return False  # сбалансировано ли дерево с корнем root_node
+        self.Root = BSTNode(sorted_array[middle], None)
+        self.Root.LeftChild = self.generate_subtree(self.Root, sorted_array[:middle])
+        self.Root.RightChild = self.generate_subtree(self.Root, sorted_array[middle+1:])
 
     def generate_subtree(self, parent, subarray):
         size = len(subarray)
-        if size > 3:
+        if size > 2:
             middle = int((size - 1) / 2)
             current_node = BSTNode(subarray[middle], parent)
-            current_node.Level = parent.Level + 1
-            current_node.LeftChild = self.generate_subtree(parent, subarray[:middle])
-            current_node.RightChild = self.generate_subtree(parent, subarray[middle:])
+            current_node.LeftChild = self.generate_subtree(current_node, subarray[:middle])
+            current_node.RightChild = self.generate_subtree(current_node, subarray[middle+1:])
         else:
             if size == 2:
-                current_node = BSTNode(max(subarray), parent)
-                current_node.Level = parent.Level + 1
-                if subarray[0] < subarray[1]:
-                    parent.LeftChild = current_node
-                    current_node.LeftChild = self.generate_subtree(parent, [min(subarray)])
+                if max(subarray) < parent.NodeKey:
+                    current_node = BSTNode(max(subarray), parent)
+                    current_node.LeftChild = BSTNode(min(subarray), current_node)
                 else:
-                    parent.RightChild = current_node
-                    current_node.RightChild = self.generate_subtree(parent, [min(subarray)])
+                    current_node = BSTNode(min(subarray), parent)
+                    current_node.RightChild = BSTNode(max(subarray), current_node)
             else:
                 current_node = BSTNode(subarray[0], parent)
-                current_node.Level = parent.Level + 1
-                if current_node.NodeKey < parent.NodeKey:
-                    parent.LeftChild = current_node
-                else:
-                    parent.RightChild = current_node
-                return current_node
+        return current_node
+
+    def IsBalanced(self, root_node):
+        leaves = root_node.find_leaves()
+        leaf_levels = []
+        for leaf in leaves:
+            leaf_levels.append(leaf.Level)
+        if max(leaf_levels) - min(leaf_levels) > 1:
+            return False
+        else:
+            return True
+
+    def get_root(self):
+        a = []
+        a.append(self.Root.NodeKey)
+        a.append(self.Root.LeftChild.NodeKey)
+        a.append(self.Root.RightChild.NodeKey)
+        return a
