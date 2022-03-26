@@ -36,8 +36,13 @@ class BalancedBST:
         size = len(sorted_array)
         middle = int((size - 1) / 2)
         self.Root = BSTNode(sorted_array[middle], None)
-        self.Root.LeftChild = self.generate_subtree(self.Root, sorted_array[:middle])
-        self.Root.RightChild = self.generate_subtree(self.Root, sorted_array[middle+1:])
+        if size > 2:
+            self.Root.LeftChild = self.generate_subtree(self.Root, sorted_array[:middle])
+            self.Root.RightChild = self.generate_subtree(self.Root, sorted_array[middle+1:])
+        elif size == 2:
+            self.Root.RightChild = self.generate_subtree(self.Root, sorted_array[middle + 1:])
+        else:
+            pass  # нечего добавить, что делать, если else не нужен
 
     def generate_subtree(self, parent, subarray):
         size = len(subarray)
@@ -67,10 +72,3 @@ class BalancedBST:
             return False
         else:
             return True
-
-    def get_root(self):
-        a = []
-        a.append(self.Root.NodeKey)
-        a.append(self.Root.LeftChild.NodeKey)
-        a.append(self.Root.RightChild.NodeKey)
-        return a
