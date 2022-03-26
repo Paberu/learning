@@ -32,5 +32,17 @@ class TestSimpleTree(unittest.TestCase):
         bbst.GenerateTree(a)
         self.assertTrue(bbst.IsBalanced(bbst.Root))
 
+    def test_unbalanced_tree(self):
+        a = [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+        bbst = BalancedBST()
+        bbst.GenerateTree(a)
+        self.assertFalse(bbst.IsBalanced(bbst.Root))
+
+    def test_unbalanced_tree_2(self):
+        a = [0, 1, 2, 3, 3, 3, 3, 3, 8]
+        bbst = BalancedBST()
+        bbst.GenerateTree(a)
+        self.assertFalse(bbst.IsBalanced(bbst.Root))
+
 
 unittest.main()
