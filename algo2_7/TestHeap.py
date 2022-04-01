@@ -38,4 +38,9 @@ class TestHeap(unittest.TestCase):
         self.assertEqual(heap.GetMax(), 4)
         self.assertEqual(heap.HeapArray, [])
 
+    def test_get_max4(self):
+        heap = Heap()
+        heap.MakeHeap([], 2)
+        self.assertEqual(heap.GetMax(), -1)
+
 unittest.main()
