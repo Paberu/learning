@@ -1,3 +1,6 @@
+from pip._internal.cli.cmdoptions import hash
+
+
 class Heap:
 
     def __init__(self):
@@ -15,28 +18,34 @@ class Heap:
         heap = self.HeapArray  # использование псевдонима для внутреннего массива кучи
         if len(heap) == 0:
             return -1
-        elif len(heap) == 1:
-            return heap.pop()
+        elif len(heap) in (1, 2):
+            return heap.pop(0)
         else:
             max_to_return = heap[0]
             heap[0] = heap.pop()
             current_index = 0
             left_child_index = 2 * current_index + 1
             right_child_index = left_child_index + 1
-            if left_child_index >= len(heap):
+            has_left_child = left_child_index < len(heap)
+            has_right_child = right_child_index < len(heap)
+            if not has_left_child:  # следовательно, и правого нет
                 return max_to_return
             else:
-                current_index = 0
-                while heap[current_index] < heap[left_child_index] or heap[current_index] < heap[left_child_index]:
-                    if heap[left_child_index] > heap[right_child_index]:
-                        heap[current_index], heap[left_child_index] = heap[left_child_index], heap[current_index]
-                        current_index = left_child_index
+                while has_left_child:  # иммет смысл продолжать, пока хотя бы левый сущетствует
+                    child_index_for_replace = left_child_index
+                    if has_right_child and heap[right_child_index] > heap[left_child_index]:
+                        child_index_for_replace = right_child_index
+
+                    if heap[child_index_for_replace] > heap[current_index]:
+                        heap[current_index], heap[child_index_for_replace] = heap[child_index_for_replace], heap[current_index]
+                        current_index = child_index_for_replace
                     else:
-                        heap[current_index], heap[right_child_index] = heap[right_child_index], heap[current_index]
-                        current_index = right_child_index
+                        return max_to_return
                     left_child_index = 2 * current_index + 1
                     right_child_index = left_child_index + 1
-                return max_to_return
+                    has_left_child = left_child_index < len(heap)
+                    has_right_child = right_child_index < len(heap)
+            return max_to_return
 
     def Add(self, key):
         heap = self.HeapArray  # использование псевдонима для внутреннего массива кучи

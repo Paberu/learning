@@ -43,4 +43,15 @@ class TestHeap(unittest.TestCase):
         heap.MakeHeap([], 2)
         self.assertEqual(heap.GetMax(), -1)
 
+    def test_get_max5(self):
+        heap = Heap()
+        heap.MakeHeap([110, 90, 40, 70, 80, 30, 10, 20, 50, 60, 65, 31, 29, 11, 9], 3)
+        self.assertEqual(heap.GetMax(), 110)
+        self.assertEqual(heap.GetMax(), 90)
+        self.assertEqual(heap.GetMax(), 80)
+        self.assertEqual(heap.GetMax(), 70)
+        self.assertEqual(heap.GetMax(), 65)
+        self.assertEqual(heap.GetMax(), 60)
+        self.assertEqual(heap.GetMax(), 50)
+
 unittest.main()
