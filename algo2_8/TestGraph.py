@@ -39,13 +39,13 @@ class TestHeap(unittest.TestCase):
 
     def test_add_edge3(self):
         graph3 = SimpleGraph(100)
-        for i in range(1, 101):
+        for i in range(100):
             self.assertTrue(graph3.AddVertex(i))
-        for i in range(1, 101):
-            for j in range(1, 101):
+        for i in range(100):
+            for j in range(100):
                 self.assertTrue(graph3.AddEdge(i, j))
-        for i in range(1, 101):
-            for j in range(1, 101):
+        for i in range(100):
+            for j in range(100):
                 self.assertTrue(graph3.IsEdge(i, j))
 
     def test_is_edge(self):

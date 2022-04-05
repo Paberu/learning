@@ -22,43 +22,30 @@ class SimpleGraph:
         return False
 
     def RemoveVertex(self, v):
-        vertex_index = self.get_vertex_by_value(v)
-        if vertex_index:
+        if v < self.max_vertex:
             for i in range(self.max_vertex):
-                self.m_adjacency[vertex_index][i] = 0
-                self.m_adjacency[i][vertex_index] = 0
-            self.vertex[vertex_index] = None
+                self.m_adjacency[v][i] = 0
+                self.m_adjacency[i][v] = 0
+            self.vertex[v] = None
             return True
         return False
 
     def IsEdge(self, v1, v2):
-        v1_index = self.get_vertex_by_value(v1)
-        v2_index = self.get_vertex_by_value(v2)
-        if v1_index is not None and v2_index is not None:
-            if self.m_adjacency[v1_index][v2_index] == 1 or self.m_adjacency[v2_index][v1_index] == 1:
+        if v1 < self.max_vertex and v2 < self.max_vertex:
+            if self.m_adjacency[v1][v2] == 1 or self.m_adjacency[v2][v1] == 1:
                 return True
         return False
 
     def AddEdge(self, v1, v2):
-        v1_index = self.get_vertex_by_value(v1)
-        v2_index = self.get_vertex_by_value(v2)
-        if v1_index is not None and v2_index is not None:
-            self.m_adjacency[v1_index][v2_index] = 1
-            self.m_adjacency[v2_index][v1_index] = 1
+        if v1 < self.max_vertex and v2 < self.max_vertex:
+            self.m_adjacency[v1][v2] = 1
+            self.m_adjacency[v2][v1] = 1
             return True
         return False
 
     def RemoveEdge(self, v1, v2):
-        v1_index = self.get_vertex_by_value(v1)
-        v2_index = self.get_vertex_by_value(v2)
-        if v1_index is not None and v2_index is not None:
-            self.m_adjacency[v1_index][v2_index] = 0
-            self.m_adjacency[v2_index][v1_index] = 0
+        if v1 < self.max_vertex and v2 < self.max_vertex:
+            self.m_adjacency[v1][v2] = 0
+            self.m_adjacency[v2][v1] = 0
             return True
         returnFalse
-
-    def get_vertex_by_value(self, v):
-        for i in range(self.max_vertex):
-            if self.vertex[i].Value == v:
-                return i
-        return None
