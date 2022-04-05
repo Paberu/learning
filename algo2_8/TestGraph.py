@@ -30,23 +30,23 @@ class TestHeap(unittest.TestCase):
     def test_add_edge(self):
         for i in range(5):
             self.graph.AddVertex(i)
-        self.graph.AddEdge(3, 3)
-        self.graph.AddEdge(2, 4)
-        self.graph.AddEdge(2, 0)
-        self.graph.IsEdge(3, 3)
-        self.graph.IsEdge(2, 4)
-        self.graph.IsEdge(2, 0)
+        self.assertTrue(self.graph.AddEdge(3, 3))
+        self.assertTrue(self.graph.AddEdge(2, 4))
+        self.assertTrue(self.graph.AddEdge(2, 0))
+        self.assertTrue(self.graph.IsEdge(3, 3))
+        self.assertTrue(self.graph.IsEdge(2, 4))
+        self.assertTrue(self.graph.IsEdge(2, 0))
 
     def test_add_edge3(self):
         graph3 = SimpleGraph(100)
         for i in range(1, 101):
-            graph3.AddVertex(i)
+            self.assertTrue(graph3.AddVertex(i))
         for i in range(1, 101):
             for j in range(1, 101):
-                graph3.AddEdge(i, j)
+                self.assertTrue(graph3.AddEdge(i, j))
         for i in range(1, 101):
             for j in range(1, 101):
-                graph3.IsEdge(i, j)
+                self.assertTrue(graph3.IsEdge(i, j))
 
     def test_is_edge(self):
         for i in range(5):
