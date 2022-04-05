@@ -12,6 +12,11 @@ class TestHeap(unittest.TestCase):
             self.graph.AddVertex(i)
         self.assertEqual([v.Value for v in self.graph.vertex], [0, 1, 2, 3, 4])
 
+    def test_add_vertex2(self):
+        for i in range(7):
+            self.graph.AddVertex(i)
+        self.assertEqual([v.Value for v in self.graph.vertex], [0, 1, 2, 3, 4])
+
     def test_remove_vertex(self):
         for i in range(5):
             self.graph.AddVertex(i)
