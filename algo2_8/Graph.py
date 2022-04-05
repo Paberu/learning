@@ -18,7 +18,8 @@ class SimpleGraph:
         for i in range(self.max_vertex):
             if self.vertex[i] is None:
                 self.vertex[i] = Vertex(v)
-                break
+                return True
+        return False
 
     def RemoveVertex(self, v):
         vertex_index = self.get_vertex_by_value(v)
@@ -27,6 +28,8 @@ class SimpleGraph:
                 self.m_adjacency[vertex_index][i] = 0
                 self.m_adjacency[i][vertex_index] = 0
             self.vertex[vertex_index] = None
+            return True
+        return False
 
     def IsEdge(self, v1, v2):
         v1_index = self.get_vertex_by_value(v1)
@@ -42,6 +45,8 @@ class SimpleGraph:
         if v1_index is not None and v2_index is not None:
             self.m_adjacency[v1_index][v2_index] = 1
             self.m_adjacency[v2_index][v1_index] = 1
+            return True
+        return False
 
     def RemoveEdge(self, v1, v2):
         v1_index = self.get_vertex_by_value(v1)
@@ -49,6 +54,8 @@ class SimpleGraph:
         if v1_index is not None and v2_index is not None:
             self.m_adjacency[v1_index][v2_index] = 0
             self.m_adjacency[v2_index][v1_index] = 0
+            return True
+        returnFalse
 
     def get_vertex_by_value(self, v):
         for i in range(self.max_vertex):
