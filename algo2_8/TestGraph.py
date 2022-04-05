@@ -33,27 +33,20 @@ class TestHeap(unittest.TestCase):
         self.graph.AddEdge(3, 3)
         self.graph.AddEdge(2, 4)
         self.graph.AddEdge(2, 0)
-        for i in range(5):
-            for j in range(5):
-                print(self.graph.m_adjacency[i][j], end=' ')
-            print()
+        self.graph.IsEdge(3, 3)
+        self.graph.IsEdge(2, 4)
+        self.graph.IsEdge(2, 0)
 
-    def test_add_edge2(self):
-        graph2 = SimpleGraph(10)
-        for i in range(80, 100):
-            graph2.AddVertex(i)
-        for v in graph2.vertex:
-            print(v.Value)
-        graph2.AddEdge(80, 82)
-        graph2.AddEdge(80, 80)
-        graph2.AddEdge(84, 82)
-        graph2.AddEdge(80, 83)
-        graph2.AddEdge(83, 83)
-        graph2.AddEdge(88, 89)
-        for i in range(10):
-            for j in range(10):
-                print(graph2.m_adjacency[i][j], end=' ')
-            print()
+    def test_add_edge3(self):
+        graph3 = SimpleGraph(100)
+        for i in range(1, 101):
+            graph3.AddVertex(i)
+        for i in range(1, 101):
+            for j in range(1, 101):
+                graph3.AddEdge(i, j)
+        for i in range(1, 101):
+            for j in range(1, 101):
+                graph3.IsEdge(i, j)
 
     def test_is_edge(self):
         for i in range(5):
