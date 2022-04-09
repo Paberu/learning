@@ -93,5 +93,5 @@ class SimpleTree:
             return []
         for child in self.Root.Children:
             if len(child.get_all_descendantes()) % 2 == 0:
-                edges_to_remove.extend([child.Parent.NodeValue, child.NodeValue])
+                edges_to_remove.extend([child.Parent, child])
         return edges_to_remove
