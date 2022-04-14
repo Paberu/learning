@@ -5,6 +5,7 @@ class Vertex:
 
     def __init__(self, val):
         self.Value = val
+        self.hit = False
 
 
 class SimpleGraph:
@@ -49,3 +50,16 @@ class SimpleGraph:
             self.m_adjacency[v2][v1] = 0
             return True
         returnFalse
+
+    def DepthFirstSearch(self, VFrom, VTo):
+        inner_stack = []
+        for vertex in self.vertex:
+            vertex.hit = False
+        vertex_X = VFrom
+        vertex_X.hit = True
+        inner_stack.append(vertex_X)
+
+
+            # узлы задаются позициями в списке vertex
+            # возвращается список узлов -- путь из VFrom в VTo
+            # или [] если пути нету
