@@ -62,7 +62,7 @@ class SimpleGraph:
             had_unhit_edges = False
             for i in range(self.max_vertex):
                 if self.m_adjacency[current_index][i] == 1:
-                    if self.vertex == v_to:
+                    if self.vertex[i] == v_to:
                         inner_stack.insert(0, v_to)
                         return inner_stack
                     else:

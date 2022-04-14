@@ -19,10 +19,23 @@ class TestHeap(unittest.TestCase):
         self.graph.AddEdge(8, 9)
         self.graph.AddEdge(8, 10)
 
-    def test_depth_first_search(self):
+    def test_depth_first_search1(self):
         v_from = self.graph.vertex[0]
-        v_to = self.graph.vertex[9]
-        print(self.graph.DepthFirstSearch(v_from, v_to))
+        v_to = self.graph.vertex[1]
+        values = [vert.Value for vert in self.graph.DepthFirstSearch(v_from, v_to)]
+        self.assertTrue(values, [1, 0])
+
+    def test_depth_first_search2(self):
+        v_from = self.graph.vertex[0]
+        v_to = self.graph.vertex[3]
+        values = [vert.Value for vert in self.graph.DepthFirstSearch(v_from, v_to)]
+        self.assertTrue(values, [3, 1, 0])
+
+    def test_depth_first_search3(self):
+        v_from = self.graph.vertex[0]
+        v_to = self.graph.vertex[6]
+        values = [vert.Value for vert in self.graph.DepthFirstSearch(v_from, v_to)]
+        self.assertTrue(values, [6, 2, 0])
 
 
 unittest.main()
