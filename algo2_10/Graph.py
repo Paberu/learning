@@ -76,4 +76,5 @@ class SimpleGraph:
                 inner_stack.remove(current_v)
                 if len(inner_stack) > 0:
                     current_v = inner_stack[0]
+                    current_index = self.vertex.index(current_v)
         return inner_stack
