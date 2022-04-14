@@ -51,25 +51,25 @@ class SimpleGraph:
             return True
         returnFalse
 
-    def DepthFirstSearch(self, v_from, v_to):
-        inner_stack = [v_from]
+    def DepthFirstSearch(self, index_from, index_to):
+        inner_stack = [self.vertex[index_from]]
         for vertex in self.vertex:
             vertex.hit = False
-        current_v = v_from
-        current_index = self.vertex.index(v_from)
+        current_v = self.vertex[index_from]
+        current_index = index_from
         while len(inner_stack) != 0:
             current_v.hit = True
             had_unhit_edges = False
             for i in range(self.max_vertex):
                 if self.m_adjacency[current_index][i] == 1:
-                    if self.vertex[i] == v_to:
-                        inner_stack.insert(0, v_to)
-                        return inner_stack
+                    if i == index_to:
+                        inner_stack.insert(0, self.vertex[index_to])
+                        return reversed(inner_stack)
                     else:
                         if not self.vertex[i].hit:
                             current_v = self.vertex[i]
                             inner_stack.insert(0, current_v)
-                            current_index = self.vertex.index(current_v)
+                            current_index = i
                             had_unhit_edges = True
                             break
             if not had_unhit_edges:
@@ -77,4 +77,4 @@ class SimpleGraph:
                 if len(inner_stack) > 0:
                     current_v = inner_stack[0]
                     current_index = self.vertex.index(current_v)
-        return inner_stack
+        return reversed(inner_stack)
