@@ -46,7 +46,8 @@ class TestHeap(unittest.TestCase):
     def test_depth_first_search59(self):
         index_from = 5
         index_to = 9
-        values = [vert.Value for vert in self.graph.DepthFirstSearch(index_from, index_to)]
+        result = self.graph.DepthFirstSearch(index_from, index_to)
+        values = [vert.Value for vert in result]
         self.assertEqual(values, [5, 2, 0, 1, 4, 8, 9])
 
     def test_empty_result(self):

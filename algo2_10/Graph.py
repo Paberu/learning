@@ -61,7 +61,7 @@ class SimpleGraph:
                 if self.m_adjacency[current_index][i] == 1:
                     if i == index_to:
                         inner_stack.insert(0, self.vertex[index_to])
-                        return reversed(inner_stack)
+                        return list(reversed(inner_stack))
                     else:
                         if not self.vertex[i].hit:
                             current_v = self.vertex[i]
@@ -74,4 +74,4 @@ class SimpleGraph:
                 if len(inner_stack) > 0:
                     current_v = inner_stack[0]
                     current_index = self.vertex.index(current_v)
-        return reversed(inner_stack)
+        return list(reversed(inner_stack))
