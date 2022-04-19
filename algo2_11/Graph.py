@@ -100,9 +100,11 @@ class SimpleGraph:
 
     def get_list_for_return(self, current_index, index_to, deleted_from_queue):
         list_for_return = [self.vertex[current_index], self.vertex[index_to]]
-        while current_index != 0:
+        while len(deleted_from_queue) > 0:
             for deleted_index in deleted_from_queue:
                 if self.m_adjacency[deleted_index][current_index] == 1:
                     list_for_return.insert(0, self.vertex[deleted_index])
                     current_index = deleted_index
+                    break
+            deleted_from_queue = deleted_from_queue[:deleted_from_queue.index(current_index)]
         return list_for_return
