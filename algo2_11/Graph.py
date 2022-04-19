@@ -83,17 +83,26 @@ class SimpleGraph:
             vertex.hit = False
         current_v = self.vertex[index_from]
         current_index = index_from
+        current_v.hit = True
         while len(inner_queue) != 0:
-            current_v.hit = True
             for i in range(self.max_vertex):
                 if self.m_adjacency[current_index][i] == 1:
                     if i == index_to:
-                        return list_for_return(index_to)
+                        return self.get_list_for_return(current_index, index_to, deleted_from_queue)
                     else:
                         if not self.vertex[i].hit:
                             inner_queue.append(self.vertex[i])
-                inner_queue.append(current_v)
-        #         if len(inner_stack) > 0:
-        #             current_v = inner_stack[0]
-        #             current_index = self.vertex.index(current_v)
-        # return list(reversed(inner_stack))
+                            self.vertex[i].hit = True
+            deleted_from_queue.append(inner_queue.pop(0))
+            if len(inner_queue) > 0:
+                current_v = inner_queue[0]
+                current_index = self.vertex.index(current_v)
+
+    def get_list_for_return(self, current_index, index_to, deleted_from_queue):
+        list_for_return = [self.vertex[current_index], self.vertex[index_to]]
+        while current_index != 0:
+            for deleted_index in deleted_from_queue:
+                if self.m_adjacency[deleted_index][current_index] == 1:
+                    list_for_return.insert(0, self.vertex[deleted_index])
+                    current_index = deleted_index
+        return list_for_return
