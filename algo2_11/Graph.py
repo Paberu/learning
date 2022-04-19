@@ -77,7 +77,7 @@ class SimpleGraph:
         return list(reversed(inner_stack))
 
     def BreadthFirstSearch(self, index_from, index_to):
-        inner_queue = [self.vertex[index_from]]
+        inner_queue = [index_from]
         deleted_from_queue = []
         for vertex in self.vertex:
             vertex.hit = False
@@ -91,12 +91,12 @@ class SimpleGraph:
                         return self.get_list_for_return(current_index, index_to, deleted_from_queue)
                     else:
                         if not self.vertex[i].hit:
-                            inner_queue.append(self.vertex[i])
+                            inner_queue.append(i)
                             self.vertex[i].hit = True
             deleted_from_queue.append(inner_queue.pop(0))
             if len(inner_queue) > 0:
-                current_v = inner_queue[0]
-                current_index = self.vertex.index(current_v)
+                current_index = inner_queue[0]
+        return []
 
     def get_list_for_return(self, current_index, index_to, deleted_from_queue):
         list_for_return = [self.vertex[current_index], self.vertex[index_to]]
