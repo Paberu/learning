@@ -24,6 +24,3 @@ def buy(user_items, item):
 
 
 finale = user_state.then(buy('wine')).then(buy('apples')).then(buy('chips')).then(buy('chips')).then(buy('milk'))
-print(finale.value)
-print(finale.monoid)
-
