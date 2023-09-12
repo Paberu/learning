@@ -1,6 +1,7 @@
 from pymonad.tools import curry
 from pymonad.maybe import Just, Maybe, Nothing
-from pymonad.list import ListMonad, List
+from pymonad.list import ListMonad
+
 
 @curry(2)
 def to_left(num: int, birds: Maybe):
@@ -10,6 +11,7 @@ def to_left(num: int, birds: Maybe):
     else:
         return Just([left+num, right])
 
+
 @curry(2)
 def to_right(num: int, birds: Maybe):
     left, right = birds
@@ -17,6 +19,7 @@ def to_right(num: int, birds: Maybe):
         return Nothing
     else:
         return Just([left, right + num])
+
 
 @curry(1)
 def banana(birds: Maybe):
@@ -29,9 +32,9 @@ def show(birds: Maybe):
 
 begin = Just([0, 0])
 
-finale = begin.then(to_left(2)).then(to_right(5)).then(to_left(2))
-finale2 = begin.then(to_left(3)).then(to_right(5)).then(to_left(-3))
-finale3 = begin.then(to_left(2)).then(to_right(2)).then(banana).then(to_left(2)).then(to_right(2))
+finale = begin.bind(to_left(2)).bind(to_right(5)).bind(to_left(2))
+finale2 = begin.bind(to_left(3)).bind(to_right(5)).bind(to_left(-3))
+finale3 = begin.bind(to_left(2)).bind(to_right(2)).bind(banana).bind(to_left(2)).bind(to_right(2))
 print(show(finale))
 print(show(finale2))
 print(show(finale3))
