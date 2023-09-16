@@ -1,26 +1,32 @@
 from pymonad.tools import curry
 from pymonad.state import State
 
+car_init = {'roots': [], 'gas': 40}
 
-user_init = {'items': [], 'money': 2000}
-
-items = {'apples': 70,
-         'wine': 300,
-         'milk': 80,
-         'chips': 100
+roots = {'Pskov-PushGory': 15,
+         'Pskov-Ostrov': 5,
+         'Ostrov-Pushgory': 10,
          }
 
-user_state = State(user_init['items'], user_init['money'])
+car_state = State.insert(car_init['roots'])
 
 
 @curry(2)
-def buy(user_items, item):
-    @State
-    def count_computation(old_count):
-        if old_count < items[item] or item not in items:
-            return user_items, old_count
-        return user_items.append(item), old_count - items[item]
-    return count_computation
+def drive(root_key, car_roots):
+    def count_computation(gas_remained):
+        return car_roots + [root_key], gas_remained - roots[root_key]
+
+    return State(count_computation)
 
 
-finale = user_state.then(buy('wine')).then(buy('apples')).then(buy('chips')).then(buy('chips')).then(buy('milk'))
+@curry(1)
+def fill_the_tank(car_roots):
+    def count_computation(gas_remained):
+        return car_roots + ['Gas Station'], 40
+
+    return State(count_computation)
+
+
+finale = car_state.then(drive('Pskov-PushGory')).then(drive('Ostrov-Pushgory')).then(fill_the_tank()).then(drive('Pskov-Ostrov'))
+
+print(finale.run(car_init['gas']))
