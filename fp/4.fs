@@ -11,7 +11,7 @@ let rec sum : int -> int = function
     | n -> n + sum(n - 1)
 
 // 7.1.3
-let rec sum2 = function
+let rec sum2 : int * int -> int = function
     | (m, 0) -> m
     | (m, n) -> m + n + sum2(m, n-1)
  
