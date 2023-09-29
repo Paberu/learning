@@ -1,7 +1,7 @@
 // 16.1
 let notDivisible : int * int -> bool = function
-    |(m,n) when n = 0 -> false
-    |(m,n) -> (m % n = 0)
+    |(n,m) when n = 0 -> false
+    |(n,m) -> (m % n = 0)
 
 // 16.2
 let prime (n: int) : bool =
