@@ -6,7 +6,8 @@ let rec pow : string * int -> string = function
 
 // 17.2
 let rec isIthChar : string * int * char -> bool = function
-    |(s,n,c) -> s.[n] = c
+    |(s,n,c) when n >= 0 && n < String.length(s) -> s.[n] = c
+    |_ -> false
 
 // 17.3
 let rec countChar : string * int * char * int -> int = function
