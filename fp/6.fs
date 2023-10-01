@@ -1,5 +1,6 @@
 // 17.1
 let rec pow : string * int -> string = function
+    |(s,0) -> ""
     |(s,1) -> s
     |(s,n) -> s+pow(s,n-1)
 
