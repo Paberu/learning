@@ -11,6 +11,7 @@ let rec isIthChar : string * int * char -> bool = function
 
 // 17.3
 let rec countChar : string * int * char * int -> int = function
+    |(str,position,ch,total) when position > String.length(str) -> 0
     |(str,position,ch,total) when position = String.length(str) -> total
     |(str,position,ch,total) when isIthChar(str,position,ch) -> countChar(str,position+1,ch,total+1)
     |(str,position,ch,total) -> countChar(str,position+1,ch,total)
