@@ -17,5 +17,5 @@ let dnto n =
 let rec evenn n = 
     let rec addTwo = function
         | (0, acc) -> acc
-        | (k, acc) -> addTwo(k-1, (k*2)::acc)
+        | (k, acc) -> addTwo(k-1, (k-1)*2::acc)
     addTwo(n, [])
