@@ -36,4 +36,4 @@ let rec zip (xs1,xs2) =
     else
         match (xs1, xs2) with
             | ([],[]) -> []
-            | (x1 :: tail1, x2 :: tail2) -> x1 :: x2 :: zip (tail1, tail2)
+            | (x1 :: tail1, x2 :: tail2) -> (x1, x2) :: zip (tail1, tail2)
