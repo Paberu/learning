@@ -20,7 +20,7 @@ let rec insert (xs, n) =
     match xs with
     | [] -> n::[]
     | x::tail when x < n -> x :: insert(tail,n)
-    | x::tail when x >= n -> n :: x :: tail
+    | x::tail -> n :: x :: tail
  
 // 40.2.3
 let rec intersect (xs1, xs2) =
@@ -57,16 +57,16 @@ let rec minus (xs1, xs2) =
     | _, x2::tail2 -> minus(remove(xs1,x2),tail2)
 
 // 40.3.1
-let rec smallest xs = 
-    let rec check(xs, minimal) = 
-        match xs with
-        | [] -> minimal
-        | x::tail when x < minimal -> check(tail, x)
-        | x::tail -> check(tail, minimal)
-    match xs with
+let rec smallest = function
     | [] -> failwith "Empty list"
-    | x::tail -> check(tail, x)
-
+    | x::tail -> 
+        let rec check(xs, minimal) = 
+            match xs with
+            | [] -> minimal
+            | x::tail when x < minimal -> check(tail, x)
+            | x::tail -> check(tail, minimal)
+        check(tail, x)
+    
 // 40.3.2
 let rec delete (n, xs) =
     match xs with
@@ -82,11 +82,11 @@ let rec sort = function
         minimal::sort(delete(minimal, xs))
 
 // 40.4
-let rec revrev xs =
-    let rec reverseList (acc, ys) =
-        match ys with
-        | [] -> acc
-        | y::tail -> reverseList (y::acc, tail)
-    match xs with
+let rec revrev = function
     | [] -> []
-    | x::tail -> reverseList ([], x) :: revrev tail
+    | x::tail -> 
+        let rec reverseList acc ys =
+            match ys with
+            | [] -> acc
+            | y::tail -> reverseList (y::acc) tail
+        (reverseList [] x) :: revrev tail
