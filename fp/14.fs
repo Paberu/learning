@@ -79,7 +79,7 @@ let rec sort = function
     | [] -> []
     | xs ->
         let minimal = Option.get (smallest xs)
-        minimal :: sort (delete (minimal, xs))
+        minimal::sort(delete(minimal, xs))
 
 // 40.4
 let rec revrev = function
