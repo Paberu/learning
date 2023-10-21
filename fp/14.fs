@@ -58,11 +58,11 @@ let rec minus (xs1, xs2) =
 
 // 40.3.1
 let rec smallest = function
-    | [] -> failwith "Empty list"
+    | [] -> None
     | x::tail -> 
         let rec check(xs, minimal) = 
             match xs with
-            | [] -> minimal
+            | [] -> Some minimal
             | x::tail when x < minimal -> check(tail, x)
             | x::tail -> check(tail, minimal)
         check(tail, x)
@@ -78,8 +78,8 @@ let rec delete (n, xs) =
 let rec sort = function
     | [] -> []
     | xs ->
-        let minimal = smallest(xs)
-        minimal::sort(delete(minimal, xs))
+        let minimal = Option.get (smallest xs)
+        minimal :: sort (delete (minimal, xs))
 
 // 40.4
 let rec revrev = function
