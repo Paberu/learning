@@ -28,7 +28,7 @@ let rec intersect (xs1, xs2) =
     | [], _ -> []
     | _, [] -> []
     | x1::tail1, _ when x1 < List.head xs2 -> intersect(tail1, xs2)
-    | _, x2::tail2 when List.head xs1 < x2 -> intersect(xs1, tail2)
+    | _, x2::tail2 when List.head xs1 > x2 -> intersect(xs1, tail2)
     | x1::tail1, x2::tail2 when x1 = x2 -> x1 :: intersect(tail1, tail2)
     | _::tail1, _::tail2 -> intersect(tail1, tail2)
     
