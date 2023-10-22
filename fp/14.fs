@@ -30,7 +30,7 @@ let rec intersect (xs1, xs2) =
     | x1::tail1, _ when x1 < List.head xs2 -> intersect(tail1, xs2)
     | _, x2::tail2 when List.head xs1 > x2 -> intersect(xs1, tail2)
     | x1::tail1, x2::tail2 when x1 = x2 -> x1 :: intersect(tail1, tail2)
-    | _::tail1, _::tail2 -> intersect(tail1, tail2)
+
     
 //40.2.4
 let rec plus (xs1, xs2) = 
@@ -40,21 +40,18 @@ let rec plus (xs1, xs2) =
     | xs1, x2::tail2 -> plus(insert(xs1, x2), tail2)
 
 let rec remove (xs, n) =
-    if n > List.last xs || n < List.head xs then
-        xs
-    else
-        match xs with
-        | [] -> []
-        | x::tail when x < n -> x :: remove(tail,n)
-        | x::tail when x = n -> remove(tail,n)
-        | tail -> tail
+    match xs with
+    | [] -> []
+    | x::tail when x < n -> x :: remove(tail,n)
+    | x::tail when x = n -> remove(tail,n)
+    | tail -> tail
 
 // 40.2.5
 let rec minus (xs1, xs2) = 
     match (xs1, xs2) with
     | [], _ -> []
-    | _, [] -> xs1
-    | _, x2::tail2 -> minus(remove(xs1,x2),tail2)
+    | xs1, [] -> xs1
+    | _, x2::tail2 -> minus(remove(xs1, x2), tail2)
 
 // 40.3.1
 let rec smallest = function
