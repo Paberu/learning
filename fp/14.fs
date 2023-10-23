@@ -43,7 +43,7 @@ let rec remove (xs, n) =
     match xs with
     | [] -> []
     | x::tail when x < n -> x :: remove(tail,n)
-    | x::tail when x = n -> remove(tail,n)
+    | x::tail when x = n -> tail
     | tail -> tail
 
 // 40.2.5
