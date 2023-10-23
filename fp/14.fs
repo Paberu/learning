@@ -78,12 +78,15 @@ let rec sort = function
         let minimal = Option.get (smallest xs)
         minimal::sort(delete(minimal, xs))
 
-// 40.4
-let rec revrev = function
+
+let rec reverseList acc xs =
+    match xs with
+    | [] -> acc
+    | x::tail -> reverseList (x::acc) tail
+
+let rec reverseInnerLists = function
     | [] -> []
-    | x::tail -> 
-        let rec reverseList acc ys =
-            match ys with
-            | [] -> acc
-            | y::tail -> reverseList (y::acc) tail
-        (reverseList [] x) :: revrev tail
+    | x :: tail -> (reverseList [] x) :: reverseInnerLists tail
+
+// 40.4   
+let revrev xs = reverseList [] (reverseInnerLists xs)
