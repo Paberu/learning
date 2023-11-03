@@ -16,5 +16,3 @@ let fibo (n:int):int =
         f1 <- f2
         f2 <- temp + f2
     f1
-    
-printfn "%d" (fibo 4)
