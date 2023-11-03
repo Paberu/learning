@@ -14,5 +14,7 @@ let fibo (n:int):int =
     for _ in 1..n do
         let temp = f1
         f1 <- f2
-        f1 <- temp + f2
+        f2 <- temp + f2
     f1
+    
+printfn "%d" (fibo 4)
