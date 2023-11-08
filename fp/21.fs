@@ -1,9 +1,12 @@
+let rec factorial n acc = 
+    match n with
+    | 0 | 1 -> acc
+    | n -> factorial (n - 1) acc*n
+
 // 50.2.1
 let fac_seq n = seq {
-    let mutable fact = 1
-    for i in 1..n do
-        fact <- fact * i
-        yield fact
+    for i in 0..n do
+        yield factorial i 1
 }
 
 // 50.2.2
