@@ -1,16 +1,27 @@
 // 50.2.1
-let fac_seq n = seq {
-    let mutable factorial = 1
-    for i in 0..n do
-        factorial <- 1
-        for j in 1..i do
-            factorial <- factorial * j
-        yield factorial
+let rec factorial n acc = 
+    match n with
+    | 0 | 1 -> acc
+    | n -> factorial (n - 1) acc*n
+    
+let rec fac_seq_gen i =
+    seq {
+        yield factorial i 1
+        yield! fac_seq_gen (i + 1)
+    }
+
+let fac_seq = seq {
+    yield! fac_seq_gen 0
 }
 
 // 50.2.2
-let seq_seq n = seq {
-    for i in 0..n do
-        if i % 2 = 0 then yield i/2
-        else yield -(i + 1)/2
+let rec f i= seq {
+    yield (0 - i)
+    yield i
+    yield! f(i + 1)
+}
+
+let seq_seq = seq {
+    yield 0
+    yield! f 1
 }
