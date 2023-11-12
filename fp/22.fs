@@ -13,4 +13,6 @@ let tl (s : 'a cell) : Lazy<'a cell> =
 // 51.3
 let rec nth (s : 'a cell) (n : int) : 'a =
     if n = 0 then hd s
-    else nth (Lazy.Force (tl s)) (n - 1)
+    else
+        let tls = tl s
+        nth (tls.Force()) (n - 1)
