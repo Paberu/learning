@@ -48,10 +48,11 @@ class BoundedStack:
 
     def pop(self):
         if self.size() > 0:
-            self.__stack.pop(-1)
+            value = self.__stack.pop(-1)
             self.__pop_status = BoundedStack.POP_OK
-        else:
-            self.__pop_status = BoundedStack.POP_ERR
+            return value
+        self.__pop_status = BoundedStack.POP_ERR
+        return 0
 
     def peek(self):
         if self.size() > 0:
