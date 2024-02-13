@@ -1,11 +1,7 @@
 from typing import Final
 
-class BoundedStack:
 
-    # скрытые поля
-    # private List<T> stack; // основное хранилище стека
-    # private int peek_status; // статус запроса peek()
-    # private int pop_status; // статус команды pop()
+class BoundedStack:
 
     # интерфейс класса, реализующий АТД Stack
     POP_NIL: Final = 0
@@ -44,9 +40,11 @@ class BoundedStack:
         return self.__push_status
 
     def push(self, value):
-        if self.size() == self.__size:  # размер внутреннего списка может сравняться с ограничением, но не превысить его
-            raise IndexError('Stack is full, pop some items.')
-        self.__stack.append(value)
+        if self.size() < self.__size:
+            self.__stack.append(value)
+            self.__push_status = BoundedStack.PUSH_OK
+        else:
+            self.__push_status = BoundedStack.PUSH_ERR
 
     def pop(self):
         if self.size() > 0:
@@ -61,4 +59,3 @@ class BoundedStack:
             return self.__stack[-1]
         self.__peek_status = PEEK_ERR
         return 0
-
