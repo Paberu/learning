@@ -23,6 +23,8 @@ class BoundedStack:
         self.__pop_status = BoundedStack.POP_NIL
         self.__push_status = BoundedStack.PUSH_NIL
 
+    # Python требует, чтобы все поля объявлялись и инициализировались в конструкторе.
+    # Поэтому clear() просто переинициализирует объект
     def clear(self):
         self.__init__(self.size())
 
@@ -39,6 +41,8 @@ class BoundedStack:
     def get_push_status(self):
         return self.__push_status
 
+    # предусловие: стек заполнен не полностью
+    # постусловие: в стек добавлен новый элемент
     def push(self, value):
         if self.size() < self.__size:
             self.__stack.append(value)
@@ -46,17 +50,21 @@ class BoundedStack:
         else:
             self.__push_status = BoundedStack.PUSH_ERR
 
+    # предусловие: стек не пустой
+    # постусловие: из стека удален верхний элемент
     def pop(self):
         if self.size() > 0:
-            value = self.__stack.pop(-1)
+            self.__stack.pop(-1)
             self.__pop_status = BoundedStack.POP_OK
-            return value
-        self.__pop_status = BoundedStack.POP_ERR
-        return 0
+        else:
+            self.__pop_status = BoundedStack.POP_ERR
 
+    # предусловие: стек не пустой
     def peek(self):
         if self.size() > 0:
+            result = self.__stack[-1]
             self.__peek_status = BoundedStack.PEEK_OK
-            return self.__stack[-1]
-        self.__peek_status = PEEK_ERR
-        return 0
+        else:
+            result = 0
+            self.__peek_status = BoundedStack.PEEK_ERR
+        return result
