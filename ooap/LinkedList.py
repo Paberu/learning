@@ -1,94 +1,83 @@
-class Node:
-
-    def __init__(self, v):
-        self.value = v
-        self.next = None
-
-
 class LinkedList:
 
     def __init__(self):
-        self.head = None
-        self.tail = None
+        self.__list = []
+        self.__cursor = None  # указывает на индекс текущего элемента в списке
 
-    def add_in_tail(self, item):
-        if self.head is None:
-            self.head = item
+    def size(self):
+        return len(self.__list)
+
+    # предусловие: список должен быть непустой
+    # постусловие: курсор сместился к началу списка
+    def head(self):
+        if size():
+            self.__cursor = 0
+
+    # предусловие: список должен быть непустой
+    # постусловие: курсор сместился в конец списка
+    def tail(self):
+        if size():
+            self.__cursor = size() - 1
+
+    # предусловие: справа должен быть хотя бы один элемент
+    # постусловие: курсор сместится к элементу справа
+    def right(self):
+        if size > 0 and self.__cursor < size() - 1:
+            self.__cursor += 1
+
+    # почему-то отсутствовал вариант с движением в обратную сторону
+    # предусловие: слева должен быть хотя бы один элемент
+    # постусловие: курсор сместится к элементу слева
+    def left(self):
+        if size > 0 and self.__cursor > 0:
+            self.__cursor -= 1
+
+    # предусловие: список должен быть непустой
+    # постусловие: возврат текущего значения
+    def get(self):
+        if size() > 0:
+            return self.__list[self.__cursor]
+
+    # предусловие: требуется рассмотреть несколько граничных условий:
+    #  - пустой список
+    #  - элемент крайний справа
+    #  - элемент не последний
+    # постусловие: добавление элемента в конец списка или создание нового списка и замена им старого
+    def put_right(self, value):
+        if self.size() == 0 or self.size() == cursor + 1:
+            self.__list.append(value)
         else:
-            self.tail.next = item
-        self.tail = item
+            new_list = self.__list[:self.__cursor+1]
+            new_list.append(value)
+            new_list.extend(self.__list[self.__cursor+1])
+            self.__list = new_list
 
-    def print_all_nodes(self):
-        node = self.head
-        while node is not None:
-            print(node.value)
-            node = node.next
-
-    def find(self, val):
-        node = self.head
-        while node is not None:
-            if node.value == val:
-                return node
-            node = node.next
-        return None
-
-    def find_all(self, val):
-        node = self.head
-        result = []
-        while node is not None:
-            if node.value == val:
-                result.append(node)
-            node = node.next
-        return result
-
-    def delete(self, val, all=False):
-        node = self.head
-        previous = self.head
-        while node is not None:
-            if node.value == val:
-                if node == self.head:
-                    self.head = node.next
-                elif node == self.tail:
-                    previous.next = None
-                    self.tail = previous
-                else:
-                    previous.next = node.next
-
-                if not all:
-                    break
-                else:
-                    node = node.next
-            else:
-                previous = node
-                node = node.next
-
-        if self.head is None:
-            self.tail = None
-
-    def clean(self):
-        self.head = None
-        self.tail = None
-
-    def len(self):
-        node = self.head
-        length = 0
-        while node is not None:
-            length += 1
-            node = node.next
-        return length
-
-    def insert(self, afterNode, newNode):
-        node = self.head
-        if not afterNode:
-            self.head = newNode
-            newNode.next = node
-            if node is None:
-                self.tail = newNode
+    # предусловие: требуется рассмотреть несколько граничных условий:
+    #  - пустой список
+    #  - элемент крайний слева
+    #  - элемент не первый
+    # постусловие: добавление элемента в список или создание нового списка и замена им старого
+    def put_left(self, value):
+        if self.size() == 0:
+            self.__list.append(value)
+        elif self.__cursor == 0:
+            self.__list = [value].extend(self.__list)
         else:
-            while node is not None:
-                if node == afterNode:
-                    newNode.next = node.next
-                    node.next = newNode
-                    if newNode.next is None:
-                        self.tail = newNode
-                node = node.next
+            new_list = self.__list[:self.__cursor]
+            new_list.append(value)
+            new_list.extend(self.__list[self.__cursor])
+            self.__list = new_list
+
+    # предусловие: требуется рассмотреть несколько граничных условий:
+    #  - непустой список и элемент крайний справа (элемент удаляется, курсор уходит на 1 влево)
+    #  - просто непустой список (элемент удаляется, курсор остаётся неизменен)
+    # постусловие: удаление элемента из списка
+    def remove(self):
+        if self.size() != 0:
+            self.__list.pop(self.__cursor)  # удаляет элемент, на который указывает курсор, происходит уменьшение списка на 1
+        if self.__cursor == self.size():  # если элемент был крайний справа, курсор уменьшится на 1
+            self.__cursor -= 1
+
+    # постусловие: список пуст, курсор не определён
+    def clear(self):
+        self.__init__(self)
