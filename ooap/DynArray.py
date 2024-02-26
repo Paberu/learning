@@ -1,4 +1,5 @@
 import ctypes
+from typing import Final
 
 
 class DynArray:
@@ -15,14 +16,15 @@ class DynArray:
     INSERT_NIL: Final = 0
     INSERT_OK: Final = 1
     INSERT_ERR: Final = 2
+    INSERT_INDEX_ERROR: Final = 3
     DELETE_NIL: Final = 0
     DELETE_OK: Final = 1
-    DELETE_ERR: Final = 2
+    DELETE_INDEX_ERR: Final = 2
 
     def __init__(self, capacity = 16):
         self._count = 0
         self._capacity = capacity
-        self._array = self.make_array(self.capacity)
+        self._array = self.make_array(self._capacity)
 
         self._get_status = self.GET_NIL
         self._resize_status = self.RESIZE_NIL
@@ -36,22 +38,27 @@ class DynArray:
         dyn_array = DynArray(capacity)
         return dyn_array
 
-    # постусловие:
+    # постусловие: выделение памяти под динамический массив
     @staticmethod
     def make_array(self, new_capacity):
         return (new_capacity * ctypes.py_object)()
 
+    # запросы
+    # постусловие: возвращает счётчик массива
     def __len__(self):
         return self._count
 
+    # постусловие: возвращает необходимое значение или 0; что получилось, смотрим по статусу
     def __getitem__(self, i):
         if i < 0 or i >= self.count:
-            self._get_status = self.GET_ERR
+            self.set_get_status(self.GET_ERR)
             return 0
-        self._get_status = self.GET_OK
+        self.set_get_status(self.GET_OK)
         return self.array[i]
 
-    def resize(self, new_capacity):
+    # команды
+    # постусловие: изменение ёмкости и статуса; или бездействие в случае чрезмерного занижения ёмкости
+    def _resize(self, new_capacity):
         if new_capacity < 16:
             new_capacity = 16
         if new_capacity != self._capacity:
@@ -64,44 +71,62 @@ class DynArray:
         else:
             self._resize_status = self.RESIZE_NOT
 
-    def append(self, item):
+    # постусловие: добавить элемент в массив, если есть место; результат см. в статусе
+    def _append(self, item):
         if self._count >= self._capacity:
-            self._append_status = self.APPEND_ERR
+            self.set_append_status(self.APPEND_ERR)
         else:
             self._array[self._count] = item
             self._count += 1
             self._append_status = self.APPEND_OK
 
-    def insert(self, i, item):
+    # постусловие: добавление элемента в указанное место или отказ, в случае превышения ёмкости или ошибки в индексе
+    def _insert(self, i, item):
         if i < 0 or i > self.count:
-            self._insert_status = self.INSERT_ERR
+            self._insert_status = self.INSERT_INDEX_ERR
         elif i == self.count:
-            self.append(item)
+            self._append(item)
         else:
             if self.count == self.capacity:
                 self._insert_status = self.INSERT_ERR
             else:
-                # расписать insert
-            self.count += 1
+                for j in range(self._count, i, -1):
+                    self._array[j] = self._array[j - 1]
+                self._array[i] = item
+            self._count += 1
+            self._insert_status = self.INSERT_OK
 
-    def delete(self, i):
+    # постусловие: удаление элемента по указанному индексу
+    def _delete(self, i):
         if i < 0 or i >= self.count:
-            raise IndexError('Index is out of bounds')
+            self._delete_status = self.DELETE_INDEX_ERR
         else:
-            if self.capacity == 16 or self.count - 1 >= self.capacity / 2:
-                for j in range(i, self.count-1):
-                    self.array[j] = self.array[j+1]
-                self.array[self.count-1] = ctypes.py_object
-            else:
-                if self.capacity/1.5 < 16:
-                    self.capacity = 16
-                else:
-                    self.capacity = int(self.capacity/1.5)
-                new_array = self.make_array(self.capacity)
-                if i > 0:
-                    for j in range(i):
-                        new_array[j] = self.array[j]
-                for j in range(i+1, self.count):
-                    new_array[j-1] = self.array[j]
-                self.array = new_array
+            for j in range(i, self._count-1):
+                self._array[j] = self._array[j+1]
             self.count -= 1
+            self._delete_status = self.DELETE_OK
+
+    # запросы геттеры:
+    def get_count(self):
+        return self._count
+
+    def get_capacity(self):
+        return self._capacity
+
+    def get_array(self):
+        return self._array
+
+    def get_get_status(self):
+        return self._get_status
+
+    def get_resize_status(self):
+        return self._resize_status
+
+    def get_append_status(self):
+        return self._append_status
+
+    def get_insert_status(self):
+        return self._insert_status
+
+    def get_delete_status(self):
+        return self._delete_status
