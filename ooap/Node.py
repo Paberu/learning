@@ -19,11 +19,13 @@ class Node:
 
     def set_next(self, node):
         self._next = node
-        node._previous = self
+        if node:
+            node._previous = self
 
     def set_previous(self, node):
         self._previous = node
-        node._next = self
+        if node:
+            node._next = self
 
     def get_value(self):
         return self._value

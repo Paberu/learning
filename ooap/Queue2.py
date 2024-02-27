@@ -1,8 +1,7 @@
 from typing import Final
-from Node import Node
 
 
-class Queue:
+class Queue2:
 
     HEAD_NIL: Final = 0
     HEAD_OK: Final = 1
@@ -13,28 +12,23 @@ class Queue:
     DEQUEUE_ERR: Final = 2
 
     def __init__(self):
-        self._head = None
-        self._tail = None
+        self._queue = []
         self._depth = 0
+
         self._head_status = self.HEAD_NIL
         self._tail_status = self.TAIL_NIL
         self._dequeue_status = self.DEQUEUE_NIL
 
     def __len__(self):
-        return self._depth
+        return len(self._queue)
 
     # команда
     # постусловие: увеличение очереди на 1 элемент (добавление в хвост очереди)
     def _enqueue(self, value):
-        new_node = Node(value)
+        self._queue.insert(0, value)
         if self._head_status == self.HEAD_NIL:
-            self._head = new_node
             self._head_status = self.HEAD_OK
-        else:
-            self._tail.set_next(new_node)
-            new_node.set_previous(self._tail)
-        self._tail = new_node
-        self._tail_status = self.TAIL_OK
+            self._tail_status = self.TAIL_OK
         self._depth += 1
 
     # запрос
@@ -42,19 +36,17 @@ class Queue:
     # постусловие: возврат значения из головы очереди (уменьшение очереди на 1 элемент)
     def _dequeue(self):
         if self._head_status == self.HEAD_OK:
-            value = self._head.get_value()
+            value = self._queue[self._depth-1]
             if self._depth == 1:
                 self.__init__()
             else:
-                self._head = self._head.get_next()
-                self._head.set_previous(None)
                 self._depth -= 1
             self._dequeue_status = self.DEQUEUE_OK
         else:
-            value = 0
             self._dequeue_status = self.DEQUEUE_ERR
+            value = 0
         return value
-
+    
     def get_head_status(self):
         return self._head_status
 
