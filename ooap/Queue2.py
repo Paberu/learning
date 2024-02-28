@@ -23,6 +23,7 @@ class Queue2:
         return len(self._queue)
 
     # команда
+    # предусловие: нет
     # постусловие: увеличение очереди на 1 элемент (добавление в хвост очереди)
     def _enqueue(self, value):
         self._queue.insert(0, value)
@@ -46,12 +47,13 @@ class Queue2:
             self._dequeue_status = self.DEQUEUE_ERR
             value = 0
         return value
-    
-    def get_head_status(self):
+
+    # запросы получения статусов
+    def get_head_status(self):  # успешно; пустая очередь
         return self._head_status
 
-    def get_tail_status(self):
+    def get_tail_status(self):  # успешно; пустая очередь
         return self._tail_status
 
-    def get_dequeue_status(self):
+    def get_dequeue_status(self):  # успешно: пустая очередь
         return self._dequeue_status

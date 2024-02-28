@@ -24,6 +24,7 @@ class Queue:
         return self._depth
 
     # команда
+    # предусловие: нет
     # постусловие: увеличение очереди на 1 элемент (добавление в хвост очереди)
     def _enqueue(self, value):
         new_node = Node(value)
@@ -55,11 +56,12 @@ class Queue:
             self._dequeue_status = self.DEQUEUE_ERR
         return value
 
-    def get_head_status(self):
+    # запросы получения статусов
+    def get_head_status(self):  # успешно; пустая очередь
         return self._head_status
 
-    def get_tail_status(self):
+    def get_tail_status(self):  # успешно; пустая очередь
         return self._tail_status
 
-    def get_dequeue_status(self):
+    def get_dequeue_status(self):  # успешно: пустая очередь
         return self._dequeue_status
