@@ -7,7 +7,9 @@
 
 Родительский класс:
  https://github.com/Paberu/learning/blob/master/ooap/6/ParentQueue.py
+ 
 Обычная очередь:
  https://github.com/Paberu/learning/blob/master/ooap/6/Queue.py
+ 
 Двусторонняя очередь:
  https://github.com/Paberu/learning/blob/master/ooap/6/Dequeue.py
