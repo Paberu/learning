@@ -60,13 +60,15 @@ class NativeDictionary:
     # постусловие: ключ и значение размещены в словаре или произошла коллизия
     def put(self, key, value):
         basic_key_hash = self.__hash_fun(key)
-        if self.__slots[basic_key_hash] in (key, None):
+        if self.__slots[basic_key_hash] in (key, None):  # выглядит достаточно по-уродски, просто из-за отсутствия do-while
             self.__write_into_dict(basic_key_hash, key, value)
+            self.__put_status = self.PUT_OK
         else:
             key_hash = self.__increase_key_hash(basic_key_hash)
             while key_hash != basic_key_hash:
                 if self.__slots[key_hash] in (key, None):
                     self.__write_into_dict(key_hash, key, value)
+                    self.__put_status = self.PUT_OK
                     break
                 else:
                     key_hash = self.__increase_key_hash(key_hash)
@@ -111,7 +113,6 @@ class NativeDictionary:
     def __write_into_dict(self, position, key, value):
         self.__slots[position] = key
         self.__values[position] = value
-        self.__put_status = self.PUT_OK
 
     # запросы на получение статусов выполнения public-функций
     def get_get_status(self):
