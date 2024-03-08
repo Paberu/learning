@@ -48,7 +48,7 @@ class TestNativeDictionary(unittest.TestCase):
         for every_str in str_list:
             self.dict2.put(every_str, every_str)
         self.assertEqual(self.dict2.get('readability'), 'readability')
-        self.assertEqual(self.dict2.get('RubyOnRails'), 0)
+        self.assertEqual(self.dict2.get('RubyOnRails'), None)
         self.assertEqual(self.dict2.get_get_status(), NativeDictionary.GET_ERR)
 
     def test_is_key(self):

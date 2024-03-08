@@ -43,25 +43,19 @@ class NativeDictionary:
     # предусловие: строковое значение ключа
     # постусловие: получено значение или решение, что по этому ключу ничего нет
     def get(self, key):
-        value = 0
         basic_key_hash = self.__hash_fun(key)
         if self.__hash_status == self.HASH_OK and self.__slots[basic_key_hash] == key:
             self.__get_status = self.GET_OK
-            value = self.__values[basic_key_hash]
+            return self.__values[basic_key_hash]
         elif self.__hash_status == self.HASH_OK:
             key_hash = self.__increase_key_hash(basic_key_hash)
             while key_hash != basic_key_hash:
                 if self.__slots[key_hash] == key:
                     self.__get_status = self.GET_OK
-                    value = self.__values[key_hash]
-                    break
+                    return self.__values[key_hash]
                 else:
                     key_hash = self.__increase_key_hash(key_hash)
-            else:
-                self.__get_status = self.GET_ERR
-        else:
-            self.__get_status = self.GET_ERR
-        return value
+        self.__get_status = self.GET_ERR
 
     # предусловие: строковое значение ключа
     # постусловие: получен ответ, является ключ ключом или нет
@@ -75,16 +69,12 @@ class NativeDictionary:
     def put(self, key, value):
         basic_key_hash = self.__hash_fun(key)
         if self.__slots[basic_key_hash] in (key, None):
-            self.__slots[basic_key_hash] = key
-            self.__values[basic_key_hash] = value
-            self.__put_status = self.PUT_OK
+            self.__write_into_dict(basic_key_hash, key, value)
         else:
             key_hash = self.__increase_key_hash(basic_key_hash)
             while key_hash != basic_key_hash:
                 if self.__slots[key_hash] in (key, None):
-                    self.__slots[key_hash] = key
-                    self.__values[key_hash] = value
-                    self.__put_status = self.PUT_OK
+                    self.__write_into_dict(key_hash, key, value)
                     break
                 else:
                     key_hash = self.__increase_key_hash(key_hash)
@@ -97,6 +87,11 @@ class NativeDictionary:
         if index >= self.__size:
             index -= self.__size
         return index
+
+    def __write_into_dict(self, position, key, value):
+        self.__slots[position] = key
+        self.__values[position] = value
+        self.__put_status = self.PUT_OK
 
     # запросы на получение статусов выполнения public-функций
     def get_get_status(self):
