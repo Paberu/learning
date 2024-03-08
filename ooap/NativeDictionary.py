@@ -119,3 +119,6 @@ class NativeDictionary:
 
     def get_put_status(self):
         return self.__put_status
+
+    def get_remove_status(self):
+        return self.__remove_status

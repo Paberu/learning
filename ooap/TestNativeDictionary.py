@@ -61,5 +61,14 @@ class TestNativeDictionary(unittest.TestCase):
         self.assertFalse(self.dict1.is_key('self-taught'))
         self.assertFalse(self.dict1.is_key('self-made'))
 
+    def test_remove(self):
+        str_list = self.test_string1.split()
+        for every_str in str_list:
+            self.dict1.put(every_str, every_str)
+        self.dict1.remove('readability')
+        self.assertEqual(self.dict1.get_remove_status(), NativeDictionary.REMOVE_OK)
+        self.dict1.remove('RubyOnRails')
+        self.assertEqual(self.dict1.get_remove_status(), NativeDictionary.REMOVE_ERR)
+
 
 unittest.main()
