@@ -12,6 +12,9 @@ class NativeDictionary:
     PUT_NIL: Final = 0
     PUT_OK: Final = 1
     PUT_ERR: Final = 2
+    REMOVE_NIL: Final = 0
+    REMOVE_OK: Final = 1
+    REMOVE_ERR: Final = 2
 
     #  конструктор
     def __init__(self, sz):
@@ -26,20 +29,9 @@ class NativeDictionary:
         self.__hash_status = self.HASH_NIL
         self.__get_status = self.GET_NIL
         self.__put_status = self.PUT_NIL
+        self.__remove_status = self.REMOVE_NIL
 
     # запросы
-    # предусловие: строковое значение ключа
-    # постусловие: получен номер ячейки
-    def __hash_fun(self, key):
-        sum_value = 0
-        if isinstance(key, str):
-            for letter in key:
-                sum_value += ord(letter)
-            self.__hash_status = self.HASH_OK
-        else:
-            self.__hash_status = self.HASH_ERR
-        return sum_value % self.__size
-
     # предусловие: строковое значение ключа
     # постусловие: получено значение или решение, что по этому ключу ничего нет
     def get(self, key):
@@ -63,7 +55,7 @@ class NativeDictionary:
         self.get(key)
         return self.__get_status == self.GET_OK
 
-    # запросы
+    # команды
     # предусловие: строковое значение ключа
     # постусловие: ключ и значение размещены в словаре или произошла коллизия
     def put(self, key, value):
@@ -81,7 +73,35 @@ class NativeDictionary:
             else:
                 self.__put_status = self.PUT_ERR  # коллизия
 
+    # предусловие: строковое значение ключа
+    # постусловие: ключ и соответсвующее значение удалены (на их прежнем месте теперь None)
+    def remove(self, key):
+        if self.is_key(key):
+            key_hash = self.__hash_fun(key)
+            while True:
+                if self.__slots[key_hash] == key:
+                    self.__slots[key_hash] = None
+                    self.__values[key_hash] = None
+                    self.__remove_status = self.REMOVE_OK
+                    break
+                else:
+                    key_hash = self.__increase_key_hash(key_hash)
+        else:
+            self.__remove_status = self.REMOVE_ERR
+
     # вспомогательные функции
+    # предусловие: строковое значение ключа
+    # постусловие: получен номер ячейки
+    def __hash_fun(self, key):
+        sum_value = 0
+        if isinstance(key, str):
+            for letter in key:
+                sum_value += ord(letter)
+            self.__hash_status = self.HASH_OK
+        else:
+            self.__hash_status = self.HASH_ERR
+        return sum_value % self.__size
+
     def __increase_key_hash(self, index):
         index += self.__step
         if index >= self.__size:
