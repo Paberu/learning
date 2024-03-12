@@ -10,8 +10,9 @@
 
 При первой реализации умудрился реализовать внутреннее хранилище, как список списков. Потом пришлось спешно переделывать, 
 сначала HashTable:
+
 https://github.com/Paberu/learning/blob/master/ooap/HashTable.py
+
 а за ним и PowerSet:
+
 https://github.com/Paberu/learning/blob/master/ooap/PowerSet.py
-
-
