@@ -4,10 +4,6 @@ from HashTable import HashTable
 
 class PowerSet(HashTable):
 
-    REMOVE_NIL: Final = 0
-    REMOVE_OK: Final = 1
-    REMOVE_ERR: Final = 2
-
     # конструктор
     def __init__(self):
         super().__init__(29)
