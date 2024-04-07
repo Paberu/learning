@@ -14,3 +14,9 @@ class Any(General):
     def serialize(self):
         print('Overriding General method.')
         super().serialize()
+
+
+if __name__ == '__main__':
+    test_object = Any()
+    serialized_object = test_object.serialize()
+    print(serialized_object)

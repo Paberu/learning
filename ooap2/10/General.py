@@ -25,14 +25,14 @@ class General:
         return copy.deepcopy(self)
 
     def compare(self, another):
-        for attr in self.__dir__():
-            if another.__getattr__(attr) != self.__getattribute__(attr):
+        for attr in self.__dict__.keys():
+            if another.getattr(attr) != self.getattr(attr):
                 return False
         return True
 
     def deep_compare(self, another):
-        for attr in self.__dir__():
-            compare_attr_result = self.__compare(self.__getattribute__(attr), another.__getattr__(attr))
+        for attr in self.__dict__.keys():
+            compare_attr_result = self.__compare(self.getattr(attr), another.getattr(attr))
             if not compare_attr_result:
                 return False
         return True
@@ -60,20 +60,20 @@ class General:
     @final
     def serialize(self):
         to_dict = {}
-        for attr in self.__dir__():
-            to_dict[attr] = self.__getattribute__(attr)
+        for attr in self.__dict__.keys():
+            to_dict[attr] = self.getattr(attr)
         return json.dumps(to_dict)
 
     @final
     def deserialize(self, data):
         from_dict = json.loads(data)
         for key in from_dict.keys():
-            self.__setattr__(key, from_dict[key])
+            self.setattr(key, from_dict[key])
 
     def __str__(self):
         result = ''
-        for attr in self.__dir__():
-            result += f'{attr}: {self.__getattribute__(attr)}'
+        for attr in self.__dict__.keys():
+            result += f'{attr}: {self.getattr(attr)}'
 
     def print(self):
         return str(self)
