@@ -3,6 +3,10 @@ from General import General
 
 class Any(General):
 
+    def __init__(self):
+        super().__init__()
+        self.errors = 'None errors here'
+
     # можно переопределять, системе всё равно
     def print(self):
         print('str from Any')
@@ -17,6 +21,8 @@ class Any(General):
 
 
 if __name__ == '__main__':
-    test_object = Any()
-    serialized_object = test_object.serialize()
-    print(serialized_object)
+    obj = Any()
+    print(obj.check_type(General))
+    print(obj.get_real_type())
+    print(str(obj))
+    print(obj.serialize())

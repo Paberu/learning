@@ -71,9 +71,10 @@ class General:
             self.setattr(key, from_dict[key])
 
     def __str__(self):
-        result = ''
+        result = str(type(self))
         for attr in self.__dict__.keys():
             result += f'{attr}: {self.getattr(attr)}'
+        return result
 
     def print(self):
         return str(self)
