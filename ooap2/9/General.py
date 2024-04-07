@@ -26,13 +26,13 @@ class General:
 
     def compare(self, another):
         for attr in self.__dict__.keys():
-            if another.getattr(attr) != self.getattr(attr):
+            if another.__getattribute__(attr) != self.__getattribute__(attr):
                 return False
         return True
 
     def deep_compare(self, another):
         for attr in self.__dict__.keys():
-            compare_attr_result = self.__compare(self.getattr(attr), another.getattr(attr))
+            compare_attr_result = self.__compare(self.__getattribute__(attr), another.__getattribute__(attr))
             if not compare_attr_result:
                 return False
         return True
@@ -61,19 +61,19 @@ class General:
     def serialize(self):
         to_dict = {}
         for attr in self.__dict__.keys():
-            to_dict[attr] = self.getattr(attr)
+            to_dict[attr] = self.__getattribute__(attr)
         return json.dumps(to_dict)
 
     @final
     def deserialize(self, data):
         from_dict = json.loads(data)
         for key in from_dict.keys():
-            self.setattr(key, from_dict[key])
+            self.__setattr__(key, from_dict[key])
 
     def __str__(self):
         result = str(type(self))
         for attr in self.__dict__.keys():
-            result += f'{attr}: {self.getattr(attr)}'
+            result += f'{attr}: {self.__getattribute__(attr)}'
         return result
 
     def print(self):
@@ -84,3 +84,4 @@ class General:
 
     def get_real_type(self):
         return type(self)
+
