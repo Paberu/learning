@@ -3,7 +3,6 @@ from General import General
 
 class Any(General):
 
-    # можно переопределять, системе всё равно
     def print(self):
         print('str from Any')
         super().print()
@@ -14,3 +13,10 @@ class Any(General):
     def serialize(self):
         print('Overriding General method.')
         super().serialize()
+
+
+if __name__ == '__main__':
+    object = Any()
+    # print(getattr(object, '__final__'))
+    print(object.print())
+    print(object.serialize())
