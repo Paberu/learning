@@ -18,18 +18,22 @@ class General:
     #     another = copy.deepcopy(self)
 
     # на всякий случай, сделаю возврат неглубокого копирования:
+    @final
     def copy(self):
         return copy.copy(self)
 
+    @final
     def clone(self):
         return copy.deepcopy(self)
 
+    @final
     def compare(self, another):
         for attr in self.__dict__.keys():
             if another.__getattribute__(attr) != self.__getattribute__(attr):
                 return False
         return True
 
+    @final
     def deep_compare(self, another):
         for attr in self.__dict__.keys():
             compare_attr_result = self.__compare(self.__getattribute__(attr), another.__getattribute__(attr))
@@ -76,11 +80,20 @@ class General:
             result += f'{attr}: {self.__getattribute__(attr)}'
         return result
 
+    @final
     def print(self):
         return str(self)
 
+    @final
     def check_type(self, type_to_check):
         return isinstance(self, type_to_check)
 
+    @final
     def get_real_type(self):
         return type(self)
+
+if __name__ == '__main__':
+    object = General()
+    print(getattr(object, '__final__'))
+    object.print()
+    object.serialize()

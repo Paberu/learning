@@ -2,7 +2,6 @@ from collections.abc import Iterable
 from typing import final
 import copy
 import json
-from Void import Void
 
 
 class General:
@@ -74,7 +73,6 @@ class General:
         from_dict = json.loads(data)
         for key in from_dict.keys():
             self.__setattr__(key, from_dict[key])
-        return Void
 
     def __str__(self):
         result = str(type(self))
@@ -95,8 +93,22 @@ class General:
         return type(self)
 
 
+class Any(General):
+
+    def print(self):
+        print('str from Any')
+        super().print()
+
+    # всё, что даёт декоратор @final - это предупреждение от IDE:
+    # 'General.serialize' is marked as '@final' and should not be overridden
+    # гарантированной защиты от несанкционированного переопределения в Python нет
+    def serialize(self):
+        print('Overriding General method.')
+        super().serialize()
+
+
 if __name__ == '__main__':
-    obj = General()
-    print(getattr(obj, '__final__'))
-    obj.print()
-    obj.serialize()
+    object = Any()
+    # print(getattr(object, '__final__'))
+    print(object.print())
+    print(object.serialize())
