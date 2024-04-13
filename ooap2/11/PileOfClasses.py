@@ -69,6 +69,15 @@ class General:
         return True
 
     @final
+    @staticmethod
+    def assignment_attempt(target, source):
+        if issubclass(source.__class__, target.__class__):
+            target = source
+        else:
+            target = Void()
+        return target
+
+    @final
     def serialize(self):
         to_dict = {}
         for attr in self.__dict__.keys():
@@ -270,6 +279,11 @@ if __name__ == '__main__':
     if isinstance(deserial, Void):
         print('Troll successfully deserialized into Giant Troll. Magic!')
 
-    runaway = princess.flee()
-    if isinstance(runaway, Void):
-        print('Princess is running away from the Void!')
+    new_troll = GiantTroll(ClubBludgeoningBehaviour(12))
+    troll2 = Troll.assignment_attempt(troll2, new_troll)
+    if isinstance(troll2, Void):
+        print('Assign attempt failed')
+
+    princess = General.assignment_attempt(princess, new_troll)
+    if isinstance(princess, Void):
+        print('Her name is not Fiona!')
