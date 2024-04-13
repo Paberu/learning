@@ -102,11 +102,3 @@ class Any(General):
 class Void(General, Any):
 
     pass
-
-
-if __name__ == '__main__':
-    obj = General()
-    print(obj)
-    print(obj.__dict__)
-    obj.print()
-    obj.serialize()
