@@ -1,7 +1,6 @@
-from collections.abc import Iterable
 from typing import final, TypeVar
 import copy
-import json
+import pickle
 
 _T = TypeVar('_T')
 
@@ -33,63 +32,41 @@ class General(object):
                 value = copy.deepcopy(getattr(self, attr))
                 setattr(other, attr, value)
             self._copy_status = self.COPY_OK
-    @final
-    def clone(self):
-        new_object = self.__class__.__new__()
-        self.copy_to(new_object)
-        if self._copy_status == self.COPY_OK:
-            return new_object
-        else:
-            return Void()
 
     @final
-    def compare(self, another):
-        for attr in self.__dict__.keys():
-            if another.__getattribute__(attr) != self.__getattribute__(attr):
-                return False
-        return True
-
-    @final
-    def deep_compare(self, another):
-        for attr in self.__dict__.keys():
-            compare_attr_result = self.__compare(self.__getattribute__(attr), another.__getattribute__(attr))
-            if not compare_attr_result:
-                return False
-        return True
-
     @staticmethod
-    def __compare(one, another):
-        one_iterable = isinstance(one, Iterable)
-        another_iterable = isinstance(another, Iterable)
+    def assignment_attempt(target, source):
+        if issubclass(source.__class__, target.__class__):
+            target = source
+        else:
+            target = Void()
+        return target
 
-        if (one_iterable and not another_iterable) or (not one_iterable and another_iterable):
-            return False  # т.к. один - итерируемый, а второй - нет
-
-        if not one_iterable and not another_iterable:  # оба неитерируемы
-            return one == another
-
-        # остался случай, когда оба итерируемы
-        if len(one) != len(another):
-            return False
-
-        for i in range(len(one)):
-            if not General.__compare(one[i], another[i]):
-                return False
-        return True
+    # requests:
+    @final
+    def __eq__(self, other: _T) -> bool:
+        return self.__dict__ == other.__dict__
 
     @final
-    def serialize(self):
-        to_dict = {}
-        for attr in self.__dict__.keys():
-            to_dict[attr] = self.__getattribute__(attr)
-        return json.dumps(to_dict)
+    def __repr__(self) -> str:
+        s = f'<"{self.__class__.__name__}" instance (id={id(self)})>'
+        return s
 
     @final
-    def deserialize(self, data):
-        from_dict = json.loads(data)
-        for key in from_dict.keys():
-            self.__setattr__(key, from_dict[key])
-        return Void
+    def clone(self) -> _T:
+        clone = copy.deepcopy(self)
+        return clone
+
+    @final
+    def serialize(self) -> bytes:
+        bs = pickle.dumps(self)
+        return bs
+
+    @final
+    @classmethod
+    def deserialize(cls, bs: bytes) -> _T:
+        instance = pickle.loads(bs)
+        return instance
 
     def __str__(self):
         result = str(type(self))
@@ -108,6 +85,13 @@ class General(object):
     @final
     def get_real_type(self):
         return type(self)
+
+    # method statuses requests:
+    @final
+    def get_copy_status(self) -> int:
+        """Return status of last copy_to() call:
+        one of the COPY_* constants."""
+        return self._copy_status
 
 
 class Any(General):
