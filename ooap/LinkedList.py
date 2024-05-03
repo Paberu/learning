@@ -63,7 +63,7 @@ class LinkedList:
     # постусловие: курсор сместился в конец списка
     def tail(self):
         if self.__list_status == LinkedList.LIST_NOT_EMPTY:
-            self.__cursor = size() - 1
+            self.__cursor = self.size() - 1
 
     # предусловие: справа должен быть хотя бы один элемент
     # постусловие: курсор сместится к элементу справа
