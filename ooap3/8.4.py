@@ -3,27 +3,20 @@ from typing import Final
 from enum import Enum
 from random import choice
 
-COLUMNS = 8
-ROWS = 8
-BOARD_FIELDS = COLUMNS * ROWS
-
-
-class CellValue(Enum):
-    A = 'A'
-    B = 'B'
-    C = 'C'
-    D = 'D'
-    E = 'E'
+COLUMNS: Final = 8
+ROWS: Final = 8
+BOARD_FIELDS: Final = COLUMNS * ROWS
+CELL_VALUES: Final = ['A', 'B', 'C', 'D', 'E']
 
 
 class Cell:
 
     def __init__(self):
-        self._value = choice(list(CellValue))
+        self._value = choice(CELL_VALUES)
 
     # возвращает хранимое значение для отображения на экране
     def get_value(self):
-        return self._value.name
+        return self._value
 
 
 class EmptyCell(Cell):
@@ -42,26 +35,25 @@ class GameBoard:
         self._match_status = self.MATCH_NIL
         self._counters = {'moves': 0,
                           'score': 0}
-        self._board = []
-        for i in range(BOARD_FIELDS):
-            self._board.append(Cell())
+        self._board = [[Cell() for _ in range(COLUMNS)] for _ in range(ROWS)]  # переход на двумерный массив
 
     # ЗАПРОСЫ
     # получить значения по индексам
     def get_values_by_indexes(self, indexes):
-        return set(self._board[i].get_value() for i in indexes if i < len(self._board))
+        return set(self._board[y][x].get_value() for y, x in indexes)
 
     # проверяет, приводит ли ход к игровому событию
     def match_checker(self, cell_addresses):
-        i, j = self._exchange_cells(cell_addresses)
-        indexes_to_check = self.__get_indexes_to_check(i) + self.__get_indexes_to_check(j)
-        filtered_indexes = [inner_group for inner_group in indexes_to_check if all(x >= 0 for x in inner_group)]
+        y1, x1 = self.__get_indexes(cell_addresses[0])
+        y2, x2 = self.__get_indexes(cell_addresses[1])
+        self._exchange_cells(y1, x1, y2, x2)
+        indexes_to_check = self.__get_indexes_to_check(y1, x1) + self.__get_indexes_to_check(y2, x2)
         indexes_to_collapse = []
-        for inner_group in filtered_indexes:
-            values = self.get_values_by_indexes(inner_group)
+        for trio in indexes_to_check:
+            values = self.get_values_by_indexes(trio)
             if len(values) == 1:
-                indexes_to_collapse += inner_group
-        self._exchange_cells(cell_addresses)
+                indexes_to_collapse += trio
+        self._exchange_cells(y1, x1, y2, x2)
         if len(indexes_to_collapse) == 0:
             self._match_status = self.MATCH_NOT
             return []
@@ -70,9 +62,11 @@ class GameBoard:
 
     # регистрирует ход
     def make_the_move(self, cell_addresses, indexes):
-        i, j = self._exchange_cells(cell_addresses)
-        for index in indexes:
-            self._board[index] = EmptyCell()
+        y1, x1 = self.__get_indexes(cell_addresses[0])
+        y2, x2 = self.__get_indexes(cell_addresses[1])
+        self._exchange_cells(y1, x1, y2, x2)
+        for y, x  in indexes:
+            self._board[y][x] = EmptyCell()
         self._counters['moves'] += 1
         self._counters['score'] += len(indexes) * 10
 
@@ -81,27 +75,26 @@ class GameBoard:
         pass
 
     # КОМАНДЫ
-    # метод, перекочевавший из класса Cell
-    def _exchange_cells(self, cell_addresses):
-        i = self.__get_index(cell_addresses[0][0], cell_addresses[0][1:])
-        j = self.__get_index(cell_addresses[1][0], cell_addresses[1][1:])
-        self._board[i], self._board[j] = self._board[j], self._board[i]
-        return i, j
-
     # получить индекс массива из полученных координат
-    def __get_index(self, y, x):
-        row_y = ord(y) - 65  # на случай первого ряда, т.е. нулевого смещения, привожу А к 0, а дальше по схеме
-        return row_y * COLUMNS + int(x)
+    def __get_indexes(self, coordinates):
+        y = ord(coordinates[0]) - 65  # приведение 'A' к 0-му ряду и т. д.
+        x = int(coordinates[1:])
+        return y, x
+
+    # метод, перекочевавший из класса Cell
+    def _exchange_cells(self, y1, x1, y2, x2):
+        self._board[y1][x1], self._board[y2][x2] = self._board[y2][x2], self._board[y1][x1]
 
     # получить ряды индексов для проверки совпадений
-    def __get_indexes_by_step(self, index, step):
-        return [[index - 2 * step, index - step, index],
-                [index - step, index, index + step],
-                [index, index + step, index + 2 * step]]
+    def __get_indexes_to_check(self, y, x):
+        indexes = [[[y, x - 2], [y, x - 1], [y, x]],
+                   [[y, x - 1], [y, x], [y, x + 1]],
+                   [[y, x], [y, x + 1], [y, x + 2]],
+                   [[y - 2, x], [y - 1, x], [y, x]],
+                   [[y - 1, x], [y, x], [y + 1, x]],
+                   [[y, x], [y + 1, x], [y + 2, x]]]
+        return [trio for trio in indexes if all(0 <= pair[0] < ROWS and 0 <= pair[1] < COLUMNS for pair in trio)]
 
-    # получить индексы всех ячеек, подлежащих проверке
-    def __get_indexes_to_check(self, index):
-        return self.__get_indexes_by_step(index, 1) + self.__get_indexes_by_step(index, COLUMNS)
 
 class GameMaster:
 
@@ -117,7 +110,7 @@ if __name__ == '__main__':
     game_board = GameBoard()
     for row in range(ROWS):
         for column in range(COLUMNS):
-            print(game_board._board[row*ROWS+column].get_value(), end=' ')
+            print(game_board._board[row][column].get_value(), end=' ')
         print()
     cell_addresses = input('Enter coordinates: ').split()
     indexes = game_board.match_checker(cell_addresses)
@@ -126,5 +119,5 @@ if __name__ == '__main__':
 
     for row in range(ROWS):
         for column in range(COLUMNS):
-            print(game_board._board[row*ROWS+column].get_value(), end=' ')
+            print(game_board._board[row][column].get_value(), end=' ')
         print()
