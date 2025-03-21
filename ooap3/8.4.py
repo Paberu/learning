@@ -54,10 +54,11 @@ class GameBoard:
         self._board = [[Cell() for _ in range(COLUMNS)] for _ in range(ROWS)]  # переход на двумерный массив
 
     def __str__(self):
-        str_board = ''
-        str_board += '    ' + ' '.join(str(i) for i in range(COLUMNS)) + '\n'  # Индексы столбцов
+        str_board = '    ' + ' '.join(str(i) for i in range(COLUMNS)) + '\n'  # Индексы столбцов
+        str_board += '\n'
         for i, row in enumerate(self._board):
             str_board+= f'{chr(i + 65)}   ' + ' '.join([str(cell) for cell in row]) + f'   {chr(i + 65)}\n'  # Индексы строк и ряды значений
+        str_board += '\n'
         str_board += '    ' + ' '.join(str(i) for i in range(COLUMNS)) + '\n'  # Индексы столбцов
         return str_board
 
@@ -100,6 +101,7 @@ class GameBoard:
             if count_empty_cells == 0:
                 self._has_empty_cell = self.HAS_NOT_EMPTY_CELL
 
+    # удалять случайные совпадения, пока не появится возможность для хода
     def remove_accidental_coincidences(self):
         old_score = self._counters['score']
         self.check_the_board()
@@ -114,8 +116,8 @@ class GameBoard:
         self._board[y1][x1], self._board[y2][x2] = self._board[y2][x2], self._board[y1][x1]
 
     # регистрирует ход
-    def make_the_move(self, cell_addresses, indexes):
-        y1, x1, y2, x2 = self.__get_indexes(cell_addresses)
+    def make_the_move(self, coordinates_to_swap, indexes):
+        y1, x1, y2, x2 = coordinates_to_swap
         self._swap_cells(y1, x1, y2, x2)
         for y, x in indexes:
             self._board[y][x] = EmptyCell()
@@ -144,8 +146,8 @@ class GameBoard:
         return self._board[y1][x1] == self._board[y2][x2] == self._board[y3][x3]
 
     # проверяет, приводит ли ход к игровому событию
-    def match_checker(self, cell_addresses):
-        y1, x1, y2, x2 = self.__get_indexes(cell_addresses)
+    def match_checker(self, coordinates_to_swap):
+        y1, x1, y2, x2 = coordinates_to_swap
         self._swap_cells(y1, x1, y2, x2)
         indexes_to_check = self.__get_indexes_to_check(y1, x1) + self.__get_indexes_to_check(y2, x2)
         indexes_to_collapse = []
@@ -194,16 +196,14 @@ class GameBoard:
         return self._has_empty_cell
 
 class GameMaster:
+    USER_INPUT_NIL: Final = 0
+    USER_INPUT_COORDINATES: Final = 1
+    USER_INPUT_EXIT: Final = 2
+    USER_INPUT_FAILED: Final = 3
 
     def __init__(self, last_move):
         self._last_move = last_move
-
-    # получить доску для отображения
-    # def get_board(self):
-    #     return self._board.get_board()
-    #
-    # def get_counters(self):
-    #     return self._board._counters
+        self._user_input_status = self.USER_INPUT_NIL
 
     # отображение доски в консоли
     def display_board(self, board):
@@ -221,11 +221,29 @@ class GameMaster:
     def check_user_input(self, user_input):
         pattern = r'^[A-H]\d+\s[A-H]\d+$'
         if re.match(pattern, user_input):
+            self._user_input_status = self.USER_INPUT_COORDINATES
             return user_input
-        return 'exit'
+        if user_input == 'EXIT':
+            self._user_input_status = self.USER_INPUT_EXIT
+            return user_input
+        self._user_input_status = self.USER_INPUT_FAILED
+        return 'FAILED'
+
+    def get_coordinates(self, user_input):
+        first, second = user_input.split()
+        y1 = ord(first[0]) - 65  # приведение 'A' к 0-му ряду и т. д.
+        x1 = int(first[1:])
+        y2 = ord(second[0]) - 65
+        x2 = int(second[1:])
+        if abs(y1 - y2) == 1 and x1 == x2 or abs(x1 - x2) == 1 and y1 == y2:
+            return y1, x1, y2, x2
+        return user_input
 
     def handle_bad_coordinates(self):
         print('Coordinates aren\'t valid. Try again.')
+
+    def get_user_input_status(self):
+        return self._user_input_status
 
 
 if __name__ == '__main__':
@@ -236,14 +254,20 @@ if __name__ == '__main__':
         game_master.display_board(game_board)
         game_master.display_count(*game_board.get_counters())
         user_input = game_master.check_user_input(input('Enter coordinates: ').upper())
-        if user_input == 'exit':
+        if game_master.get_user_input_status() == game_master.USER_INPUT_EXIT:
             break
-        try:
-            indexes = game_board.match_checker(user_input)
-            if game_board.failed_game():
-                game_master.game_over()
-                break
-            if game_board.has_match():
-                game_board.make_the_move(user_input, indexes)
-        except (ValueError, IndexError):
+        if game_master.get_user_input_status() == game_master.USER_INPUT_FAILED:
             game_master.handle_bad_coordinates()
+            game_board.increase_failed_attempts_counter()
+            continue
+        if game_master.get_user_input_status() == game_master.USER_INPUT_COORDINATES:
+            coordinates_to_swap = game_master.get_coordinates(user_input)
+            try:
+                indexes = game_board.match_checker(coordinates_to_swap)
+                if game_board.failed_game():
+                    game_master.game_over()
+                    break
+                if game_board.has_match():
+                    game_board.make_the_move(coordinates_to_swap, indexes)
+            except (ValueError, IndexError):
+                game_master.handle_bad_coordinates()
