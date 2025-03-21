@@ -212,13 +212,16 @@ class GameMaster:
 if __name__ == '__main__':
     game_master = GameMaster(last_move='')
     game_board = GameBoard()
-    while game_master._last_move != 'exit':
-        game_board.remove_accidental_coincidences()
-        game_master.display_board(game_board)
-        game_master.display_count(*game_board.get_counters())
-        user_input = game_master.check_user_input(input('Enter coordinates: '))
-        if user_input == 'exit':
-            break
-        indexes = game_board.match_checker(user_input)
-        if game_board.has_match():
-            game_board.make_the_move(user_input, indexes)
+    while True:
+            game_board.remove_accidental_coincidences()
+            game_master.display_board(game_board)
+            game_master.display_count(*game_board.get_counters())
+            user_input = game_master.check_user_input(input('Enter coordinates: ').upper())
+            if user_input == 'exit':
+                break
+            try:
+                indexes = game_board.match_checker(user_input)
+                if game_board.has_match():
+                    game_board.make_the_move(user_input, indexes)
+            except (ValueError, IndexError):
+                print('Coordinates aren\'t valid. Try again.')
