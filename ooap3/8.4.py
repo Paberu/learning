@@ -49,15 +49,65 @@ class GameBoard:
         self._match_status = self.MATCH_NIL
         self._has_empty_cell = self.HAS_NOT_EMPTY_CELL
         self._counters = {'moves': 0,
-                          'score': 0}
+                          'score': 0,
+                          'failed_attempts': 0}
         self._board = [[Cell() for _ in range(COLUMNS)] for _ in range(ROWS)]  # переход на двумерный массив
 
     def __str__(self):
         str_board = ''
-        str_board += '   ' + ' '.join(str(i) for i in range(COLUMNS)) + '\n'  # Индексы столбцов
+        str_board += '    ' + ' '.join(str(i) for i in range(COLUMNS)) + '\n'  # Индексы столбцов
         for i, row in enumerate(self._board):
-            str_board+= f'{chr(i + 65)}   ' + ' '.join([str(cell) for cell in row]) + '\n'  # Индексы строк и ряды значений
+            str_board+= f'{chr(i + 65)}   ' + ' '.join([str(cell) for cell in row]) + f'   {chr(i + 65)}\n'  # Индексы строк и ряды значений
+        str_board += '    ' + ' '.join(str(i) for i in range(COLUMNS)) + '\n'  # Индексы столбцов
         return str_board
+
+    # КОМАНДЫ
+    # проверить всю доску на совпадения после автозаполнения очищенных ячеек
+    def check_the_board(self):
+        cells_to_collapse = set()
+        # проверить по строкам
+        for y in range(ROWS):
+            for x in range(COLUMNS - 2):
+                if self._board[y][x] == self._board[y][x + 1] == self._board[y][x + 2]:
+                    cells_to_collapse.update(((y, x), (y, x + 1), (y, x + 2)))
+        # проверить по столбцам
+        for y in range(ROWS - 2):
+            for x in range(COLUMNS):
+                if self._board[y][x] == self._board[y + 1][x] == self._board[y + 2][x]:
+                    cells_to_collapse.update(((y, x), (y + 1, x), (y + 2, x)))
+        # очистить ячейки и начислить очки
+        for y, x in cells_to_collapse:
+            self._board[y][x] = EmptyCell()
+        # начислить очки, но не начислять ходы, т.к. "оно само"
+        self._counters['score'] += len(cells_to_collapse) * 10
+        if len(cells_to_collapse) > 0:
+            self._has_empty_cell = self.HAS_EMPTY_CELL
+
+    # заполняет опустевшие поля новыми значениями
+    def fill_cells(self):
+        while self._has_empty_cell == self.HAS_EMPTY_CELL:
+            count_empty_cells = 0
+            for x in range(COLUMNS):
+                if self._board[0][x].get_value() == ' ':
+                    self._board[0][x] = Cell()
+
+            for y in range(ROWS - 1):
+                for x in range(COLUMNS):
+                    if self._board[y + 1][x].get_value() == ' ':
+                        self._swap_cells(y, x, y + 1, x)
+                        count_empty_cells += 1
+
+            if count_empty_cells == 0:
+                self._has_empty_cell = self.HAS_NOT_EMPTY_CELL
+
+    def remove_accidental_coincidences(self):
+        old_score = self._counters['score']
+        self.check_the_board()
+        self.fill_cells()
+        while old_score != self._counters['score']:
+            self.check_the_board()
+            self.fill_cells()
+            old_score = self._counters['score']
 
     # ЗАПРОСЫ
     # передать массив значений для отображения на экране
@@ -65,11 +115,12 @@ class GameBoard:
         return self._board
 
     def get_counters(self):
-        return self._counters['moves'], self._counters['score']
+        return self._counters['moves'], self._counters['score'], self._counters['failed_attempts']
 
-    # получить значения по индексам
-    def get_values_by_indexes(self, indexes):
-        return set(self._board[y][x].get_value() for y, x in indexes)
+    # проверить, равны ли значения в указанных трёх ячейках
+    def cells_are_equal(self, trio):
+        [y1, x1], [y2, x2], [y3, x3] = trio
+        return self._board[y1][x1] == self._board[y2][x2] == self._board[y3][x3]
 
     # проверяет, приводит ли ход к игровому событию
     def match_checker(self, cell_addresses):
@@ -79,8 +130,7 @@ class GameBoard:
         indexes_to_check = self.__get_indexes_to_check(y1, x1) + self.__get_indexes_to_check(y2, x2)
         indexes_to_collapse = []
         for trio in indexes_to_check:
-            values = self.get_values_by_indexes(trio)
-            if len(values) == 1:
+            if self.cells_are_equal(trio):
                 indexes_to_collapse += trio
         self._swap_cells(y1, x1, y2, x2)
         if len(indexes_to_collapse) == 0:
@@ -100,53 +150,7 @@ class GameBoard:
         self._counters['score'] += len(indexes) * 10
         self._has_empty_cell = self.HAS_EMPTY_CELL
 
-    # КОМАНДЫ
-    # проверить всю доску на совпадения после автозаполнения очищенных ячеек
-    def check_the_board(self):
-        cells_to_collapse = set()
-        # проверить по строкам
-        for y in range(ROWS):
-            for x in range(COLUMNS-2):
-                if self._board[y][x] == self._board[y][x+1] == self._board[y][x+2]:
-                    cells_to_collapse.update( ((y, x), (y, x+1), (y, x+2)) )
-        # проверить по столбцам
-        for y in range(ROWS-2):
-            for x in range(COLUMNS):
-                if self._board[y][x] == self._board[y+1][x] == self._board[y+2][x]:
-                    cells_to_collapse.update( ((y, x), (y+1, x), (y+2, x)) )
-        # очистить ячейки и начислить очки
-        for y, x in cells_to_collapse:
-            self._board[y][x] = EmptyCell()
-        # начислить очки, но не начислять ходы, т.к. "оно само"
-        self._counters['score'] += len(cells_to_collapse) * 10
-        if len(cells_to_collapse) > 0:
-            self._has_empty_cell = self.HAS_EMPTY_CELL
 
-    # заполняет опустевшие поля новыми значениями
-    def fill_cells(self):
-        while self._has_empty_cell == self.HAS_EMPTY_CELL:
-            count_empty_cells = 0
-            for x in range(COLUMNS):
-                if self._board[0][x].get_value() == ' ':
-                    self._board[0][x] = Cell()
-
-            for y in range(ROWS-1):
-                for x in range(COLUMNS):
-                    if self._board[y+1][x].get_value() == ' ':
-                        self._swap_cells(y, x, y+1, x)
-                        count_empty_cells += 1
-
-            if count_empty_cells == 0:
-                self._has_empty_cell = self.HAS_NOT_EMPTY_CELL
-
-    def remove_accidental_coincidences(self):
-        old_score = self._counters['score']
-        self.check_the_board()
-        self.fill_cells()
-        while old_score != self._counters['score']:
-            self.check_the_board()
-            self.fill_cells()
-            old_score = self._counters['score']
 
     # получить индекс массива из полученных координат
     def __get_indexes(self, coordinates):
@@ -167,6 +171,10 @@ class GameBoard:
                    [[y - 1, x], [y, x], [y + 1, x]],
                    [[y, x], [y + 1, x], [y + 2, x]]]
         return [trio for trio in indexes if all(0 <= pair[0] < ROWS and 0 <= pair[1] < COLUMNS for pair in trio)]
+
+    # увеличить счётчик неверных ходов
+    def increase_failed_attempts_counter(self):
+        self._counters['failed_attempts'] += 1
 
     # ЗАПРОСЫ СТАТУСОВ
     def get_match_status(self):
@@ -198,8 +206,8 @@ class GameMaster:
         os.system('cls' if os.name == 'nt' else 'clear')  # Очистка окна консоли
         print(board)
 
-    def display_count(self, moves, score):
-        print(f'Moves: {moves}. Score: {score}')
+    def display_count(self, moves, score, failed_attempts):
+        print(f'Moves: {moves}. Score: {score}. Failed attempts: {failed_attempts} of 5')
 
     # проверяет пользовательский ввод
     def check_user_input(self, user_input):
@@ -219,9 +227,9 @@ if __name__ == '__main__':
             user_input = game_master.check_user_input(input('Enter coordinates: ').upper())
             if user_input == 'exit':
                 break
-            try:
-                indexes = game_board.match_checker(user_input)
-                if game_board.has_match():
-                    game_board.make_the_move(user_input, indexes)
-            except (ValueError, IndexError):
-                print('Coordinates aren\'t valid. Try again.')
+            # try:
+            indexes = game_board.match_checker(user_input)
+            if game_board.has_match():
+                game_board.make_the_move(user_input, indexes)
+            # except (ValueError, IndexError):
+            #     print('Coordinates aren\'t valid. Try again.')
