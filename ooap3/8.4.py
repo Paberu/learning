@@ -254,6 +254,9 @@ if __name__ == '__main__':
         game_master.display_board(game_board)
         game_master.display_count(*game_board.get_counters())
         user_input = game_master.check_user_input(input('Enter coordinates: ').upper())
+        if game_board.failed_game():
+            game_master.game_over()
+            break
         if game_master.get_user_input_status() == game_master.USER_INPUT_EXIT:
             break
         if game_master.get_user_input_status() == game_master.USER_INPUT_FAILED:
@@ -264,9 +267,6 @@ if __name__ == '__main__':
             coordinates_to_swap = game_master.get_coordinates(user_input)
             try:
                 indexes = game_board.match_checker(coordinates_to_swap)
-                if game_board.failed_game():
-                    game_master.game_over()
-                    break
                 if game_board.has_match():
                     game_board.make_the_move(coordinates_to_swap, indexes)
             except (ValueError, IndexError):
