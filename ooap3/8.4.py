@@ -109,6 +109,24 @@ class GameBoard:
             self.fill_cells()
             old_score = self._counters['score']
 
+    # метод, перекочевавший из класса Cell
+    def _swap_cells(self, y1, x1, y2, x2):
+        self._board[y1][x1], self._board[y2][x2] = self._board[y2][x2], self._board[y1][x1]
+
+    # регистрирует ход
+    def make_the_move(self, cell_addresses, indexes):
+        y1, x1, y2, x2 = self.__get_indexes(cell_addresses)
+        self._swap_cells(y1, x1, y2, x2)
+        for y, x in indexes:
+            self._board[y][x] = EmptyCell()
+        self._counters['moves'] += 1
+        self._counters['score'] += len(indexes) * 10
+        self._has_empty_cell = self.HAS_EMPTY_CELL
+
+    # увеличить счётчик неверных ходов
+    def increase_failed_attempts_counter(self):
+        self._counters['failed_attempts'] += 1
+
     # ЗАПРОСЫ
     # передать массив значений для отображения на экране
     def get_board(self):
@@ -117,6 +135,9 @@ class GameBoard:
     def get_counters(self):
         return self._counters['moves'], self._counters['score'], self._counters['failed_attempts']
 
+    def failed_game(self):
+        return self._counters['failed_attempts'] > 4
+
     # проверить, равны ли значения в указанных трёх ячейках
     def cells_are_equal(self, trio):
         [y1, x1], [y2, x2], [y3, x3] = trio
@@ -124,8 +145,7 @@ class GameBoard:
 
     # проверяет, приводит ли ход к игровому событию
     def match_checker(self, cell_addresses):
-        y1, x1 = self.__get_indexes(cell_addresses[0])
-        y2, x2 = self.__get_indexes(cell_addresses[1])
+        y1, x1, y2, x2 = self.__get_indexes(cell_addresses)
         self._swap_cells(y1, x1, y2, x2)
         indexes_to_check = self.__get_indexes_to_check(y1, x1) + self.__get_indexes_to_check(y2, x2)
         indexes_to_collapse = []
@@ -139,28 +159,14 @@ class GameBoard:
         self._match_status = self.MATCH_OK
         return indexes_to_collapse
 
-    # регистрирует ход
-    def make_the_move(self, cell_addresses, indexes):
-        y1, x1 = self.__get_indexes(cell_addresses[0])
-        y2, x2 = self.__get_indexes(cell_addresses[1])
-        self._swap_cells(y1, x1, y2, x2)
-        for y, x  in indexes:
-            self._board[y][x] = EmptyCell()
-        self._counters['moves'] += 1
-        self._counters['score'] += len(indexes) * 10
-        self._has_empty_cell = self.HAS_EMPTY_CELL
-
-
-
     # получить индекс массива из полученных координат
     def __get_indexes(self, coordinates):
-        y = ord(coordinates[0]) - 65  # приведение 'A' к 0-му ряду и т. д.
-        x = int(coordinates[1:])
-        return y, x
-
-    # метод, перекочевавший из класса Cell
-    def _swap_cells(self, y1, x1, y2, x2):
-        self._board[y1][x1], self._board[y2][x2] = self._board[y2][x2], self._board[y1][x1]
+        first, second = coordinates.split()
+        y1 = ord(first[0]) - 65  # приведение 'A' к 0-му ряду и т. д.
+        x1 = int(first[1:])
+        y2 = ord(second[0]) - 65  # приведение 'A' к 0-му ряду и т. д.
+        x2 = int(second[1:])
+        return y1, x1, y2, x2
 
     # получить ряды индексов для проверки совпадений
     def __get_indexes_to_check(self, y, x):
@@ -172,9 +178,13 @@ class GameBoard:
                    [[y, x], [y + 1, x], [y + 2, x]]]
         return [trio for trio in indexes if all(0 <= pair[0] < ROWS and 0 <= pair[1] < COLUMNS for pair in trio)]
 
-    # увеличить счётчик неверных ходов
-    def increase_failed_attempts_counter(self):
-        self._counters['failed_attempts'] += 1
+    def has_match(self):
+        if  self._match_status == self.MATCH_NOT:
+            self.increase_failed_attempts_counter()
+        return self._match_status == self.MATCH_OK
+
+    def has_empty_cell(self):
+        return self._has_empty_cell == self.HAS_EMPTY_CELL
 
     # ЗАПРОСЫ СТАТУСОВ
     def get_match_status(self):
@@ -182,12 +192,6 @@ class GameBoard:
 
     def get_has_empty_cell_status(self):
         return self._has_empty_cell
-
-    def has_match(self):
-        return self._match_status == self.MATCH_OK
-
-    def has_empty_cell(self):
-        return self._has_empty_cell == self.HAS_EMPTY_CELL
 
 class GameMaster:
 
@@ -209,27 +213,37 @@ class GameMaster:
     def display_count(self, moves, score, failed_attempts):
         print(f'Moves: {moves}. Score: {score}. Failed attempts: {failed_attempts} of 5')
 
+    def game_over(self):
+        os.system('cls' if os.name == 'nt' else 'clear')  # Очистка окна консоли
+        print('Game Over')
+
     # проверяет пользовательский ввод
     def check_user_input(self, user_input):
         pattern = r'^[A-H]\d+\s[A-H]\d+$'
         if re.match(pattern, user_input):
-            return user_input.split()
+            return user_input
         return 'exit'
+
+    def handle_bad_coordinates(self):
+        print('Coordinates aren\'t valid. Try again.')
 
 
 if __name__ == '__main__':
     game_master = GameMaster(last_move='')
     game_board = GameBoard()
     while True:
-            game_board.remove_accidental_coincidences()
-            game_master.display_board(game_board)
-            game_master.display_count(*game_board.get_counters())
-            user_input = game_master.check_user_input(input('Enter coordinates: ').upper())
-            if user_input == 'exit':
-                break
-            # try:
+        game_board.remove_accidental_coincidences()
+        game_master.display_board(game_board)
+        game_master.display_count(*game_board.get_counters())
+        user_input = game_master.check_user_input(input('Enter coordinates: ').upper())
+        if user_input == 'exit':
+            break
+        try:
             indexes = game_board.match_checker(user_input)
+            if game_board.failed_game():
+                game_master.game_over()
+                break
             if game_board.has_match():
                 game_board.make_the_move(user_input, indexes)
-            # except (ValueError, IndexError):
-            #     print('Coordinates aren\'t valid. Try again.')
+        except (ValueError, IndexError):
+            game_master.handle_bad_coordinates()
