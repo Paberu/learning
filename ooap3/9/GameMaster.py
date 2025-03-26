@@ -71,6 +71,7 @@ class GameMaster:
             if GameBoard.validate_coordinates(y1, x1, y2, x2):
                 self._user_input_status = self.USER_INPUT_COORDINATES
                 return y1, x1, y2, x2
+
         self._user_input_status = self.USER_INPUT_FAILED
         return set()
 
@@ -85,8 +86,8 @@ if __name__ == '__main__':
     while True:
         game_board.remove_accidental_coincidences()
         game_master.display(game_board)
-        coordinates_to_swap = game_master.check_user_input(input('Enter coordinates: ').upper())
-        if game_board.failed_game() or game_master.USER_INPUT_EXIT:
+        coordinates_to_swap = game_master.check_user_input(input('Enter coordinates: ').upper().strip())
+        if game_board.failed_game() or game_master.get_user_input_status() == game_master.USER_INPUT_EXIT:
             game_master.game_over()
         if game_master.get_user_input_status() in (game_master.USER_INPUT_FAILED, game_master.USER_INPUT_COORDINATES_WRONG):
             game_board.increase_failed_attempts_counter()
