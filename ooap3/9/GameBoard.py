@@ -155,7 +155,7 @@ class GameBoard:
     def get_counters(self):
         """ Передать кортеж счётчиков для отображения на экране
 
-        :return: Кортеж из трёх числовых значений
+        :return: Кортеж из трёх числовых значений - moves, score, failed_attempts.
         """
         return self._counters['moves'], self._counters['score'], self._counters['failed_attempts']
 
