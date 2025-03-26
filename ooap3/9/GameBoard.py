@@ -197,18 +197,30 @@ class GameBoard:
         return indexes_to_collapse
 
     @staticmethod
-    def get_indexes(coordinates):
+    def get_coordinates_from_str(coordinates):
         """ Преобразовывает пользовательский ввод в список из индексов.
 
         :param coordinates: Строковое значение координат в удобном для пользователя виде (e.g. 'B5 C5').
         :return: Список из четырёх целочисленных значений - координат двух ячеек.
         """
         first, second = coordinates.split()
-        y1 = ord(first[0]) - 65  # приведение 'A' к 0-му ряду и т. д.
-        x1 = int(first[1:])
-        y2 = ord(second[0]) - 65  # приведение 'A' к 0-му ряду и т. д.
-        x2 = int(second[1:])
-        return y1, x1, y2, x2
+        return ord(first[0]) - 65, int(first[1:]), ord(second[0]) - 65, int(second[1:])
+
+    @staticmethod
+    def validate_coordinates(y1, x1, y2, x2):
+        """ Проверяет координаты на соответствие трём условиям: ячейки должны быть соседними, горизонтальные координаты
+        должны быть в пределах от 0 до ROWS, вертикальные координаты должны быть в пределах от 0 до COLUMNS.
+
+        :param y1: Координата
+        :param x1:
+        :param y2:
+        :param x2:
+        :return:
+        """
+        if_neighbor_cells = abs(y1 - y2) == 1 and x1 == x2 or abs(x1 - x2) == 1 and y1 == y2
+        if_y_in_borders = 0 <= y1 < ROWS and 0 <= y2 < ROWS
+        if_x_in_borders = 0 <= x1 < COLUMNS and 0 <= x2 < COLUMNS
+        return if_neighbor_cells and if_y_in_borders and if_x_in_borders
 
     @staticmethod
     def get_indexes_to_check(y, x):

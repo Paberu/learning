@@ -9,8 +9,9 @@ class GameMaster:
     за вывод игрового процесса на экран.
 
     Четыре значения для статуса проверки пользовательского ввода (USER_INPUT_NIL - начало игры, ни одного хода не было
-    сделано, USER_INPUT_COORDINATES - пользователь ввёл верные координаты, USER_INPUT_EXIT - пользователь выбрал выйти
-    из игры, USER_INPUT_FAILED- пользователь выполнил неверный ввод.
+    сделано, USER_INPUT_COORDINATES - пользователь ввёл верные координаты, USER_INPUT_COORDINATES_WRONG - пользователь
+    ввёл неверные координаты, USER_INPUT_EXIT - пользователь выбрал выйти из игры, USER_INPUT_FAILED- пользователь
+    выполнил неверный ввод).
     """
     USER_INPUT_NIL: Final = 0
     USER_INPUT_COORDINATES: Final = 1
@@ -28,7 +29,7 @@ class GameMaster:
     def display_board(self, board):
         """ Выводит на экран доски.
 
-        :param board: Строковок представление доски.
+        :param board: Строковое представление доски.
         :return: Ничего. Это функция вывода на экран.
         """
         os.system('cls' if os.name == 'nt' else 'clear')  # Очистка окна консоли
@@ -36,7 +37,8 @@ class GameMaster:
             self.handle_bad_coordinates()
         print(board)
 
-    def display_count(self, moves, score, failed_attempts):
+    @staticmethod
+    def display_count(moves, score, failed_attempts):
         """ Выводит на экран прогресса игры.
 
         :param moves: Количество ходов.
@@ -46,7 +48,8 @@ class GameMaster:
         """
         print(f'Moves: {moves}. Score: {score}. Failed attempts: {failed_attempts} of 5')
 
-    def game_over(self):
+    @staticmethod
+    def game_over():
         """ Выводит на экран информацию об окончании игры.
 
         :return: Ничего. Это функция вывода на экран.
@@ -54,7 +57,8 @@ class GameMaster:
         os.system('cls' if os.name == 'nt' else 'clear')  # Очистка окна консоли
         print('Game Over')
 
-    def handle_bad_coordinates(self):
+    @staticmethod
+    def handle_bad_coordinates():
         """ Выводит на экран сообщение о неверных координатах
 
         :return: Ничего. Это функция вывода на экран.
@@ -69,7 +73,7 @@ class GameMaster:
         """
         pattern = r'^[A-H]\d+\s[A-H]\d+$'
         if re.match(pattern, user_input):
-            y1, x1, y2, x2 = self.get_coordinates(user_input)
+            y1, x1, y2, x2 = GameBoard.get_coordinates_from_str(user_input)
             if abs(y1 - y2) == 1 and x1 == x2 or abs(x1 - x2) == 1 and y1 == y2:
                 self._user_input_status = self.USER_INPUT_COORDINATES
                 return y1, x1, y2, x2
@@ -80,32 +84,6 @@ class GameMaster:
             return set()
         self._user_input_status = self.USER_INPUT_FAILED
         return set()
-
-    def get_coordinates(self, user_input):
-        """ Получает координаты в формате пользовательского ввода (проверка проведена заранее методом check_user_input)
-        e.g. 'A5 B5'. Приводит их к виду четырёх целочисленных координат. В случае, если пользователь указал координаты
-        в правильном формате, но нарушил правило соседних ячеек, возвращается исходное значение.
-
-        :param user_input: Строка с пользовательским вводом.
-        :return: Возвращает четыре координаты: первые две для первой ячейки, вторые - для второй.
-        """
-        first, second = user_input.split()
-        return ord(first[0]) - 65, int(first[1:]), ord(second[0]) - 65, int(second[1:])
-
-    def validate_coordinates(self, y1, x1, y2, x2):
-        """ Проверяет координаты на соответствие трём условиям: ячейки должны быть соседними, горизонтальные координаты
-        должны быть в пределах [0; ROWS), вертикальные координаты должны быть в пределах [0; COLUMNS).
-
-        :param y1: Координата
-        :param x1:
-        :param y2:
-        :param x2:
-        :return:
-        """
-        if_neighbor_cells = abs(y1 - y2) == 1 and x1 == x2 or abs(x1 - x2) == 1 and y1 == y2
-        if_y_in_borders = 0 <= y1 < ROWS and 0 <= y2 < ROWS
-        if_x_in_borders = 0 <= x1 < COLUMNS and 0 <= x2 < COLUMNS
-        return if_neighbor_cells and if_y_in_borders and if_x_in_borders
 
     def get_user_input_status(self):
         return self._user_input_status
