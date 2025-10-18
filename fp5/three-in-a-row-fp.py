@@ -1,6 +1,15 @@
-# Для создания иммутабельного элемента, приходится использовать namedtuple, чтобы значение можно было получить по имени
+from dataclasses import dataclass
 
-from collections import namedtuple
+@dataclass(frozen=True)
+class Element:
+    symbol: str
+    EMPTY = '0'
 
-Element = namedtuple('Element', ['value'])
+    def __init__(self, c: str):
+        object.__setattr__(self, 'symbol', c)
+
+    @classmethod
+    def empty(cls):
+        return Element(cls.EMPTY)
+
 
