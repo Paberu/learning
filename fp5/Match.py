@@ -141,3 +141,21 @@ def fill_empty_spaces(current_state: 'BoardState', symbols: list) -> 'BoardState
 
     new_board = Board(size=size, cells=new_cells)
     return BoardState(new_board, current_state.Score)
+
+
+def process_cascade(initial_state: 'BoardState', symbols: list) -> 'BoardState':
+    state = initial_state
+
+    while True:
+        matches = find_matches(state.Board)
+        if not matches:
+            # Нет новых совпадений — каскад завершён
+            break
+
+        # Удаляем совпадения и применяем гравитацию
+        state = remove_matches(state, matches)
+
+        # Заполняем пустые ячейки новыми символами
+        state = fill_empty_spaces(state, symbols)
+
+    return state
