@@ -143,19 +143,14 @@ def fill_empty_spaces(current_state: 'BoardState', symbols: list) -> 'BoardState
     return BoardState(new_board, current_state.Score)
 
 
-def process_cascade(initial_state: 'BoardState', symbols: list) -> 'BoardState':
-    state = initial_state
+def process_cascade(current_state: 'BoardState', symbols: list) -> 'BoardState':
 
-    while True:
-        matches = find_matches(state.Board)
-        if not matches:
-            # Нет новых совпадений — каскад завершён
-            break
+    matches = find_matches(current_state.Board)
+    if not matches:
+        return current_state
 
-        # Удаляем совпадения и применяем гравитацию
-        state = remove_matches(state, matches)
-
-        # Заполняем пустые ячейки новыми символами
-        state = fill_empty_spaces(state, symbols)
-
-    return state
+    # Удаляем совпадения и применяем гравитацию
+    state_after_removal = remove_matches(current_state, matches)
+    # Заполняем пустые ячейки новыми символами
+    state_after_filling = fill_empty_spaces(state_after_removal, symbols)
+    return process_cascade(state_after_filling, symbols)
