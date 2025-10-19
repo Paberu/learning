@@ -1,16 +1,16 @@
 from sys import exit
 from Board import Board, BoardState
+from fp5.Match import process_cascade, fill_empty_spaces
 
 INITIAL_SIZE = 8
 INITIAL_SCORE = 0
 
 class Game:
-    symbols = ['A', 'B', 'C', 'D', 'E', 'F']
 
     @staticmethod
     def initialize_game() -> 'BoardState':
-        board = Board.create_empty(8)
-        return BoardState(board, score=0)
+        board = Board.create_empty(INITIAL_SIZE)
+        return process_cascade(fill_empty_spaces(BoardState(Board(INITIAL_SIZE), INITIAL_SCORE)))
 
     @staticmethod
     def draw(board):

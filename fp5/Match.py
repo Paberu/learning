@@ -6,6 +6,7 @@ from random import random
 from fp5.Board import Board, BoardState
 from fp5.Element import Element
 
+SYMBOLS = ['A', 'B', 'C', 'D', 'E', 'F']
 
 class MatchDirection(Enum):
     Horizontal = 1
@@ -123,7 +124,7 @@ def calculate_score(removed_count: int) -> int:
     return removed_count * 10
 
 
-def fill_empty_spaces(current_state: 'BoardState', symbols: list) -> 'BoardState':
+def fill_empty_spaces(current_state: 'BoardState') -> 'BoardState':
     if current_state.Board.cells is None:
         return current_state
 
@@ -134,7 +135,7 @@ def fill_empty_spaces(current_state: 'BoardState', symbols: list) -> 'BoardState
     for row in range(size):
         for col in range(size):
             if rows[row][col].symbol == Element.EMPTY:
-                rows[row][col] = Element(random(symbols))
+                rows[row][col] = Element(random(SYMBOLS))
 
     # Преобразуем обратно в кортеж кортежей (иммутабельная структура)
     new_cells = tuple(tuple(row) for row in rows)
@@ -143,14 +144,13 @@ def fill_empty_spaces(current_state: 'BoardState', symbols: list) -> 'BoardState
     return BoardState(new_board, current_state.Score)
 
 
-def process_cascade(current_state: 'BoardState', symbols: list) -> 'BoardState':
+def process_cascade(current_state: 'BoardState') -> 'BoardState':
 
     matches = find_matches(current_state.Board)
     if not matches:
         return current_state
-
     # Удаляем совпадения и применяем гравитацию
     state_after_removal = remove_matches(current_state, matches)
     # Заполняем пустые ячейки новыми символами
-    state_after_filling = fill_empty_spaces(state_after_removal, symbols)
-    return process_cascade(state_after_filling, symbols)
+    state_after_filling = fill_empty_spaces(state_after_removal)
+    return process_cascade(state_after_filling)
