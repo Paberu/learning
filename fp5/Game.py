@@ -15,15 +15,9 @@ class Game:
 
     @staticmethod
     def initialize_game() -> 'BoardState':
-
-        def pipeline_initialize(board_state, *steps):
-            initialized_board_state = board_state
-            for step in steps:
-                 initialized_board_state = step(initialized_board_state)
-            return initialized_board_state
-
-        board_state = BoardState(Board.create_empty(INITIAL_SIZE), INITIAL_SCORE)
-        return pipeline_initialize(board_state, fill_empty_spaces, process_cascade)
+        return (BoardState(Board.create_empty(INITIAL_SIZE), INITIAL_SCORE)
+                .pipe(fill_empty_spaces)
+                .pipe(process_cascade))
 
     @staticmethod
     def draw(board):
