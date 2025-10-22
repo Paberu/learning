@@ -77,17 +77,17 @@ def remove_matches(current_state: 'BoardState', matches: List[Match]) -> 'BoardS
         return current_state
 
     # Шаг 1: Помечаем ячейки для удаления
-    marked_cells = mark_cells_for_removal(current_state.Board, matches)
+    marked_cells = mark_cells_for_removal(current_state.board, matches)
 
     # Шаг 2: Применяем гравитацию
-    gravity_applied_cells = apply_gravity(marked_cells, current_state.Board.size)
+    gravity_applied_cells = apply_gravity(marked_cells, current_state.board.size)
 
     # Шаг 3: Подсчитываем очки
     removed_count = sum(m.length for m in matches)
-    new_score = current_state.Score + calculate_score(removed_count)
+    new_score = current_state.score + calculate_score(removed_count)
 
     # Возвращаем новое состояние с обновлённой доской и счётом
-    new_board = Board(size=current_state.Board.size, cells=gravity_applied_cells)
+    new_board = Board(size=current_state.board.size, cells=gravity_applied_cells)
     return BoardState(new_board, new_score)
 
 def mark_cells_for_removal(board: 'Board', matches: List[Match]) -> Tuple[Tuple[Element, ...], ...]:
@@ -125,12 +125,12 @@ def calculate_score(removed_count: int) -> int:
 
 
 def fill_empty_spaces(current_state: 'BoardState') -> 'BoardState':
-    if current_state.Board.cells is None:
+    if current_state.board.cells is None:
         return current_state
 
     # Создаём изменяемую копию доски
-    rows = [list(row) for row in current_state.Board.cells]
-    size = current_state.Board.size
+    rows = [list(row) for row in current_state.board.cells]
+    size = current_state.board.size
 
     for row in range(size):
         for col in range(size):
@@ -141,12 +141,12 @@ def fill_empty_spaces(current_state: 'BoardState') -> 'BoardState':
     new_cells = tuple(tuple(row) for row in rows)
 
     new_board = Board(size=size, cells=new_cells)
-    return BoardState(new_board, current_state.Score)
+    return BoardState(new_board, current_state.score)
 
 
 def process_cascade(current_state: 'BoardState') -> 'BoardState':
 
-    matches = find_matches(current_state.Board)
+    matches = find_matches(current_state.board)
     if not matches:
         return current_state
     # Удаляем совпадения и применяем гравитацию
