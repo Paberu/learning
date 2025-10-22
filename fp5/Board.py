@@ -21,3 +21,6 @@ class BoardState:
     board: Board
     score: int
 
+    def pipe(self, func):
+        return func(self)
+
