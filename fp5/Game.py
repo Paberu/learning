@@ -7,10 +7,23 @@ INITIAL_SCORE = 0
 
 class Game:
 
+    # Переписал метод на пайплайны. Прикинул, что для того, чтобы вызывать метод
+    # через точку, мне эти методы надо перекинуть в класс BoardState, и это уже 
+    # откат к ООП, т.к. Python через одно место устроен. А вот если надо выполнять
+    # автономные функции по мере их упоминания, то здесь больше подходит
+    # последовательный вызов.
+    
     @staticmethod
     def initialize_game() -> 'BoardState':
-        board = Board.create_empty(INITIAL_SIZE)
-        return process_cascade(fill_empty_spaces(BoardState(Board(INITIAL_SIZE), INITIAL_SCORE)))
+
+        def pipeline_initialize(board_state, *steps):
+            initialized_board_state = board_state
+            for step in steps:
+                 initialized_board_state = step(initialized_board_state)
+            return initialized_board_state
+
+        board_state = BoardState(Board(INITIAL_SIZE), INITIAL_SCORE)
+        return pipeline_initialize(board_state, fill_empty_spaces, process_cascade)
 
     @staticmethod
     def draw(board):
