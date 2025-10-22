@@ -81,5 +81,5 @@ class Game:
 if __name__ == "__main__":
     bs = Game.initialize_game()
     while True:
-        Game.draw(bs.Board)
+        Game.draw(bs.board)
         bs = Game.read_move(bs)
