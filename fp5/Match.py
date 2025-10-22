@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import List, Tuple
-from random import random
+from random import choice
 
 from fp5.Board import Board, BoardState
 from fp5.Element import Element
@@ -135,7 +135,7 @@ def fill_empty_spaces(current_state: 'BoardState') -> 'BoardState':
     for row in range(size):
         for col in range(size):
             if rows[row][col].symbol == Element.EMPTY:
-                rows[row][col] = Element(random(SYMBOLS))
+                rows[row][col] = Element(choice(SYMBOLS))
 
     # Преобразуем обратно в кортеж кортежей (иммутабельная структура)
     new_cells = tuple(tuple(row) for row in rows)
