@@ -52,7 +52,7 @@ class Game:
         new_cells = tuple(tuple(row) for row in rows)
 
         new_board = Board(size=board.size, cells=new_cells)
-        return BoardState(new_board, bs.Score)
+        return BoardState(new_board, bs.score)
 
 
 
