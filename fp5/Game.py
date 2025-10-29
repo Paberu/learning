@@ -37,11 +37,11 @@ class Game:
             return bs
 
         # Проверка границ доски (можно расширить)
-        if not all(0 <= c < bs.Board.size for c in (x, y, x1, y1)):
+        if not all(0 <= c < bs.board.size for c in (x, y, x1, y1)):
             print("Ошибка: координаты вне диапазона")
             return bs
 
-        board = Game.clone_board(bs.Board)
+        board = Game.clone_board(bs.board)
 
         # Меняем местами элементы
         # В Python cells — кортежи, поэтому нужно создать новый кортеж с заменой
@@ -59,5 +59,5 @@ class Game:
 if __name__ == "__main__":
     bs = Game.initialize_game()
     while True:
-        Game.draw(bs.board)
+        bs.draw()
         bs = Game.read_move(bs)
