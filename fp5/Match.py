@@ -146,7 +146,7 @@ def fill_empty_spaces(current_state: 'BoardState') -> 'BoardState':
 
 def process_cascade(current_state: 'BoardState') -> 'BoardState':
     # debug_mode = True
-    return current_state if find_matches(current_state.board) == 0 else (current_state
+    return current_state if not find_matches(current_state.board) else (current_state
                                                                          .pipe(lambda bs: remove_matches(bs, find_matches(bs.board)))
                                                                          .pipe(fill_empty_spaces)
                                                                          .pipe(process_cascade))
