@@ -14,16 +14,6 @@ class Game:
                 .pipe(process_cascade))
 
     @staticmethod
-    def draw(board):
-        print("  0 1 2 3 4 5 6 7")
-        for i in range(8):
-            print(f"{i} ", end='')
-            for j in range(8):
-                print(board.cells[i][j].symbol, end=' ')
-            print()
-        print()
-
-    @staticmethod
     def clone_board(board: 'Board') -> 'Board':
         new_cells = tuple(tuple(cell for cell in row) for row in board.cells)
         return Board(size=board.size, cells=new_cells)

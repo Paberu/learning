@@ -24,3 +24,13 @@ class BoardState:
     def pipe(self, func):
         return func(self)
 
+    def draw(self, ask=False):
+        print("  0 1 2 3 4 5 6 7")
+        for i in range(8):
+            print(f"{i} ", end='')
+            for j in range(8):
+                print(self.board.cells[i][j].symbol, end=' ')
+            print()
+        print()
+        if ask:
+            input('debug mode on, next step on any key...')
