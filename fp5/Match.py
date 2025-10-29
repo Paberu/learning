@@ -145,12 +145,8 @@ def fill_empty_spaces(current_state: 'BoardState') -> 'BoardState':
 
 
 def process_cascade(current_state: 'BoardState') -> 'BoardState':
-
-    matches = find_matches(current_state.board)
-    if not matches:
-        return current_state
-    # Удаляем совпадения и применяем гравитацию
-    state_after_removal = remove_matches(current_state, matches)
-    # Заполняем пустые ячейки новыми символами
-    state_after_filling = fill_empty_spaces(state_after_removal)
-    return process_cascade(state_after_filling)
+    # debug_mode = True
+    return current_state if find_matches(current_state.board) == 0 else (current_state
+                                                                         .pipe(lambda bs: remove_matches(bs, find_matches(bs.board)))
+                                                                         .pipe(fill_empty_spaces)
+                                                                         .pipe(process_cascade))
