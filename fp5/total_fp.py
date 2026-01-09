@@ -5,6 +5,8 @@ from typing import List, Tuple
 
 
 SYMBOLS = ['A', 'B', 'C', 'D', 'E', 'F']
+INITIAL_SIZE = 8
+INITIAL_SCORE = 0
 
 
 @dataclass(frozen=True)
@@ -171,11 +173,14 @@ def fill_empty_spaces(current_state: 'BoardState') -> 'BoardState':
     return BoardState(new_board, current_state.score)
 
 
-
-
 def process_cascade(current_state: 'BoardState') -> 'BoardState':
     # debug_mode = True
     return current_state if not find_matches(current_state.board) else (current_state
                                                                          .pipe(lambda bs: remove_matches(bs, find_matches(bs.board)))
                                                                          .pipe(fill_empty_spaces)
                                                                          .pipe(process_cascade))
+
+def initialize_game() -> 'BoardState':
+    return (BoardState(create_empty_board(INITIAL_SIZE), INITIAL_SCORE)
+            .pipe(fill_empty_spaces)
+            .pipe(process_cascade))
