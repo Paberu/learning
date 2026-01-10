@@ -50,6 +50,18 @@ class BoardState:
     score: int
 
 
+def draw(self, ask=False):
+    print("  0 1 2 3 4 5 6 7")
+    for i in range(8):
+        print(f"{i} ", end='')
+        for j in range(8):
+            print(self.board.cells[i][j].symbol, end=' ')
+        print()
+    print()
+    if ask:
+        input('debug mode on, next step on any key...')
+
+
 def create_empty_board(size: int) -> 'Board':
         empty_row = tuple(EmptyElement() for _ in range(size))
         cells = tuple(empty_row for _ in range(size))
