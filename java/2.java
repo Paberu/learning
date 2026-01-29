@@ -4,24 +4,24 @@
 Тем более, что личная заинтересованность даст больший выхлоп.
 */
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 class Hero {
 	String name;
-	int attack;
-	int defence;
-	int power;
-	int knowledge;
-	double movement;
+	HashMap<String, Integer> parameters;
 	Artifact[] artifacts;
 	Unit[] units;
 	
-	public Hero(String name, int attack, int defence, int power, int knowledge, double movement, Artifact artifact, Unit[] units) {
+	public Hero(String name, int attack, int defence, int power, int knowledge, int movement, Artifact artifact, Unit[] units) {
+		
 		this.name = name;
-		this.attack = attack;
-		this.defence = defence;
-		this.power = power;
-		this.knowledge = knowledge;
-		this.movement = movement;
+		this.parameters = new HashMap<>();
+		this.parameters.put("attack", attack);
+		this.parameters.put("defence", defence);
+		this.parameters.put("power", power);
+		this.parameters.put("knowledge", knowledge);
+		this.parameters.put("movement", movement);
 		this.artifacts = new Artifact[1];
 		if (artifact != null) {
 			this.artifacts[0] = artifact;
@@ -30,19 +30,40 @@ class Hero {
 		this.units = units;
 	}	
 	
-	public HashMap<String, Integer> getArtifactBonuses() {
+	public HashMap<String, Integer> getArtifactsBonuses() {
 		HashMap<String, Integer> bonuses = new HashMap<>();
-		for (int i = 0; i < this.artifacts.length(); i++){
-			artifact = this.artifacts[i];
-			Set<String> parameters = artifact.keySet();
-			for (int k = 0; k < parameters.length(); k++) {
-				parameter = parameters[k];
-				bonus = artifact.getParameterValue(parameter);
+		for (int i = 0; i < this.artifacts.length; i++){
+			Artifact artifact = this.artifacts[i];
+			String[] parameters = artifact.getParameters();
+			for (int k = 0; k < parameters.length; k++) {
+				String parameter = parameters[k];
+				int bonus = artifact.getParameterValue(parameter);
 				if (!bonuses.containsKey(parameter)) {
-					
+					bonuses.put(parameter, bonus);
+				} else {
+					bonuses.put(parameter, bonus + bonuses.get(parameter));
 				}
 			}
 		}
+		return bonuses;
+	}
+	
+	public HashMap<String, Integer> getHeroParameters() {
+		return this.parameters;
+	}
+	
+	public HashMap<String, Integer> getRealHeroParameters() {
+		HashMap<String, Integer> parameters = this.getHeroParameters();
+		HashMap<String, Integer> bonuses = this.getArtifactsBonuses();
+		for (Map.Entry<String, Integer> entry : bonuses.entrySet()) {
+			String key = entry.getKey();
+			int value = entry.getValue();
+			
+			if (parameters.containsKey(key)) {
+				parameters.put(key, parameters.get(key) + value);
+			}
+		}
+		return parameters;		
 	}
 	
 	public static void main(String[] args) {
@@ -56,7 +77,7 @@ class Hero {
 		
 		Unit[] barbarianArmy = new Unit[]{wolfRaider};
 		
-		Hero barbarian = new Hero("Tarnum", 4, 0, 1, 0, 1000.0, battleAxe, barbarianArmy);
+		Hero barbarian = new Hero("Tarnum", 4, 0, 1, 0, 1000, battleAxe, barbarianArmy);
 		System.out.println(barbarian.name + " has " + barbarian.artifacts[0].name);
 		System.out.println("Axe is good:" + barbarian.artifacts[0].parameters);
 		// допустим, мы решили сделать другой топор, не варварской работы
@@ -68,6 +89,12 @@ class Hero {
 		// а значит нечаянное изменение свойств артефакта далее по коду скажется и на свойствах варвара, определённого где-то
 		// вначале.
 		System.out.println("Barbarian axe've changed: " + barbarian.artifacts[0].parameters);
+		System.out.println(barbarian.getHeroParameters());
+		System.out.println(barbarian.getRealHeroParameters());
+		System.out.println(barbarian.getHeroParameters());
+		System.out.println(barbarian.getRealHeroParameters());
+		System.out.println(barbarian.getHeroParameters());
+		System.out.println(barbarian.getRealHeroParameters());
 		
 	}
 }
@@ -91,8 +118,15 @@ class Artifact {
 	}
 	
 	//возможно, потребуется применить другой подход: получить результирующий бонус от всех артефактов, и уже потом учесть все бонусы разом
-	public HashMap<String, Integer> getParameters() {
-		return this.parameters;
+	public String[] getParameters() {
+		Set keys = this.parameters.keySet();
+		String[] parameters = new String[keys.size()];
+		int i = 0;
+		for (Object key : keys) {
+			parameters[i] = (String)key;
+			i++;
+		}
+		return parameters;
 	}
 }
 
