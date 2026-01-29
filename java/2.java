@@ -53,17 +53,20 @@ class Hero {
 	}
 	
 	public HashMap<String, Integer> getRealHeroParameters() {
+		HashMap<String, Integer> realParameters = new HashMap<>();
 		HashMap<String, Integer> parameters = this.getHeroParameters();
 		HashMap<String, Integer> bonuses = this.getArtifactsBonuses();
-		for (Map.Entry<String, Integer> entry : bonuses.entrySet()) {
+		for (Map.Entry<String, Integer> entry : parameters.entrySet()) {
 			String key = entry.getKey();
 			int value = entry.getValue();
 			
-			if (parameters.containsKey(key)) {
-				parameters.put(key, parameters.get(key) + value);
+			if (bonuses.containsKey(key)) {
+				realParameters.put(key, bonuses.get(key) + value);
+			} else {
+				realParameters.put(key, value);
 			}
 		}
-		return parameters;		
+		return realParameters;		
 	}
 	
 	public static void main(String[] args) {
@@ -95,7 +98,7 @@ class Hero {
 		System.out.println(barbarian.getRealHeroParameters());
 		System.out.println(barbarian.getHeroParameters());
 		System.out.println(barbarian.getRealHeroParameters());
-		
+		//ЯРЧАЙШИЙ ПРИМЕР ПЕРЕДАЧИ ПО ССЫЛКЕ И 
 	}
 }
 
