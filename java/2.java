@@ -72,7 +72,7 @@ class Hero {
 	public static void main(String[] args) {
 		
 		UnitFeature[] wolfRaiderFeatures = new UnitFeature[]{UnitFeature.ALWAYS_RESPONDING};
-		Unit wolfRaider = new Unit("Wolf Raider", 5, 2, 4, 15, 15, UnitType.MELEE, wolfRaiderFeatures, 10);
+		Unit wolfRaider = new Unit("Wolf Raider", 5, 2, 4, 15, UnitType.MELEE, wolfRaiderFeatures, 10, 5);
 		
 		HashMap<String, Integer> axeParameters = new HashMap<>();
 		axeParameters.put("attack", 3);
@@ -92,13 +92,10 @@ class Hero {
 		// а значит нечаянное изменение свойств артефакта далее по коду скажется и на свойствах варвара, определённого где-то
 		// вначале.
 		System.out.println("Barbarian axe've changed: " + barbarian.artifacts[0].parameters);
-		System.out.println(barbarian.getHeroParameters());
-		System.out.println(barbarian.getRealHeroParameters());
-		System.out.println(barbarian.getHeroParameters());
-		System.out.println(barbarian.getRealHeroParameters());
-		System.out.println(barbarian.getHeroParameters());
-		System.out.println(barbarian.getRealHeroParameters());
-		//ЯРЧАЙШИЙ ПРИМЕР ПЕРЕДАЧИ ПО ССЫЛКЕ И 
+		System.out.println("Barbarian parameters :" + barbarian.getHeroParameters());
+		System.out.println("Barbarian real parameters :" + barbarian.getRealHeroParameters());
+		System.out.println("Wolf Raiders parameters: " + wolfRaider.getUnitParameters());
+		System.out.println("Wolf Raiders real parameters: " + wolfRaider.getRealUnitParameters(barbarian.getRealHeroParameters()));
 	}
 }
 
@@ -149,24 +146,42 @@ public enum UnitFeature {
 
 class Unit {
 	String name;
-	int attack;
-	int defence;
-	int damage;
-	int health;
-	int currentHealth;
+	HashMap<String, Integer> parameters;
 	UnitType type;
 	UnitFeature[] unitFeatures;
-	int movement;
 	
-	public Unit(String name, int attack, int defence, int damage, int health, int currentHealth, UnitType type, UnitFeature[] unitFeatures, int movement) {
+	public Unit(String name, int attack, int defence, int damage, int health, UnitType type, UnitFeature[] unitFeatures, int speed, int count) {
 		this.name = name;
-		this.attack = attack;
-		this.defence = defence;
-		this.damage = damage;
-		this.health = health;
-		this.currentHealth = currentHealth;
+		this.parameters = new HashMap<>();
+		this.parameters.put("attack", attack);
+		this.parameters.put("defence", defence);
+		this.parameters.put("damage", damage);
+		this.parameters.put("health", health);
+		this.parameters.put("currentHealth", health);
+		this.parameters.put("speed", speed);
+		this.parameters.put("count", count);
 		this.type = type;
 		this.unitFeatures = unitFeatures;
-		this.movement = movement;
+	}
+	
+	public HashMap<String, Integer> getUnitParameters() {
+		return this.parameters;
+	}
+	
+	public HashMap<String, Integer> getRealUnitParameters(HashMap<String, Integer> heroParameters) {
+		HashMap<String, Integer> realParameters = new HashMap<>();
+		HashMap<String, Integer> parameters = this.getUnitParameters();
+		for (Map.Entry<String, Integer> entry : parameters.entrySet()) {
+			String unitParameterKey = entry.getKey();
+			int unitParameterValue = entry.getValue();
+			
+			if (heroParameters.containsKey(unitParameterKey)) {
+				realParameters.put(unitParameterKey, unitParameterValue + heroParameters.get(unitParameterKey));
+			} else {
+				realParameters.put(unitParameterKey, unitParameterValue);
+			}
+		}
+		return realParameters;		
 	}
 }
+
