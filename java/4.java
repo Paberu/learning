@@ -112,6 +112,9 @@ class Hero {
 			Hero tmp_hero = tenHeroes[i];
 			System.out.println(tmp_hero.increaseParameter());
 		}
+		//Каждый новый запуск программы вывод получается новым, но прослеживается интересная зависимость: частота выпадения
+		//knowledge и power почти одинакова, defence выпадает в 2 раза реже, а attack - в 2 раза чаще. Что полностью соответствует 
+		//версиям функции у наследников класса Hero.
 	}
 	
 	public static Hero generateHero() {
@@ -234,6 +237,8 @@ class Unit {
 	private UnitType type;
 	private UnitFeature[] unitFeatures;
 	
+	//Здесь представлен ad hoc полиморфизм: можно вызвать конструктор с кучей параметров, который создаст юнита по заданным параметрам,
+	//а можно передать в качестве параметра уже имеющийся объекта класса Unit или его потомков и получить точную копию имеющегося объекта.
 	public Unit(String name, int attack, int defence, int damage, int health, UnitType type, UnitFeature[] unitFeatures, int speed, int count) {
 		this.name = name;
 		this.parameters = new HashMap<>();
