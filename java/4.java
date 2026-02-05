@@ -1,8 +1,3 @@
-/* Решил позволить себе взять за основу не Dwarf Fortress,
-а более привычных в обращении Heroes of Might and Magic 3.
-
-Тем более, что личная заинтересованность даст больший выхлоп.
-*/
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -110,30 +105,12 @@ class Hero {
 		
 		Barbarian barbarian = new Barbarian("Tarnum", 4, 0, 1, 0, 1000, new Artifact[]{battleAxe}, barbarianArmy);
 		Wizard wizard = new Wizard("Merlin", 0, 0, 2, 3, 800, new Artifact[]{foreverWood, foreverOre, foreverMercury}, new Unit[]{mage});
-		System.out.println(barbarian.getName() + " has " + barbarian.getArtifacts()[0].getName());
-		System.out.println("Axe is good:" + barbarian.getArtifacts()[0].getParameters());
-		// допустим, мы решили сделать другой топор, не варварской работы
-		// он повышает интеллект и знания достойного рыцаря
-		// свойства топора будем делать используя предыдущие наработки и просто накинем свойств в переменную axeParameters
-		axeParameters.put("knowledge", 2);
-		// но случилось непредвиденное: мы ещё не начали делать топор для рыцаря, а свойства варварского топора уже изменились
-		// почему? потому что параметры топора переданы в конструктор варвара не по значению, а по ссылке
-		// а значит нечаянное изменение свойств артефакта далее по коду скажется и на свойствах варвара, определённого где-то
-		// вначале.
-		barbarian.increaseParameter();
-		barbarian.increaseParameter();
-		barbarian.increaseParameter();
-		wizard.increaseParameter();
-		wizard.increaseParameter();
-		wizard.increaseParameter();
-		System.out.println("Barbarian axe've changed: " + barbarian.getArtifacts()[0].getParameters());
-		System.out.println("Barbarian parameters :" + barbarian.getHeroParameters());
-		System.out.println("Barbarian real parameters :" + barbarian.getRealHeroParameters());
-		System.out.println("Wolf Raiders parameters: " + wolfRaider.getUnitParameters());
-		System.out.println("Wolf Raiders real parameters: " + wolfRaider.getRealUnitParameters(barbarian.getRealHeroParameters()));
+		
+		//Прекрасная иллюстрация переопределения функций или, выражаясь языком курса, полиморфизма подтипов.
 		Hero[] tenHeroes = generateNHeroes(500);
 		for (int i = 0; i < 500; i++) {
-			System.out.println(tenHeroes[i]);
+			Hero tmp_hero = tenHeroes[i];
+			System.out.println(tmp_hero.increaseParameter());
 		}
 	}
 	
