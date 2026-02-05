@@ -14,7 +14,7 @@ class Hero {
 	private Artifact[] artifacts;
 	private Unit[] units;
 	
-	public Hero(String name, int attack, int defence, int power, int knowledge, int movement, Artifact artifact, Unit[] units) {
+	public Hero(String name, int attack, int defence, int power, int knowledge, int movement, Artifact[] artifacts, Unit[] units) {
 		
 		this.name = name;
 		this.parameters = new HashMap<>();
@@ -23,11 +23,7 @@ class Hero {
 		this.parameters.put("power", power);
 		this.parameters.put("knowledge", knowledge);
 		this.parameters.put("movement", movement);
-		this.artifacts = new Artifact[1];
-		if (artifact != null) {
-			this.artifacts[0] = artifact;
-		}
-		
+		this.artifacts = artifacts;
 		this.units = units;
 	}	
 	
@@ -94,13 +90,26 @@ class Hero {
 		UnitFeature[] wolfRaiderFeatures = new UnitFeature[]{UnitFeature.ALWAYS_RESPONDING};
 		Unit wolfRaider = new Unit("Wolf Raider", 5, 2, 4, 15, UnitType.MELEE, wolfRaiderFeatures, 10, 5);
 		
+		Unit mage = new Unit("Mage", 4, 4, 5, 10, UnitType.RANGED, new UnitFeature[0], 7, 2);
+		
 		HashMap<String, Integer> axeParameters = new HashMap<>();
 		axeParameters.put("attack", 3);
 		Artifact battleAxe = new Artifact("BarbarianAxe", axeParameters);
 		
+		HashMap<String, Integer> supplyMap = new HashMap<>();
+		supplyMap.put("wood", 2);
+		Supply foreverWood = new Supply("Forever Wood", supplyMap);
+		supplyMap = new HashMap<>();
+		supplyMap.put("ore", 2);
+		Supply foreverOre = new Supply("Forever Ore", supplyMap);
+		supplyMap = new HashMap<>();
+		supplyMap.put("mercury", 1);
+		Supply foreverMercury = new Supply("Mercury Drop", supplyMap);
+		
 		Unit[] barbarianArmy = new Unit[]{wolfRaider};
 		
-		Barbarian barbarian = new Barbarian("Tarnum", 4, 0, 1, 0, 1000, battleAxe, barbarianArmy);
+		Barbarian barbarian = new Barbarian("Tarnum", 4, 0, 1, 0, 1000, new Artifact[]{battleAxe}, barbarianArmy);
+		Wizard wizard = new Wizard("Merlin", 0, 0, 2, 3, 800, new Artifact[]{foreverWood, foreverOre, foreverMercury}, new Unit[]{mage});
 		System.out.println(barbarian.getName() + " has " + barbarian.getArtifacts()[0].getName());
 		System.out.println("Axe is good:" + barbarian.getArtifacts()[0].getParameters());
 		// допустим, мы решили сделать другой топор, не варварской работы
@@ -114,18 +123,43 @@ class Hero {
 		barbarian.increaseParameter();
 		barbarian.increaseParameter();
 		barbarian.increaseParameter();
+		wizard.increaseParameter();
+		wizard.increaseParameter();
+		wizard.increaseParameter();
 		System.out.println("Barbarian axe've changed: " + barbarian.getArtifacts()[0].getParameters());
 		System.out.println("Barbarian parameters :" + barbarian.getHeroParameters());
 		System.out.println("Barbarian real parameters :" + barbarian.getRealHeroParameters());
 		System.out.println("Wolf Raiders parameters: " + wolfRaider.getUnitParameters());
 		System.out.println("Wolf Raiders real parameters: " + wolfRaider.getRealUnitParameters(barbarian.getRealHeroParameters()));
+		Hero[] tenHeroes = generateNHeroes(500);
+		for (int i = 0; i < 500; i++) {
+			System.out.println(tenHeroes[i]);
+		}
+	}
+	
+	public static Hero generateHero() {
+		Random random = new Random();
+		Unit peasant = new Unit("Peasant", 1, 1, 1, 1, UnitType.MELEE, new UnitFeature[0], 3, 1);
+		int number = random.nextInt(100);
+		if (number % 2 == 0) {
+			return new Wizard("Wizard" + number, 0, 0, 2, 3, 800, new Artifact[0], new Unit[]{new Unit(peasant)});
+		}
+		return new Barbarian("Barbarian" + number, 4, 1, 0, 0, 1000,  new Artifact[0], new Unit[]{new Unit(peasant)});
+	}
+	
+	public static Hero[] generateNHeroes(int n) {
+		Hero[] heroes = new Hero[n];
+		for (int i = 0; i < n; i++) {
+			heroes[i] = generateHero();
+		}
+		return heroes;
 	}
 }
 
 class Barbarian extends Hero {
 	
-	public Barbarian(String name, int attack, int defence, int power, int knowledge, int movement, Artifact artifact, Unit[] units) {
-		super(name, attack, defence, power, knowledge, movement, artifact, units);
+	public Barbarian(String name, int attack, int defence, int power, int knowledge, int movement, Artifact[] artifacts, Unit[] units) {
+		super(name, attack, defence, power, knowledge, movement, artifacts, units);
 	}
 	
 	public String increaseParameter() {
@@ -138,8 +172,8 @@ class Barbarian extends Hero {
 
 class Wizard extends Hero {
 	
-	public Wizard(String name, int attack, int defence, int power, int knowledge, int movement, Artifact artifact, Unit[] units) {
-		super(name, attack, defence, power, knowledge, movement, artifact, units);
+	public Wizard(String name, int attack, int defence, int power, int knowledge, int movement, Artifact[] artifacts, Unit[] units) {
+		super(name, attack, defence, power, knowledge, movement, artifacts, units);
 	}
 	
 	public String increaseParameter() {
@@ -185,6 +219,24 @@ class Artifact {
 	}
 }
 
+class MainHand extends Artifact {
+	public MainHand(String name, HashMap<String, Integer> parameters){
+		super(name, parameters);
+	}
+}
+
+class SupportHand extends Artifact {
+	public SupportHand(String name, HashMap<String, Integer> parameters){
+		super(name, parameters);
+	}
+}
+
+class Supply extends Artifact {
+	public Supply(String name, HashMap<String, Integer> parameters){
+		super(name, parameters);
+	}
+}
+
 public enum UnitType {
 	MELEE,
 	RANGED,
@@ -218,6 +270,13 @@ class Unit {
 		this.type = type;
 		this.unitFeatures = unitFeatures;
 	}
+	
+	public Unit(Unit unit) {
+		this.name = unit.getName();
+		this.parameters = unit.getUnitParameters();
+		this.type = unit.getType();
+		this.unitFeatures = unit.getUnitFeatures();
+	}
 		
 	public String getName() {
 		return this.name;
@@ -229,6 +288,10 @@ class Unit {
 	
 	public UnitType getType(){
 		return this.type;
+	}
+	
+	public UnitFeature[] getUnitFeatures(){
+		return this.unitFeatures;
 	}
 	
 	public HashMap<String, Integer> getRealUnitParameters(HashMap<String, Integer> heroParameters) {
