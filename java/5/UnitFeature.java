@@ -1,0 +1,6 @@
+public enum UnitFeature {
+	NOT_RESPONDED_TO,
+	ALWAYS_RESPONDING,
+	DOUBLE_SHOT,
+	BLOW_UP_AT_DEATH	
+}
