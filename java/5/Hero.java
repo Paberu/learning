@@ -107,7 +107,7 @@ class Hero {
 		
 		System.out.print("Введи твоё имя: ");
 		String name = scanner.nextLine().trim();
-		System.out.print(name + "За кого играешь: за варвара или за мага? ");
+		System.out.print("Привет, " + name + ". За кого играешь: за варвара или за мага? ");
 		String heroClass = scanner.nextLine().trim();
 		System.out.println(heroClass);
 		
