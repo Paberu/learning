@@ -82,6 +82,7 @@ class Hero {
 	}
 	
 	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
 		
 		UnitFeature[] wolfRaiderFeatures = new UnitFeature[]{UnitFeature.ALWAYS_RESPONDING};
 		Unit wolfRaider = new Unit("Wolf Raider", 5, 2, 4, 15, UnitType.MELEE, wolfRaiderFeatures, 10, 5);
@@ -104,18 +105,37 @@ class Hero {
 		
 		Unit[] barbarianArmy = new Unit[]{wolfRaider};
 		
-		Barbarian barbarian = new Barbarian("Tarnum", 4, 0, 1, 0, 1000, new Artifact[]{battleAxe}, barbarianArmy);
-		Wizard wizard = new Wizard("Merlin", 0, 0, 2, 3, 800, new Artifact[]{foreverWood, foreverOre, foreverMercury}, new Unit[]{mage});
+		System.out.print("Введи твоё имя: ");
+		String name = scanner.nextLine().trim();
+		System.out.print(name + "За кого играешь: за варвара или за мага? ");
+		String heroClass = scanner.nextLine().trim();
+		System.out.println(heroClass);
+		
+		Hero hero = null;
+		if ("варвар".equalsIgnoreCase(heroClass) || "barbarian".equalsIgnoreCase(heroClass)) {
+			hero = new Barbarian("Tarnum", 4, 0, 1, 0, 1000, new Artifact[]{battleAxe}, barbarianArmy);
+			System.out.println("Твоего варвара зовут Тарнум");
+		} else {
+			hero = new Wizard("Merlin", 0, 0, 2, 3, 800, new Artifact[]{foreverWood, foreverOre, foreverMercury}, new Unit[]{mage});
+			System.out.println("Поиграешь за Мерлина");
+		}
+		
+		// Barbarian barbarian = new Barbarian("Tarnum", 4, 0, 1, 0, 1000, new Artifact[]{battleAxe}, barbarianArmy);
+		// Wizard wizard = new Wizard("Merlin", 0, 0, 2, 3, 800, new Artifact[]{foreverWood, foreverOre, foreverMercury}, new Unit[]{mage});
 		
 		//Прекрасная иллюстрация переопределения функций или, выражаясь языком курса, полиморфизма подтипов.
+		/*
 		Hero[] tenHeroes = generateNHeroes(500);
 		for (int i = 0; i < 500; i++) {
 			Hero tmp_hero = tenHeroes[i];
 			System.out.println(tmp_hero.increaseParameter());
 		}
+		*/
 		//Каждый новый запуск программы вывод получается новым, но прослеживается интересная зависимость: частота выпадения
 		//knowledge и power почти одинакова, defence выпадает в 2 раза реже, а attack - в 2 раза чаще. Что полностью соответствует 
 		//версиям функции у наследников класса Hero.
+		
+		System.out.println(hero.getRealHeroParameters());
 	}
 	
 	public static Hero generateHero() {
