@@ -1,6 +1,7 @@
 package heroes;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import items.*;

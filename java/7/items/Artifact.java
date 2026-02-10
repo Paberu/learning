@@ -2,6 +2,7 @@ package items;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.Set;
 
 
 public class Artifact {

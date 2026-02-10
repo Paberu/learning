@@ -2,11 +2,11 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
-import Artifact.*;
-import Unit.*;
-import Hero.*;
+import items.*;
+import heroes.*;
+import combatants.*;
 
-class Game {
+public class Game {
 	
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
