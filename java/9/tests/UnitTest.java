@@ -61,12 +61,14 @@ class UnitTest {
         assertEquals(realUnitParameters.get("attack"), heroParameters.get("attack") + unitParameters.get("attack"));
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getType() {
+        assertEquals(UnitType.MELEE, wolfRaider.getType());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getUnitFeatures() {
+        assertEquals(UnitFeature.ALWAYS_RESPONDING, wolfRaider.getUnitFeatures()[0]);
     }
 
 
