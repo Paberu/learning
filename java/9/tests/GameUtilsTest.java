@@ -41,11 +41,20 @@ public class GameUtilsTest {
     }
 
     @Test
-    void testEmpty() {
+    void testEmptyArray() {
         int[] noArray = new int[]{};
         sort(noArray);
         assertArrayEquals(new int[]{}, noArray);
     }
-
+/*
+    // Четвёртый тест с заведомо неправильными данными не удаётся даже запустить, т.к. на этапе компиляции происходит
+    // ошибка java: incompatible types: java.lang.String[] cannot be converted to int[]. Это ж не Python.
+    @Test
+    void testWrongArray() {
+        String[] strArray = new String[]{"wolfRaider", "mage", "ogre"};
+        sort(strArray);
+        assertArrayEquals(strArray, new String[]{"mage", "ogre", "wolfRaider"});
+    }
+*/
 
 }
