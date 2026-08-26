@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.Random;
+
 public class GameUtils {
 
     // Как же сложно обращаться к алгоритмам, сам не знаю почему. Обдумывать различные АТД было проще, чем
@@ -20,5 +22,15 @@ public class GameUtils {
             // вставлен в массив.
             array[j + 1] = current;
         }
+    }
+
+    public static int[] generate(int count, int bound) {
+        int[] numbers = new int[count];
+        Random random = new Random();
+
+        for (int i = 0; i < numbers.length; i++){
+            numbers[i] = random.nextInt(bound+1);
+        }
+        return numbers;
     }
 }
