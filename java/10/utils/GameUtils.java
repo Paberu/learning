@@ -1,6 +1,11 @@
 package utils;
 
+import combatants.Unit;
+import combatants.UnitFeature;
+import combatants.UnitType;
+
 import java.io.*;
+import java.util.HashMap;
 import java.util.Random;
 
 public class GameUtils {
@@ -63,14 +68,8 @@ public class GameUtils {
             String string = "";
             for (int i = 0; i < 3; i++){
                 string = br1.readLine();
-                /*if (string == null || string.equals("")) {
-                    throw new IllegalArgumentException(filename1 + " повреждён или неполон");
-                }*/
                 sum += Integer.parseInt(string);
                 string = br2.readLine();
-                /*if (string == null || string.equals("")) {
-                    throw new IllegalArgumentException(filename2 + " повреждён или неполон");
-                }*/
                 sum += Integer.parseInt(string);
             }
         } catch (FileNotFoundException fnfe) {
@@ -84,9 +83,27 @@ public class GameUtils {
     }
 
     public static void main(String[] args) {
-        // generateFiles();
-        // System.out.println(sumSomeIntFromFiles(1, 2));
+        generateFiles();
+        System.out.println(sumSomeIntFromFiles(1, 2));
         System.out.println(sumSomeIntFromFiles(4, 3));
         System.out.println(sumSomeIntFromFiles(5, 9));
+        Unit mage = new Unit("Mage", 4, 4, 5, 10, UnitType.RANGED, new UnitFeature[0], 7, 2);
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter("mage.txt"));
+            String strUnit = "";
+            strUnit += mage.getName()+";";
+            HashMap params = mage.getUnitParameters();
+            strUnit += params.get("attack")+";";
+            strUnit += params.get("defence")+";";
+            strUnit += params.get("damage")+";";
+            strUnit += params.get("health")+";";
+            strUnit += params.get("speed")+";";
+            strUnit += params.get("count")+";";
+            strUnit += mage.getType()+";";
+            strUnit += mage.getUnitFeatures()+";";
+            bw.write(strUnit);
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
     }
 }
