@@ -5,6 +5,7 @@ import combatants.UnitFeature;
 import combatants.UnitType;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -88,22 +89,56 @@ public class GameUtils {
         System.out.println(sumSomeIntFromFiles(4, 3));
         System.out.println(sumSomeIntFromFiles(5, 9));
         Unit mage = new Unit("Mage", 4, 4, 5, 10, UnitType.RANGED, new UnitFeature[0], 7, 2);
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter("mage.txt"));
-            String strUnit = "";
-            strUnit += mage.getName()+";";
-            HashMap params = mage.getUnitParameters();
+        Unit wolfRaider = new Unit("Wolf Raider", 5, 2, 4, 15, UnitType.MELEE, new UnitFeature[]{UnitFeature.ALWAYS_RESPONDING}, 10, 5);
+        unitToFile(mage, "mage.txt");
+        unitToFile(wolfRaider, "wolfraider.txt");
+        ArrayList<Unit> units = new ArrayList<>();
+        units.add(unitFromFile("mage.txt"));
+        units.add(unitFromFile("wolfraider.txt"));
+    }
+
+    private static void unitToFile(Unit unit, String filename) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))){
+            String strUnit = unit.getName()+";";
+            HashMap params = unit.getUnitParameters();
             strUnit += params.get("attack")+";";
             strUnit += params.get("defence")+";";
             strUnit += params.get("damage")+";";
             strUnit += params.get("health")+";";
             strUnit += params.get("speed")+";";
             strUnit += params.get("count")+";";
-            strUnit += mage.getType()+";";
-            strUnit += mage.getUnitFeatures()+";";
+            strUnit += unit.getType()+";";
+            for (UnitFeature feature: unit.getUnitFeatures()) {
+                strUnit += feature+";";
+            }
+            System.out.println(strUnit);
             bw.write(strUnit);
         } catch (IOException ioe) {
             throw new RuntimeException(ioe);
+        }
+    }
+
+    private static Unit unitFromFile(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String[] strUnit = br.readLine().split(";");
+            UnitType unitType = UnitType.valueOf(strUnit[7]);
+            UnitFeature[] unitFeatures = new UnitFeature[]{};
+            if (strUnit.length > 8) {
+                int size = strUnit.length - 8;
+                unitFeatures = new UnitFeature[size];
+                for (int i = 0; i < size; i++ ) {
+                    unitFeatures[i] = UnitFeature.valueOf(strUnit[8+i]);
+                }
+            }
+            Unit unit = new Unit(strUnit[0], Integer.parseInt(strUnit[1]), Integer.parseInt(strUnit[2]),
+                    Integer.parseInt(strUnit[3]), Integer.parseInt(strUnit[4]),
+                    unitType, unitFeatures,
+                    Integer.parseInt(strUnit[5]), Integer.parseInt(strUnit[6]));
+            return unit;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
