@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,14 @@ public class GraphUtils {
             if (!file.isDirectory() && filename.endsWith(inExtension)) {
                 try {
                     BufferedImage image = ImageIO.read(file);
+                    Graphics2D g = image.createGraphics();
+                    int squareSize = Math.min(image.getHeight(), image.getWidth()) / 2;
+                    g.setColor(Color.BLACK);
+                    g.drawRect((image.getWidth()-squareSize)/2, (image.getHeight()-squareSize)/2, squareSize, squareSize);
+                    g.setFont(new Font(Font.MONOSPACED, Font.ITALIC, squareSize/4));
+                    g.drawString("Hello,", (image.getWidth()-squareSize)/2+2, (image.getHeight()-squareSize)/2+g.getFont().getSize()+2);
+                    g.drawString("World!", (image.getWidth()-squareSize)/2+2, (image.getHeight()-squareSize)/2+g.getFont().getSize()*2+4);
+                    g.dispose();
                     int dot = filename.lastIndexOf('.');
                     String name = filename.substring(0, dot);
                     ImageIO.write(image, outExtension, new File(name + "." + outExtension));
