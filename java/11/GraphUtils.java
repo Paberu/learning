@@ -14,8 +14,6 @@ public class GraphUtils {
         } catch (NullPointerException npe) {
             System.out.println("Wrong current path! 0_o");
         }
-        // Path currentDir = Paths.get("").toAbsolutePath();
-        // for (File file : currentDir.toFile().listFiles()) {
         assert files != null;
         for (File file : files) {
             String filename = file.getName();
