@@ -1,11 +1,5 @@
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.Scanner;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
 import items.*;
 import heroes.*;
@@ -14,7 +8,7 @@ import utils.GameLogger;
 
 public class Game {
 	
-	public static void main(String[] args) {
+	public static void main() {
 
 		Scanner scanner = new Scanner(System.in);
 		
@@ -24,7 +18,7 @@ public class Game {
 		Unit mage = new Unit("Mage", 4, 4, 5, 10, UnitType.RANGED, new UnitFeature[0], 7, 2);
 		
 		HashMap<String, Integer> axeParameters = new HashMap<>();
-		axeParameters.put("attack", 3);
+		axeParameters.put(Hero.ATTACK, 3);
 		Artifact battleAxe = new Artifact("BarbarianAxe", axeParameters);
 		
 		HashMap<String, Integer> supplyMap = new HashMap<>();
