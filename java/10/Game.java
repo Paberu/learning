@@ -10,6 +10,7 @@ import java.util.logging.SimpleFormatter;
 import items.*;
 import heroes.*;
 import combatants.*;
+import utils.GameLogger;
 
 public class Game {
 	
@@ -58,6 +59,7 @@ public class Game {
 			hero.increaseParameter();
 		}
 
+		// GameLogger.logCreation(hero, Hero);
 		System.out.println(hero.getRealHeroParameters());
 	}
 }

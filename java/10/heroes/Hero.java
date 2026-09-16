@@ -11,6 +11,13 @@ import utils.GameLogger;
 
 
 public class Hero {
+	public static final String ATTACK = "attack";
+	public static final String DEFENCE = "defence";
+	public static final String POWER = "power";
+	public static final String KNOWLEDGE = "knowledge";
+	public static final String MOVEMENT = "movement";
+
+	protected static Random random = new Random();
 	private String name;
 	private HashMap<String, Integer> parameters;
 	private Artifact[] artifacts;
@@ -20,11 +27,11 @@ public class Hero {
 		
 		this.name = name;
 		this.parameters = new HashMap<>();
-		this.parameters.put("attack", attack);
-		this.parameters.put("defence", defence);
-		this.parameters.put("power", power);
-		this.parameters.put("knowledge", knowledge);
-		this.parameters.put("movement", movement);
+		this.parameters.put(ATTACK, attack);
+		this.parameters.put(DEFENCE, defence);
+		this.parameters.put(POWER, power);
+		this.parameters.put(KNOWLEDGE, knowledge);
+		this.parameters.put(MOVEMENT, movement);
 		this.artifacts = artifacts;
 		this.units = units;
 
@@ -44,39 +51,38 @@ public class Hero {
 	}
 	
 	public String increaseParameter() {
-		Random random = new Random();
-		String[] parameters = {"attack", "defence", "power", "knowledge"};
+		String[] parametersForRandom = {ATTACK, DEFENCE, POWER, KNOWLEDGE};
 		int i = random.nextInt(4);
-		return parameters[i];
+		return parametersForRandom[i];
 	}
 	
 	private HashMap<String, Integer> getArtifactsBonuses() {
 		HashMap<String, Integer> bonuses = new HashMap<>();
 		for (int i = 0; i < this.artifacts.length; i++){
 			Artifact artifact = this.artifacts[i];
-			String[] parameters = artifact.getParameters();
-			for (int k = 0; k < parameters.length; k++) {
-				String parameter = parameters[k];
-				int bonus = artifact.getParameterValue(parameter);
-				if (!bonuses.containsKey(parameter)) {
-					bonuses.put(parameter, bonus);
+			String[] artifactParameters = artifact.getParameters();
+			for (int k = 0; k < artifactParameters.length; k++) {
+				String artifactParameter = artifactParameters[k];
+				int bonus = artifact.getParameterValue(artifactParameter);
+				if (!bonuses.containsKey(artifactParameter)) {
+					bonuses.put(artifactParameter, bonus);
 				} else {
-					bonuses.put(parameter, bonus + bonuses.get(parameter));
+					bonuses.put(artifactParameter, bonus + bonuses.get(artifactParameter));
 				}
 			}
 		}
 		return bonuses;
 	}
 	
-	public HashMap<String, Integer> getHeroParameters() {
+	public Map<String, Integer> getHeroParameters() {
 		return this.parameters;
 	}
 	
-	public HashMap<String, Integer> getRealHeroParameters() {
+	public Map<String, Integer> getRealHeroParameters() {
 		HashMap<String, Integer> realParameters = new HashMap<>();
-		HashMap<String, Integer> parameters = this.getHeroParameters();
+		HashMap<String, Integer> heroParameters = (HashMap) this.getHeroParameters();
 		HashMap<String, Integer> bonuses = this.getArtifactsBonuses();
-		for (Map.Entry<String, Integer> entry : parameters.entrySet()) {
+		for (Map.Entry<String, Integer> entry : heroParameters.entrySet()) {
 			String key = entry.getKey();
 			int value = entry.getValue();
 			
@@ -90,9 +96,8 @@ public class Hero {
 	}
 	
 	public static Hero generateHero() {
-		Random random = new Random();
 		Unit peasant = new Unit("Peasant", 1, 1, 1, 1, UnitType.MELEE, new UnitFeature[0], 3, 1);
-		int number = random.nextInt(100);
+		int number = Hero.random.nextInt(100);
 		if (number % 2 == 0) {
 			return new Wizard("Wizard" + number, 0, 0, 2, 3, 800, new Artifact[0], new Unit[]{new Unit(peasant)});
 		}

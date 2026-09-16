@@ -1,8 +1,5 @@
 package heroes;
 
-import java.util.HashMap;
-import java.util.Random;
-
 import items.*;
 import combatants.*;
 
@@ -14,8 +11,7 @@ public class Wizard extends Hero {
 	}
 	
 	public String increaseParameter() {
-		Random random = new Random();
-		String[] parameters = {"knowledge", "power", "knowledge", "knowledge"};
+		String[] parameters = {KNOWLEDGE, POWER, KNOWLEDGE, KNOWLEDGE};
 		int i = random.nextInt(4);
 		return parameters[i];
 	}

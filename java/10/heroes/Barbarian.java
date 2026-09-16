@@ -1,8 +1,5 @@
 package heroes;
 
-import java.util.HashMap;
-import java.util.Random;
-
 import items.*;
 import combatants.*;
 
@@ -14,10 +11,9 @@ public class Barbarian extends Hero {
 	}
 	
 	public String increaseParameter() {
-		Random random = new Random();
-		String[] parameters = {"attack", "defence", "attack", "attack"};
+		String[] parameters = {ATTACK, DEFENCE, ATTACK, ATTACK};
 		int i = random.nextInt(4);
-		assert parameters[i] == "attack" || parameters[i] == "defence": "Ошибка при повышении параметра (варвары не могут получать магические бонусы)!";
+		assert parameters[i].equals(ATTACK) || parameters[i].equals(DEFENCE): "Ошибка при повышении параметра (варвары не могут получать магические бонусы)!";
 		return parameters[i];
 	}
 }

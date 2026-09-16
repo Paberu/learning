@@ -31,7 +31,7 @@ public class Unit {
 	
 	public Unit(Unit unit) {
 		this.name = unit.getName();
-		this.parameters = unit.getUnitParameters();
+		this.parameters = (HashMap) unit.getUnitParameters();
 		this.type = unit.getType();
 		this.unitFeatures = unit.getUnitFeatures();
 	}
@@ -40,7 +40,7 @@ public class Unit {
 		return this.name;
 	}
 	
-	public HashMap<String, Integer> getUnitParameters() {
+	public Map<String, Integer> getUnitParameters() {
 		return this.parameters;
 	}
 	
@@ -52,13 +52,13 @@ public class Unit {
 		return this.unitFeatures;
 	}
 	
-	public HashMap<String, Integer> getRealUnitParameters(HashMap<String, Integer> heroParameters) {
+	public Map<String, Integer> getRealUnitParameters(Map<String, Integer> heroParameters) {
 		HashMap<String, Integer> realParameters = new HashMap<>();
-		HashMap<String, Integer> parameters = this.getUnitParameters();
-		for (Map.Entry<String, Integer> entry : parameters.entrySet()) {
+		HashMap<String, Integer> unitParameters = (HashMap) this.getUnitParameters();
+		for (Map.Entry<String, Integer> entry : unitParameters.entrySet()) {
 			String unitParameterKey = entry.getKey();
 			int unitParameterValue = entry.getValue();
-			
+
 			if (heroParameters.containsKey(unitParameterKey)) {
 				realParameters.put(unitParameterKey, unitParameterValue + heroParameters.get(unitParameterKey));
 			} else {
