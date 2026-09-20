@@ -11,14 +11,16 @@ class LinkedListTest {
     private LinkedList ll1;
     private LinkedList ll2;
     private LinkedList ll3;
+    private Node node4;
+    private Node node5;
 
     @BeforeEach
     void setUp() {
         Node node1 = new Node(5);
         Node node2 = new Node(2);
         Node node3 = new Node(7);
-        Node node4 = new Node(10);
-        Node node5 = new Node(5);
+        node4 = new Node(10);
+        node5 = new Node(5);
         Node node6 = new Node(0);
 
         ll1 = new LinkedList();
@@ -95,5 +97,24 @@ class LinkedListTest {
         assertEquals(6, ll1.count());
         assertEquals(0, ll2.count());
         assertEquals(1, ll3.count());
+    }
+
+    @Test
+    void testInsertAfter() {
+        ll1.insertAfter(node4, new Node(55));
+        ll2.insertAfter(null, new Node(2));
+        ll3.insertAfter(null, new Node(2));
+
+        assertEquals(7, ll1.count());
+        assertEquals(55, node4.next.value);
+        assertEquals(node5, node4.next.next);
+
+        assertEquals(1, ll2.count());
+        assertEquals(2, ll2.head.value);
+        assertEquals(2, ll2.tail.value);
+
+        assertEquals(2, ll3.count());
+        assertEquals(2, ll3.head.value);
+        assertEquals(11, ll3.tail.value);
     }
 }
