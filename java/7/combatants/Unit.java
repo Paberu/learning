@@ -1,5 +1,7 @@
 package combatants;
 
+import utils.GameLogger;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +26,7 @@ public class Unit {
 		this.parameters.put("count", count);
 		this.type = type;
 		this.unitFeatures = unitFeatures;
+		GameLogger.logCreation(this.getClass().getName(), this.name);
 	}
 	
 	public Unit(Unit unit) {

@@ -3,9 +3,11 @@ package heroes;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
 
 import items.*;
 import combatants.*;
+import utils.GameLogger;
 
 
 public class Hero {
@@ -13,7 +15,7 @@ public class Hero {
 	private HashMap<String, Integer> parameters;
 	private Artifact[] artifacts;
 	private Unit[] units;
-	
+
 	public Hero(String name, int attack, int defence, int power, int knowledge, int movement, Artifact[] artifacts, Unit[] units) {
 		
 		this.name = name;
@@ -25,6 +27,8 @@ public class Hero {
 		this.parameters.put("movement", movement);
 		this.artifacts = artifacts;
 		this.units = units;
+
+		GameLogger.logCreation(this.getClass().getName(), this.name);
 	}	
 	
 	public String getName() {

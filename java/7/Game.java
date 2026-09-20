@@ -1,6 +1,11 @@
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import items.*;
 import heroes.*;
@@ -9,6 +14,7 @@ import combatants.*;
 public class Game {
 	
 	public static void main(String[] args) {
+
 		Scanner scanner = new Scanner(System.in);
 		
 		UnitFeature[] wolfRaiderFeatures = new UnitFeature[]{UnitFeature.ALWAYS_RESPONDING};
