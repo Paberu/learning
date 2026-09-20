@@ -96,6 +96,13 @@ public class LinkedList
 
         // если _nodeAfter = null ,
         // добавьте новый элемент первым в списке
+        if (_nodeAfter == null) {
+            _nodeToInsert.next = this.head;
+            this.head = _nodeToInsert;
+            return;
+        }
+
+        
     }
 
 }
