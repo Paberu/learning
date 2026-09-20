@@ -102,7 +102,8 @@ public class LinkedList
             return;
         }
 
-        
+        _nodeToInsert.next = _nodeAfter.next;
+        _nodeAfter.next = _nodeToInsert;
     }
 
 }
