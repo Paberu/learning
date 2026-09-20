@@ -37,6 +37,7 @@ public class LinkedList
             if (node.value == _value) {
                 nodes.add(node);
             }
+            node = node.next;
         }
         return nodes;
     }
