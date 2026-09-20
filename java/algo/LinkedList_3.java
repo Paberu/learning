@@ -89,4 +89,11 @@ class LinkedListTest {
         assertEquals(null, ll1.head);
         assertEquals(null, ll1.tail);
     }
+
+    @Test
+    void testCount() {
+        assertEquals(6, ll1.count());
+        assertEquals(0, ll2.count());
+        assertEquals(1, ll3.count());
+    }
 }
