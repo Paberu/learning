@@ -32,13 +32,34 @@ public class LinkedList
     public ArrayList<Node> findAll(int _value) {
         ArrayList<Node> nodes = new ArrayList<Node>();
         // здесь будет ваш код поиска всех узлов
+        Node node = this.head;
+        while (node != null) {
+            if (node.value == _value) {
+                nodes.add(node);
+            }
+        }
         return nodes;
     }
 
     public boolean remove(int _value)
     {
         // здесь будет ваш код удаления одного узла по заданному значению
-        return true; // если узел был удалён
+        if (this.head.value == _value) {
+            this.head = this.head.next;
+            return true;
+        } // отдельно удаление головы, ибо это не просто
+
+        Node node = this.head;
+        while (node != this.tail) {
+            if (node.next.value == _value) {
+                node.next = node.next.next; // и если node - это предпоследний узел, то node.next.next - это будет искомый null, то есть node.next будет равно null, а значит
+                if (node.next == null) {    // next у текущей node станет равен null, а это признак того, что прежний хвост удалён, и текущая node теперь стала хвостом
+                    this.tail = node;
+                }
+                return true;
+            }
+        }
+        return false; // узел не нашли и не удалили
     }
 
     public void removeAll(int _value)
