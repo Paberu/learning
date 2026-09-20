@@ -64,6 +64,8 @@ class LinkedListTest {
         ArrayList<Node> listNode = ll1.findAll(5);
         assertEquals(2, listNode.size());
 
+        listNode = ll3.findAll(5);
+        assertEquals(0, listNode.size());
     }
 
 }
