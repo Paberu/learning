@@ -83,4 +83,10 @@ class LinkedListTest {
         assertEquals(null, ll3.tail);
     }
 
+    @Test
+    void testClear() {
+        ll1.clear();
+        assertEquals(null, ll1.head);
+        assertEquals(null, ll1.tail);
+    }
 }
