@@ -65,16 +65,29 @@ public class LinkedList
     public void removeAll(int _value)
     {
         // здесь будет ваш код удаления всех узлов по заданному значению
+        if (this.head.value == _value) {
+            this.head = this.head.next;
+            return true;
+        } // отдельно удаление головы, ибо это не просто
     }
 
     public void clear()
     {
         // здесь будет ваш код очистки всего списка
+        this.head = null;
+        this.tail = null
     }
 
     public int count()
     {
-        return 0; // здесь будет ваш код подсчёта количества элементов в списке
+        // здесь будет ваш код подсчёта количества элементов в списке
+        int count = 0;
+        Node node = this.head;
+        while (node != null) {
+            count++;
+            node = node.next;
+        }
+        return count;
     }
 
     public void insertAfter(Node _nodeAfter, Node _nodeToInsert)
