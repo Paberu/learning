@@ -65,6 +65,7 @@ public class LinkedList
                 }
                 return true;
             }
+            node = node.next;
         }
         return false; // узел не нашли и не удалили
     }
