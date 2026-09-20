@@ -42,8 +42,7 @@ public class LinkedList
         return nodes;
     }
 
-    public boolean remove(int _value)
-    {
+    public boolean remove(int _value) {
         // здесь будет ваш код удаления одного узла по заданному значению
         if (this.head == null) {
             return false;
@@ -70,13 +69,12 @@ public class LinkedList
         return false; // узел не нашли и не удалили
     }
 
-    public void removeAll(int _value)
-    {
+    public void removeAll(int _value) {
         // здесь будет ваш код удаления всех узлов по заданному значению
-        if (this.head.value == _value) {
-            this.head = this.head.next;
-            return;
-        } // отдельно удаление головы, ибо это не просто
+       boolean removeFlag = true;
+       while (removeFlag) {
+            removeFlag = remove(_value);
+       }
     }
 
     public void clear()
