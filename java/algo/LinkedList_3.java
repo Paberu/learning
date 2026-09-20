@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -46,6 +48,22 @@ class LinkedListTest {
         node = new Node(144);
         ll3.addInTail(node);
         assertEquals(144, ll3.tail.value);
+    }
+
+    @Test
+    void testFind() {
+        Node node = ll1.find(5);
+        assertEquals(ll1.head, node);
+
+        node = ll2.find(5);
+        assertEquals(null, node);
+    }
+
+    @Test
+    void testFindAll() {
+        ArrayList<Node> listNode = ll1.findAll(5);
+        assertEquals(2, listNode.size());
+
     }
 
 }
