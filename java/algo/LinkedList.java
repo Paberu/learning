@@ -45,8 +45,15 @@ public class LinkedList
     public boolean remove(int _value)
     {
         // здесь будет ваш код удаления одного узла по заданному значению
+        if (this.head == null) {
+            return false;
+        }
+
         if (this.head.value == _value) {
             this.head = this.head.next;
+            if (this.head == null) {
+                this.tail = null;
+            }
             return true;
         } // отдельно удаление головы, ибо это не просто
 

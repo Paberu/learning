@@ -68,4 +68,19 @@ class LinkedListTest {
         assertEquals(0, listNode.size());
     }
 
+    @Test
+    void testRemove() {
+        boolean removeResult = ll1.remove(5);
+        assertEquals(true, removeResult);
+        assertEquals(2, ll1.head.value);
+
+        removeResult = ll2.remove(10);
+        assertEquals(false, removeResult);
+
+        removeResult = ll3.remove(11);
+        assertEquals(true, removeResult);
+        assertEquals(null, ll3.head);
+        assertEquals(null, ll3.tail);
+    }
+
 }
