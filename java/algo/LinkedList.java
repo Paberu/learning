@@ -67,7 +67,7 @@ public class LinkedList
         // здесь будет ваш код удаления всех узлов по заданному значению
         if (this.head.value == _value) {
             this.head = this.head.next;
-            return true;
+            return;
         } // отдельно удаление головы, ибо это не просто
     }
 
@@ -75,7 +75,7 @@ public class LinkedList
     {
         // здесь будет ваш код очистки всего списка
         this.head = null;
-        this.tail = null
+        this.tail = null;
     }
 
     public int count()
