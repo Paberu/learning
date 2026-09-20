@@ -38,48 +38,66 @@ class LinkedListTest {
     }
 
     @Test
-    void testAddInTail() {
+    void testAddInTail1() {
         Node node = new Node(144);
         ll1.addInTail(node);
         assertEquals(144, ll1.tail.value);
+    }
 
-        node = new Node(144);
+    @Test
+    void testAddInTail2() {
+        Node node = new Node(144);
         ll2.addInTail(node);
         assertEquals(144, ll2.tail.value);
+    }
 
-        node = new Node(144);
+    @Test
+    void testAddInTail3() {
+        Node node = new Node(144);
         ll3.addInTail(node);
         assertEquals(144, ll3.tail.value);
     }
 
     @Test
-    void testFind() {
+    void testFind1() {
         Node node = ll1.find(5);
         assertEquals(ll1.head, node);
+    }
 
-        node = ll2.find(5);
+    @Test
+    void testFind2() {
+        Node node = ll2.find(5);
         assertEquals(null, node);
     }
 
     @Test
-    void testFindAll() {
+    void testFindAll1() {
         ArrayList<Node> listNode = ll1.findAll(5);
         assertEquals(2, listNode.size());
+    }
 
-        listNode = ll3.findAll(5);
+    @Test
+    void testFindAll2() {
+        ArrayList<Node> listNode = ll3.findAll(5);
         assertEquals(0, listNode.size());
     }
 
     @Test
-    void testRemove() {
+    void testRemove1() {
         boolean removeResult = ll1.remove(5);
         assertEquals(true, removeResult);
         assertEquals(2, ll1.head.value);
+    }
 
-        removeResult = ll2.remove(10);
+    @Test
+    void testRemove2() {
+        boolean removeResult = ll2.remove(10);
         assertEquals(false, removeResult);
+    }
 
-        removeResult = ll3.remove(11);
+    @Test
+    void testRemove3() {
+        boolean removeResult = ll3.remove(11);
         assertEquals(true, removeResult);
         assertEquals(null, ll3.head);
         assertEquals(null, ll3.tail);
@@ -100,21 +118,53 @@ class LinkedListTest {
     }
 
     @Test
-    void testInsertAfter() {
+    void testInsertAfter1() {
         ll1.insertAfter(node4, new Node(55));
-        ll2.insertAfter(null, new Node(2));
-        ll3.insertAfter(null, new Node(2));
-
         assertEquals(7, ll1.count());
         assertEquals(55, node4.next.value);
         assertEquals(node5, node4.next.next);
+    }
 
+    @Test
+    void testInsertAfter2() {
+        ll2.insertAfter(null, new Node(2));
         assertEquals(1, ll2.count());
         assertEquals(2, ll2.head.value);
         assertEquals(2, ll2.tail.value);
+    }
 
+    @Test
+    void testInsertAfter3() {
+        ll3.insertAfter(null, new Node(2));
         assertEquals(2, ll3.count());
         assertEquals(2, ll3.head.value);
         assertEquals(11, ll3.tail.value);
+    }
+
+    @Test
+    void testRemoveAll1() {
+        LinkedList ll = new LinkedList();
+        for (int i = 0; i < 10; i++) {
+            ll.addInTail(new Node(5));
+        }
+
+        assertEquals(10, ll.count());
+        ll.removeAll(5);
+        assertEquals(null, ll.head);
+        assertEquals(null, ll.tail);
+    }
+
+    @Test
+    void testRemoveAll2() {
+        ll1.removeAll(5);
+        assertEquals(2, ll1.head.value);
+        assertEquals(0, node4.next.value);
+    }
+
+    @Test
+    void testRemoveAll3() {
+        ll3. removeAll(11);
+        assertEquals(null, ll3.head);
+        assertEquals(null, ll3.tail);
     }
 }
