@@ -137,6 +137,19 @@ class LinkedListTest {
         assertEquals(5, ll.tail.value);
     }
 
+    @Test
+    void testRemoveTail() {
+        LinkedList tempLL = new LinkedList();
+        Node head = new Node(1);
+        Node tail = new Node(2);
+        tempLL.addInTail(head);
+        tempLL.addInTail(tail);
+        boolean removeResult = tempLL.remove(2);
+        assertEquals(true, removeResult);
+        assertEquals(head, tempLL.head);
+        assertEquals(head, tempLL.tail);
+    }
+
     // Задача 2. Добавьте в класс LinkedList метод удаления всех узлов по конкретному значению.
     // Нормальное решение. Оставить проверку головы на финал, и проверить сначала весь оставшийся список.
     // Сложность решения по времени: O(n) - в худшем случае (n одних и тех же значений) проверяется n-1 значений, а потом отдельно голова.
@@ -170,6 +183,21 @@ class LinkedListTest {
         assertEquals(null, ll.head);
         assertEquals(null, ll.tail);
         assertEquals(0, ll.count());
+    }
+
+    @Test
+    void testRemoveAllTail() {
+        LinkedList tempLL = new LinkedList();
+        Node head = new Node(1);
+        Node tail = new Node(2);
+        tempLL.addInTail(head);
+        tempLL.addInTail(tail);
+        tempLL.addInTail(new Node(2));
+        tempLL.addInTail(new Node(2));
+        tempLL.addInTail(new Node(2));
+        tempLL.removeAll(2);
+        assertEquals(head, tempLL.head);
+        assertEquals(head, tempLL.tail);
     }
 
     // Задача 3. Добавьте в класс LinkedList метод очистки всего содержимого (создание пустого списка).
@@ -266,7 +294,8 @@ class LinkedListTest {
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
     @Test
     void testInsertAfter1() {
-        ll1.insertAfter(node4, new Node(55));
+        Node node = new Node(55);
+        ll1.insertAfter(node4, node);
         assertEquals(7, ll1.count());
         assertEquals(55, node4.next.value);
         assertEquals(node5, node4.next.next);
@@ -294,6 +323,18 @@ class LinkedListTest {
         assertEquals(11, ll.count());
         assertEquals(2, ll.head.value);
         assertEquals(5, ll.tail.value);
+    }
+
+    @Test
+    void testInsertAfterFail1() {
+        LinkedList tempLL = new LinkedList();
+        Node tmpNode1 = new Node(3);
+        tempLL.addInTail(tmpNode1);
+        Node tmpNode2 = new Node(4);
+        tempLL.insertAfter(tmpNode1, tmpNode2);
+        assertEquals(tmpNode1, tempLL.head);
+        assertEquals(tmpNode2, tempLL.tail);
+
     }
 
     // Задача 8. Напишите функцию, которая получает на вход два связных списка, состоящие из целых значений, и если их длины равны, возвращает список, каждый элемент которого равен сумме соответствующих элементов входных списков.

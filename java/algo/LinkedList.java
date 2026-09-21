@@ -163,6 +163,10 @@ public class LinkedList
 
         _nodeToInsert.next = _nodeAfter.next;
         _nodeAfter.next = _nodeToInsert;
+
+        if (_nodeToInsert.next == null) {
+            this.tail = _nodeToInsert;
+        }
     }
 }
 
