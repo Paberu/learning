@@ -79,19 +79,20 @@ class LinkedListTest {
     // Задача 1. Добавьте в класс LinkedList метод удаления одного узла по его значению.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
     // Сложность решения по пространству: О(1)
-
-
     @Test
     void testRemove1() {
         boolean removeResult = ll1.remove(5);
         assertEquals(true, removeResult);
         assertEquals(2, ll1.head.value);
+        assertEquals(0, ll1.tail.value);
     }
 
     @Test
     void testRemove2() {
         boolean removeResult = ll2.remove(10);
         assertEquals(false, removeResult);
+        assertEquals(null, ll2.head);
+        assertEquals(null, ll2.tail);
     }
 
     @Test
@@ -100,6 +101,14 @@ class LinkedListTest {
         assertEquals(true, removeResult);
         assertEquals(null, ll3.head);
         assertEquals(null, ll3.tail);
+    }
+
+    @Test
+    void testRemove() {
+        boolean removeResult = ll.remove(5);
+        assertEquals(true, removeResult);
+        assertEquals(5, ll.head.value);
+        assertEquals(5, ll.tail.value);
     }
 
 
