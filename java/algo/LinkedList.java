@@ -92,6 +92,7 @@ public class LinkedList
                     this.tail = previousNode;
                 }
             }
+            previousNode = previousNode.next;
             node = node.next;
         }
         // после проверки всего тела списка идёт проверка головы
