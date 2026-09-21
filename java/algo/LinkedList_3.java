@@ -75,6 +75,18 @@ class LinkedListTest {
         assertEquals(5, ll.head.value);
     }
 
+    @Test
+    void testFind1() {
+        Node node = ll1.find(5);
+        assertEquals(ll1.head, node);
+    }
+
+    @Test
+    void testFind2() {
+        Node node = ll2.find(5);
+        assertEquals(null, node);
+    }
+
     // Курс "Практика в программировании на АСД. Задание 1.
     // Задача 1. Добавьте в класс LinkedList метод удаления одного узла по его значению.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
@@ -177,28 +189,38 @@ class LinkedListTest {
         assertEquals(null, ll.tail);
     }
 
-
-    @Test
-    void testFind1() {
-        Node node = ll1.find(5);
-        assertEquals(ll1.head, node);
-    }
-
-    @Test
-    void testFind2() {
-        Node node = ll2.find(5);
-        assertEquals(null, node);
-    }
-
+    // Задача 4. Добавьте в класс LinkedList метод поиска всех узлов по конкретному значению (возвращается список/массив найденных узлов).
+    // Сложность решения по времени: O(1). Просто задаются новые голова и хвост, а бесхозные узлы постепенно уберёт сборщик мусора.
+    // Сложность решения по пространству: О(1).
     @Test
     void testFindAll1() {
         ArrayList<Node> listNode = ll1.findAll(5);
         assertEquals(2, listNode.size());
+        listNode = ll1.findAll(7);
+        assertEquals(1, listNode.size());
+        listNode = ll1.findAll(11);
+        assertEquals(0, listNode.size());
     }
 
     @Test
     void testFindAll2() {
-        ArrayList<Node> listNode = ll3.findAll(5);
+        ArrayList<Node> listNode = ll2.findAll(5);
+        assertEquals(0, listNode.size());
+    }
+
+    @Test
+    void testFindAll3() {
+        ArrayList<Node> listNode = ll3.findAll(11);
+        assertEquals(1, listNode.size());
+        listNode = ll3.findAll(12);
+        assertEquals(0, listNode.size());
+    }
+
+    @Test
+    void testFindAll() {
+        ArrayList<Node> listNode = ll.findAll(5);
+        assertEquals(10, listNode.size());
+        listNode = ll.findAll(0);
         assertEquals(0, listNode.size());
     }
 
