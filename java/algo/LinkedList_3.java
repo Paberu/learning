@@ -111,6 +111,41 @@ class LinkedListTest {
         assertEquals(5, ll.tail.value);
     }
 
+    // Задача 2. Добавьте в класс LinkedList метод удаления всех узлов по конкретному значению.
+    // Нормальное решение. Оставить проверку головы на финал, и проверить сначала весь оставшийся список.
+    // Сложность решения по времени: O(n) - в худшем случае (n одних и тех же значений) проверяется n-1 значений, а потом отдельно голова.
+    // Сложность решения по пространству: О(1).
+    @Test
+    void testRemoveAll1() {
+        ll1.removeAll(5);
+        assertEquals(2, ll1.head.value);
+        assertEquals(0, ll1.tail.value);
+        assertEquals(0, node4.next.value);
+    }
+
+    @Test
+    void testRemoveAll2() {
+        ll2.removeAll(5);
+        assertEquals(null, ll2.head);
+        assertEquals(null, ll2.tail);
+    }
+
+    @Test
+    void testRemoveAll3() {
+        ll3.removeAll(11);
+        assertEquals(null, ll3.head);
+        assertEquals(null, ll3.tail);
+    }
+
+    @Test
+    void testRemoveAll() {
+        assertEquals(10, ll.count());
+        ll.removeAll(5);
+        assertEquals(null, ll.head);
+        assertEquals(null, ll.tail);
+        assertEquals(0, ll.count());
+    }
+
 
     @Test
     void testFind1() {
@@ -175,27 +210,4 @@ class LinkedListTest {
         assertEquals(11, ll3.tail.value);
     }
 
-    @Test
-    void testRemoveAll1() {
-
-
-        assertEquals(10, ll.count());
-        ll.removeAll(5);
-        assertEquals(null, ll.head);
-        assertEquals(null, ll.tail);
-    }
-
-    @Test
-    void testRemoveAll2() {
-        ll1.removeAll(5);
-        assertEquals(2, ll1.head.value);
-        assertEquals(0, node4.next.value);
-    }
-
-    @Test
-    void testRemoveAll3() {
-        ll3. removeAll(11);
-        assertEquals(null, ll3.head);
-        assertEquals(null, ll3.tail);
-    }
 }
