@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class LinkedListTest {
 
+    private LinkedList ll;
     private LinkedList ll1;
     private LinkedList ll2;
     private LinkedList ll3;
@@ -22,6 +23,11 @@ class LinkedListTest {
         node4 = new Node(10);
         node5 = new Node(5);
         Node node6 = new Node(0);
+
+        ll = new LinkedList();
+        for (int i = 0; i < 10; i++) {
+            ll.addInTail(new Node(5));
+        }
 
         ll1 = new LinkedList();
         ll1.addInTail(node1);
@@ -42,6 +48,7 @@ class LinkedListTest {
         Node node = new Node(144);
         ll1.addInTail(node);
         assertEquals(144, ll1.tail.value);
+        assertEquals(5, ll1.head.value);
     }
 
     @Test
@@ -49,6 +56,7 @@ class LinkedListTest {
         Node node = new Node(144);
         ll2.addInTail(node);
         assertEquals(144, ll2.tail.value);
+        assertEquals(144, ll2.head.value);
     }
 
     @Test
@@ -56,7 +64,44 @@ class LinkedListTest {
         Node node = new Node(144);
         ll3.addInTail(node);
         assertEquals(144, ll3.tail.value);
+        assertEquals(11, ll3.head.value);
     }
+
+    @Test
+    void testAddInTail() {
+        Node node = new Node(144);
+        ll.addInTail(node);
+        assertEquals(144, ll.tail.value);
+        assertEquals(5, ll.head.value);
+    }
+
+    // Курс "Практика в программировании на АСД. Задание 1.
+    // Задача 1. Добавьте в класс LinkedList метод удаления одного узла по его значению.
+    // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
+    // Сложность решения по пространству: О(1)
+
+
+    @Test
+    void testRemove1() {
+        boolean removeResult = ll1.remove(5);
+        assertEquals(true, removeResult);
+        assertEquals(2, ll1.head.value);
+    }
+
+    @Test
+    void testRemove2() {
+        boolean removeResult = ll2.remove(10);
+        assertEquals(false, removeResult);
+    }
+
+    @Test
+    void testRemove3() {
+        boolean removeResult = ll3.remove(11);
+        assertEquals(true, removeResult);
+        assertEquals(null, ll3.head);
+        assertEquals(null, ll3.tail);
+    }
+
 
     @Test
     void testFind1() {
@@ -82,26 +127,6 @@ class LinkedListTest {
         assertEquals(0, listNode.size());
     }
 
-    @Test
-    void testRemove1() {
-        boolean removeResult = ll1.remove(5);
-        assertEquals(true, removeResult);
-        assertEquals(2, ll1.head.value);
-    }
-
-    @Test
-    void testRemove2() {
-        boolean removeResult = ll2.remove(10);
-        assertEquals(false, removeResult);
-    }
-
-    @Test
-    void testRemove3() {
-        boolean removeResult = ll3.remove(11);
-        assertEquals(true, removeResult);
-        assertEquals(null, ll3.head);
-        assertEquals(null, ll3.tail);
-    }
 
     @Test
     void testClear() {
@@ -143,10 +168,7 @@ class LinkedListTest {
 
     @Test
     void testRemoveAll1() {
-        LinkedList ll = new LinkedList();
-        for (int i = 0; i < 10; i++) {
-            ll.addInTail(new Node(5));
-        }
+
 
         assertEquals(10, ll.count());
         ll.removeAll(5);
