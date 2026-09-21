@@ -29,19 +29,10 @@ public class LinkedList
         return null;
     }
 
-    public ArrayList<Node> findAll(int _value) {
-        ArrayList<Node> nodes = new ArrayList<Node>();
-        // здесь будет ваш код поиска всех узлов
-        Node node = this.head;
-        while (node != null) {
-            if (node.value == _value) {
-                nodes.add(node);
-            }
-            node = node.next;
-        }
-        return nodes;
-    }
-
+    // Курс "Практика в программировании на АСД. Задание 1.
+    // Задача 1. Добавьте в класс LinkedList метод удаления одного узла по его значению.
+    // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
+    // Сложность решения по пространству: О(1)
     public boolean remove(int _value) {
         // здесь будет ваш код удаления одного узла по заданному значению
         if (this.head == null) {
@@ -69,6 +60,21 @@ public class LinkedList
         }
         return false; // узел не нашли и не удалили
     }
+
+
+    public ArrayList<Node> findAll(int _value) {
+        ArrayList<Node> nodes = new ArrayList<Node>();
+        // здесь будет ваш код поиска всех узлов
+        Node node = this.head;
+        while (node != null) {
+            if (node.value == _value) {
+                nodes.add(node);
+            }
+            node = node.next;
+        }
+        return nodes;
+    }
+
 
     public void removeAll(int _value) {
         // здесь будет ваш код удаления всех узлов по заданному значению
