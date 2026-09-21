@@ -146,6 +146,37 @@ class LinkedListTest {
         assertEquals(0, ll.count());
     }
 
+    // Задача 3. Добавьте в класс LinkedList метод очистки всего содержимого (создание пустого списка).
+    // Сложность решения по времени: O(1). Просто задаются новые голова и хвост, а бесхозные узлы постепенно уберёт сборщик мусора.
+    // Сложность решения по пространству: О(1).
+    @Test
+    void testClear1() {
+        ll1.clear();
+        assertEquals(null, ll1.head);
+        assertEquals(null, ll1.tail);
+    }
+
+    @Test
+    void testClear2() {
+        ll2.clear();
+        assertEquals(null, ll2.head);
+        assertEquals(null, ll2.tail);
+    }
+
+    @Test
+    void testClear3() {
+        ll3.clear();
+        assertEquals(null, ll3.head);
+        assertEquals(null, ll3.tail);
+    }
+
+    @Test
+    void testClear() {
+        ll.clear();
+        assertEquals(null, ll.head);
+        assertEquals(null, ll.tail);
+    }
+
 
     @Test
     void testFind1() {
@@ -169,14 +200,6 @@ class LinkedListTest {
     void testFindAll2() {
         ArrayList<Node> listNode = ll3.findAll(5);
         assertEquals(0, listNode.size());
-    }
-
-
-    @Test
-    void testClear() {
-        ll1.clear();
-        assertEquals(null, ll1.head);
-        assertEquals(null, ll1.tail);
     }
 
     @Test
