@@ -79,6 +79,10 @@ public class LinkedList
     // Сложность решения по пространству: О(1).
     public void removeAll(int _value) {
         // здесь будет ваш код удаления всех узлов по заданному значению
+        if (this.head == null) {
+            return;
+        }
+
         Node previousNode = this.head;
         Node node = this.head.next;
         while (node != null) {
