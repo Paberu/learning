@@ -91,8 +91,9 @@ public class LinkedList
                 if (previousNode.next == null) {
                     this.tail = previousNode;
                 }
+            } else {
+                previousNode = previousNode.next;
             }
-            previousNode = previousNode.next;
             node = node.next;
         }
         // после проверки всего тела списка идёт проверка головы
