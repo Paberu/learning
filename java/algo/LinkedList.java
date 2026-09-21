@@ -144,11 +144,10 @@ public class LinkedList
         return count;
     }
 
-    // Задача 6. Добавьте в класс LinkedList метод вычисления длины списка.
+    // Задача 6. Добавьте в класс LinkedList метод вставки нового узла после заданного узла.
     // Сложность решения по времени: O(n). В лучшем случае - добавление в голову - О(1), в худшем - в конец списка - O(n).
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
-    public void insertAfter(Node _nodeAfter, Node _nodeToInsert)
-    {
+    public void insertAfter(Node _nodeAfter, Node _nodeToInsert) {
         // здесь будет ваш код вставки узла после заданного
 
         // если _nodeAfter = null ,
@@ -165,7 +164,6 @@ public class LinkedList
         _nodeToInsert.next = _nodeAfter.next;
         _nodeAfter.next = _nodeToInsert;
     }
-
 }
 
 class Node
