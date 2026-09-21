@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class LinkedListTest {
+    // Курс "Практика в программировании на АСД. Задание 1.
+    // Задача 7. Напишите проверочные тесты для каждого из предыдущих заданий. На каждый метод класса у меня 4 тестирующих функции.
+    // Используется 4 списка: со случайными числами, пустой, с одним значением, с большим количеством одинаковых значений.
 
     private LinkedList ll;
     private LinkedList ll1;
@@ -77,8 +80,8 @@ class LinkedListTest {
 
     @Test
     void testFind1() {
-        Node node = ll1.find(5);
-        assertEquals(ll1.head, node);
+        Node node = ll1.find(10);
+        assertEquals(node4, node);
     }
 
     @Test
@@ -87,7 +90,18 @@ class LinkedListTest {
         assertEquals(null, node);
     }
 
-    // Курс "Практика в программировании на АСД. Задание 1.
+    @Test
+    void testFind3() {
+        Node node = ll3.find(11);
+        assertEquals(ll3.head, node);
+    }
+
+    @Test
+    void testFind() {
+        Node node = ll.find(5);
+        assertEquals(ll.head, node);
+    }
+
     // Задача 1. Добавьте в класс LinkedList метод удаления одного узла по его значению.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
     // Сложность решения по пространству: О(1)
