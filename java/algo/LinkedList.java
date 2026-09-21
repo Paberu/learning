@@ -61,6 +61,43 @@ public class LinkedList
         return false; // узел не нашли и не удалили
     }
 
+    // Задача 2. Добавьте в класс LinkedList метод удаления всех узлов по конкретному значению.
+    // Оставил халтурное решение, принятое вчера вечером. Осознание халтурности пришло при обдумывании сложности.
+    // Сложность решения по времени: O(n^2) - в худшем случае (n одних и тех же значений) придётся пробежать весь список n раз, где n - размерность списка.
+    // Сложность решения по пространству: О(1).
+    public void removeAllDeprecated(int _value) {
+        // здесь будет ваш код удаления всех узлов по заданному значению
+        boolean removeFlag = true;
+        while (removeFlag) {
+            removeFlag = remove(_value);
+        }
+    }
+
+    // Задача 2. Добавьте в класс LinkedList метод удаления всех узлов по конкретному значению.
+    // Нормальное решение. Оставить проверку головы на финал, и проверить сначала весь оставшийся список.
+    // Сложность решения по времени: O(n) - в худшем случае (n одних и тех же значений) проверяется n-1 значений, а потом отдельно голова.
+    // Сложность решения по пространству: О(1).
+    public void removeAll(int _value) {
+        // здесь будет ваш код удаления всех узлов по заданному значению
+        Node previousNode = this.head;
+        Node node = this.head.next;
+        while (node != null) {
+            if (node.value == _value) {
+                previousNode.next = node.next;
+                if (previousNode.next == null) {
+                    this.tail = previousNode;
+                }
+            }
+            node = node.next;
+        }
+        // после проверки всего тела списка идёт проверка головы
+        if (this.head.value == _value) {
+            this.head = this.head.next; // это если в списке после удаления осталось что-то, кроме головы
+            if (this.head == null) {
+                this.tail = null;       // а здесь если ничего не осталось
+            }
+        }
+    }
 
     public ArrayList<Node> findAll(int _value) {
         ArrayList<Node> nodes = new ArrayList<Node>();
@@ -76,13 +113,6 @@ public class LinkedList
     }
 
 
-    public void removeAll(int _value) {
-        // здесь будет ваш код удаления всех узлов по заданному значению
-       boolean removeFlag = true;
-       while (removeFlag) {
-            removeFlag = remove(_value);
-       }
-    }
 
     public void clear()
     {
