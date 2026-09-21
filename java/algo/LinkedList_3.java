@@ -247,6 +247,9 @@ class LinkedListTest {
         assertEquals(10, ll.count());
     }
 
+    // Задача 6. Добавьте в класс LinkedList метод вставки нового узла после заданного узла.
+    // Сложность решения по времени: O(n). В лучшем случае - добавление в голову - О(1), в худшем - в конец списка - O(n).
+    // Сложность решения по пространству: О(1). Ничего нового не создаётся.
     @Test
     void testInsertAfter1() {
         ll1.insertAfter(node4, new Node(55));
@@ -269,6 +272,14 @@ class LinkedListTest {
         assertEquals(2, ll3.count());
         assertEquals(2, ll3.head.value);
         assertEquals(11, ll3.tail.value);
+    }
+
+    @Test
+    void testInsertAfter() {
+        ll.insertAfter(null, new Node(2));
+        assertEquals(11, ll.count());
+        assertEquals(2, ll.head.value);
+        assertEquals(5, ll.tail.value);
     }
 
 }
