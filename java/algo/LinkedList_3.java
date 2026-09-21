@@ -190,8 +190,8 @@ class LinkedListTest {
     }
 
     // Задача 4. Добавьте в класс LinkedList метод поиска всех узлов по конкретному значению (возвращается список/массив найденных узлов).
-    // Сложность решения по времени: O(1). Просто задаются новые голова и хвост, а бесхозные узлы постепенно уберёт сборщик мусора.
-    // Сложность решения по пространству: О(1).
+    // Сложность решения по времени: O(n). В худшем случае мы соберём все узлы в новый список.
+    // Сложность решения по пространству: О(n). В худшем случае мы соберём все узлы в новый список.
     @Test
     void testFindAll1() {
         ArrayList<Node> listNode = ll1.findAll(5);
@@ -224,11 +224,27 @@ class LinkedListTest {
         assertEquals(0, listNode.size());
     }
 
+    // Задача 5. Добавьте в класс LinkedList метод вычисления длины списка.
+    // Сложность решения по времени: O(n). В любом случае надо обойти весь список.
+    // Сложность решения по пространству: О(1). На выходе одно целочисленное значение.
+    @Test
+    void testCount1() {
+        assertEquals(6, ll1.count());
+    }
+
+    @Test
+    void testCount2() {
+        assertEquals(0, ll2.count());
+    }
+
+    @Test
+    void testCount3() {
+        assertEquals(1, ll3.count());
+    }
+
     @Test
     void testCount() {
-        assertEquals(6, ll1.count());
-        assertEquals(0, ll2.count());
-        assertEquals(1, ll3.count());
+        assertEquals(10, ll.count());
     }
 
     @Test
