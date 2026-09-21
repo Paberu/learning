@@ -105,6 +105,15 @@ public class LinkedList
         }
     }
 
+    // Задача 2. Добавьте в класс LinkedList метод очистки всего содержимого (создание пустого списка).
+    // Сложность решения по времени: O(1). Просто задаются новые голова и хвост, а бесхозные узлы постепенно уберёт сборщик мусора.
+    // Сложность решения по пространству: О(1).
+    public void clear() {
+        // здесь будет ваш код очистки всего списка
+        this.head = null;
+        this.tail = null;
+    }
+
     public ArrayList<Node> findAll(int _value) {
         ArrayList<Node> nodes = new ArrayList<Node>();
         // здесь будет ваш код поиска всех узлов
@@ -120,12 +129,6 @@ public class LinkedList
 
 
 
-    public void clear()
-    {
-        // здесь будет ваш код очистки всего списка
-        this.head = null;
-        this.tail = null;
-    }
 
     public int count()
     {
