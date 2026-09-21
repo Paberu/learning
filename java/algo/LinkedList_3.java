@@ -296,4 +296,49 @@ class LinkedListTest {
         assertEquals(5, ll.tail.value);
     }
 
+    // Задача 8. Напишите функцию, которая получает на вход два связных списка, состоящие из целых значений, и если их длины равны, возвращает список, каждый элемент которого равен сумме соответствующих элементов входных списков.
+    // Сложность решения по времени: O(n). Оба списка обходятся целиком.
+    // Сложность решения по пространству: О(n). Создаётся новый список всё той же размерности n.
+    @Test
+    void testSumUp1() {
+        LinkedList tempLL = new LinkedList();
+        for (int i=0; i < ll1.count(); i++) {
+            tempLL.addInTail(new Node(i));
+        }
+        LinkedList testLL = LinkedListUtils.sumUp(ll1, tempLL);
+        assertEquals(5, testLL.head.value);
+        assertEquals(5, testLL.tail.value);
+    }
+
+    @Test
+    void testSumUp2() {
+        LinkedList tempLL = new LinkedList();
+        for (int i=0; i < ll1.count(); i++) {
+            tempLL.addInTail(new Node(i));
+        }
+        LinkedList testLL = LinkedListUtils.sumUp(ll2, tempLL);
+        assertEquals(null, testLL.head);
+        assertEquals(null, testLL.tail);
+    }
+    @Test
+    void testSumUp3() {
+        LinkedList tempLL = new LinkedList();
+        tempLL.addInTail(new Node(55));
+
+        LinkedList testLL = LinkedListUtils.sumUp(ll3, tempLL);
+        assertEquals(66, testLL.head.value);
+        assertEquals(66, testLL.tail.value);
+    }
+
+    @Test
+    void testSumUp() {
+        LinkedList tempLL = new LinkedList();
+        for (int i=1; i <= ll.count(); i++) {
+            tempLL.addInTail(new Node(i));
+        }
+        LinkedList testLL = LinkedListUtils.sumUp(ll, tempLL);
+        assertEquals(6, testLL.head.value);
+        assertEquals(15, testLL.tail.value);
+    }
+
 }
