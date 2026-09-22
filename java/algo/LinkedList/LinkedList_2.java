@@ -1,3 +1,6 @@
+package LinkedList;
+
+
 class LinkedListUtils {
     public static LinkedList sumUp(LinkedList firstList, LinkedList secondList) {
         if (firstList.count() != secondList.count()) {
