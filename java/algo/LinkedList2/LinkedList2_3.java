@@ -1,5 +1,6 @@
 package LinkedList2;
 
+import LinkedList.LinkedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -240,7 +241,50 @@ public class LinkedList2_3 {
     // Задача 5. Добавьте в класс LinkedList2 метод вставки узла после заданного узла.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
+    @Test
+    void testInsertAfter1() {
+        Node node = new Node(55);
+        ll1.insertAfter(node4, node);
+        assertEquals(7, ll1.count());
+        assertEquals(55, node4.next.value);
+        assertEquals(node5, node4.next.next);
+    }
 
+    @Test
+    void testInsertAfter2() {
+        ll2.insertAfter(null, new Node(2));
+        assertEquals(1, ll2.count());
+        assertEquals(2, ll2.head.value);
+        assertEquals(2, ll2.tail.value);
+    }
+
+    @Test
+    void testInsertAfter3() {
+        ll3.insertAfter(null, new Node(2));
+        assertEquals(2, ll3.count());
+        assertEquals(2, ll3.head.value);
+        assertEquals(11, ll3.tail.value);
+    }
+
+    @Test
+    void testInsertAfter() {
+        ll.insertAfter(null, new Node(2));
+        assertEquals(11, ll.count());
+        assertEquals(2, ll.head.value);
+        assertEquals(5, ll.tail.value);
+    }
+
+    @Test
+    void testInsertAfterFail1() {
+        LinkedList2 tempLL = new LinkedList2();
+        Node tmpNode1 = new Node(3);
+        tempLL.addInTail(tmpNode1);
+        Node tmpNode2 = new Node(4);
+        tempLL.insertAfter(tmpNode1, tmpNode2);
+        assertEquals(tmpNode1, tempLL.head);
+        assertEquals(tmpNode2, tempLL.tail);
+
+    }
     // Задача 6. Добавьте в класс LinkedList2 метод вставки узла самым первым элементом.
     // Сложность решения по времени: O(1) - всегда в начало.
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
