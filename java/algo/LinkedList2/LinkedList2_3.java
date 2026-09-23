@@ -288,6 +288,38 @@ public class LinkedList2_3 {
     // Задача 6. Добавьте в класс LinkedList2 метод вставки узла самым первым элементом.
     // Сложность решения по времени: O(1) - всегда в начало.
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
+    @Test
+    void testInsertFirst1() {
+        Node node = new Node(55);
+        ll1.insertFirst(node);
+        assertEquals(7, ll1.count());
+        assertEquals(55, ll1.head.value);
+        assertEquals(5, node.next.value);
+    }
+
+    @Test
+    void testInsertFirst2() {
+        ll2.insertFirst(new Node(2));
+        assertEquals(1, ll2.count());
+        assertEquals(2, ll2.head.value);
+        assertEquals(2, ll2.tail.value);
+    }
+
+    @Test
+    void testInsertFirst3() {
+        ll3.insertFirst(new Node(2));
+        assertEquals(2, ll3.count());
+        assertEquals(2, ll3.head.value);
+        assertEquals(11, ll3.tail.value);
+    }
+
+    @Test
+    void testInsertFirst() {
+        ll.insertFirst(new Node(2));
+        assertEquals(11, ll.count());
+        assertEquals(2, ll.head.value);
+        assertEquals(5, ll.tail.value);
+    }
 
     // Задача 7. Добавьте в класс LinkedList2 метод очистки всего содержимого (создание пустого списка).
     // Сложность решения по времени: O(1).
