@@ -76,11 +76,34 @@ public class LinkedList2_3 {
         assertEquals(144, ll.tail.value);
         assertEquals(5, ll.head.value);
     }
-    
+
     // Курс "Практика в программировании на АСД. Задание 2.
     // Задача 1. Добавьте в класс LinkedList2 метод поиска первого узла по его значению.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
+    @Test
+    void testFind1() {
+        Node node = ll1.find(10);
+        assertEquals(node4, node);
+    }
+
+    @Test
+    void testFind2() {
+        Node node = ll2.find(5);
+        assertEquals(null, node);
+    }
+
+    @Test
+    void testFind3() {
+        Node node = ll3.find(11);
+        assertEquals(ll3.head, node);
+    }
+
+    @Test
+    void testFind() {
+        Node node = ll.find(5);
+        assertEquals(ll.head, node);
+    }
 
     // Задача 2. Добавьте в класс LinkedList2 метод поиска всех узлов по конкретному значению.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
