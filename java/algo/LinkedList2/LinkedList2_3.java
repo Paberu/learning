@@ -383,4 +383,18 @@ public class LinkedList2_3 {
         assertEquals(5, tempLL.head.value);
         assertEquals(5, tempLL.tail.value);
     }
+
+    @Test
+    void testReversedListFailed() {
+        LinkedList2 llFailed = new LinkedList2();
+        for (int i = 0; i < 10; i++) {
+            llFailed.addInTail(new Node(i));
+        }
+        LinkedList2 tempLL = LinkedList2_2.reversedList(llFailed);
+        Node node = tempLL.head;
+        for (int i = 9; i >= 0; i--) {
+            assertEquals(i, node.value);
+            node = node.next;
+        }
+    }
 }
