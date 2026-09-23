@@ -97,6 +97,11 @@ public class LinkedList2 {
         Node node = this.head;
         while (node != null) {
             if (node.value == _value) {
+                if (this.head == this.tail) { // граничный случай: удалить единственный узел, он же голова, он же хвост.
+                    this.head = null;
+                    this.tail = null;
+                    return;
+                }
                 if (node == this.head) {
                     this.head = this.head.next;
                     this.head.prev = null;
