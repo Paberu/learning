@@ -13,7 +13,7 @@ public class LinkedList2_2 {
         LinkedList2 reversedLL = new LinkedList2();
         Node node = linkedList2.tail;
         while (node != null) {
-            reversedLL.addInTail(node);
+            reversedLL.addInTail(new Node(node.value));
             node = node.prev;
         }
         return reversedLL;
