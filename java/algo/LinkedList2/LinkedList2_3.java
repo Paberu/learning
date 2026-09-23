@@ -108,14 +108,134 @@ public class LinkedList2_3 {
     // Задача 2. Добавьте в класс LinkedList2 метод поиска всех узлов по конкретному значению.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
     // Сложность решения по пространству: О(n) - в худшем случае получится копия изначального списка (если список состоит из одних лишь дубликатов).
+    @Test
+    void testFindAll1() {
+        ArrayList<Node> listNode = ll1.findAll(5);
+        assertEquals(2, listNode.size());
+        listNode = ll1.findAll(7);
+        assertEquals(1, listNode.size());
+        listNode = ll1.findAll(11);
+        assertEquals(0, listNode.size());
+    }
+
+    @Test
+    void testFindAll2() {
+        ArrayList<Node> listNode = ll2.findAll(5);
+        assertEquals(0, listNode.size());
+    }
+
+    @Test
+    void testFindAll3() {
+        ArrayList<Node> listNode = ll3.findAll(11);
+        assertEquals(1, listNode.size());
+        listNode = ll3.findAll(12);
+        assertEquals(0, listNode.size());
+    }
+
+    @Test
+    void testFindAll() {
+        ArrayList<Node> listNode = ll.findAll(5);
+        assertEquals(10, listNode.size());
+        listNode = ll.findAll(0);
+        assertEquals(0, listNode.size());
+    }
 
     // Задача 3. Добавьте в класс LinkedList2 метод удаления одного узла по его значению.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
+    @Test
+    void testRemove1() {
+        boolean removeResult = ll1.remove(5);
+        assertEquals(true, removeResult);
+        assertEquals(2, ll1.head.value);
+        assertEquals(0, ll1.tail.value);
+    }
+
+    @Test
+    void testRemove2() {
+        boolean removeResult = ll2.remove(10);
+        assertEquals(false, removeResult);
+        assertEquals(null, ll2.head);
+        assertEquals(null, ll2.tail);
+    }
+
+    @Test
+    void testRemove3() {
+        boolean removeResult = ll3.remove(11);
+        assertEquals(true, removeResult);
+        assertEquals(null, ll3.head);
+        assertEquals(null, ll3.tail);
+    }
+
+    @Test
+    void testRemove() {
+        boolean removeResult = ll.remove(5);
+        assertEquals(true, removeResult);
+        assertEquals(5, ll.head.value);
+        assertEquals(5, ll.tail.value);
+    }
+
+    @Test
+    void testRemoveTail() {
+        LinkedList2 tempLL = new LinkedList2();
+        Node head = new Node(1);
+        Node tail = new Node(2);
+        tempLL.addInTail(head);
+        tempLL.addInTail(tail);
+        boolean removeResult = tempLL.remove(2);
+        assertEquals(true, removeResult);
+        assertEquals(head, tempLL.head);
+        assertEquals(head, tempLL.tail);
+    }
 
     // Задача 4. Добавьте в класс LinkedList2 метод удаления всех узлов по конкретному значению.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
     // Сложность решения по пространству: О(1). Ничего нового не создаётся. В крайнем случае (список из дубликатов) останет пустой список.
+    @Test
+    void testRemoveAll1() {
+        ll1.removeAll(5);
+        assertEquals(2, ll1.head.value);
+        assertEquals(0, ll1.tail.value);
+        assertEquals(0, node4.next.value);
+    }
+
+    @Test
+    void testRemoveAll2() {
+        ll2.removeAll(5);
+        assertEquals(null, ll2.head);
+        assertEquals(null, ll2.tail);
+    }
+
+    @Test
+    void testRemoveAll3() {
+        ll3.removeAll(11);
+        assertEquals(null, ll3.head);
+        assertEquals(null, ll3.tail);
+    }
+
+    @Test
+    void testRemoveAll() {
+        assertEquals(10, ll.count());
+        ll.removeAll(5);
+        assertEquals(null, ll.head);
+        assertEquals(null, ll.tail);
+        assertEquals(0, ll.count());
+    }
+
+    @Test
+    void testRemoveAllTail() {
+        LinkedList2 tempLL = new LinkedList2();
+        Node head = new Node(1);
+        Node tail = new Node(2);
+        tempLL.addInTail(head);
+        tempLL.addInTail(tail);
+        tempLL.addInTail(new Node(2));
+        tempLL.addInTail(new Node(2));
+        tempLL.addInTail(new Node(2));
+        tempLL.removeAll(2);
+        assertEquals(head, tempLL.head);
+        assertEquals(head, tempLL.tail);
+    }
 
     // Задача 5. Добавьте в класс LinkedList2 метод вставки узла после заданного узла.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
