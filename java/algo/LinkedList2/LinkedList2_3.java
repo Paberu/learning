@@ -352,4 +352,35 @@ public class LinkedList2_3 {
         assertNull(ll.tail);
     }
 
+    // Задача 9. Добавьте метод, который "переворачивает" порядок элементов в связном списке, меняя его на противоположный.
+    // Упрощенный вариант решения: через создание временного списка.
+    // Сложность решения по времени: O(n) - всегда надо обойти весь список.
+    // Сложность решения по пространству: О(n) - всегда создаётся новый список.
+    @Test
+    void testReversedList1(){
+        LinkedList2 tempLL = LinkedList2_2.reversedList(ll1);
+        assertEquals(0, tempLL.head.value);
+        assertEquals(5, tempLL.tail.value);
+    }
+
+    @Test
+    void testReversedList2(){
+        LinkedList2 tempLL = LinkedList2_2.reversedList(ll2);
+        assertNull(tempLL.head);
+        assertNull(tempLL.tail);
+    }
+
+    @Test
+    void testReversedList3(){
+        LinkedList2 tempLL = LinkedList2_2.reversedList(ll3);
+        assertEquals(11, tempLL.head.value);
+        assertEquals(11, tempLL.tail.value);
+    }
+
+    @Test
+    void testReversedList(){
+        LinkedList2 tempLL = LinkedList2_2.reversedList(ll);
+        assertEquals(5, tempLL.head.value);
+        assertEquals(5, tempLL.tail.value);
+    }
 }
