@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class LinkedList2_3 {
@@ -91,7 +91,7 @@ public class LinkedList2_3 {
     @Test
     void testFind2() {
         Node node = ll2.find(5);
-        assertEquals(null, node);
+        assertNull(node);
     }
 
     @Test
@@ -147,7 +147,7 @@ public class LinkedList2_3 {
     @Test
     void testRemove1() {
         boolean removeResult = ll1.remove(5);
-        assertEquals(true, removeResult);
+        assertTrue(removeResult);
         assertEquals(2, ll1.head.value);
         assertEquals(0, ll1.tail.value);
     }
@@ -155,23 +155,23 @@ public class LinkedList2_3 {
     @Test
     void testRemove2() {
         boolean removeResult = ll2.remove(10);
-        assertEquals(false, removeResult);
-        assertEquals(null, ll2.head);
-        assertEquals(null, ll2.tail);
+        assertFalse(removeResult);
+        assertNull(ll2.head);
+        assertNull(ll2.tail);
     }
 
     @Test
     void testRemove3() {
         boolean removeResult = ll3.remove(11);
-        assertEquals(true, removeResult);
-        assertEquals(null, ll3.head);
-        assertEquals(null, ll3.tail);
+        assertTrue(removeResult);
+        assertNull(ll3.head);
+        assertNull(ll3.tail);
     }
 
     @Test
     void testRemove() {
         boolean removeResult = ll.remove(5);
-        assertEquals(true, removeResult);
+        assertTrue(removeResult);
         assertEquals(5, ll.head.value);
         assertEquals(5, ll.tail.value);
     }
@@ -184,7 +184,7 @@ public class LinkedList2_3 {
         tempLL.addInTail(head);
         tempLL.addInTail(tail);
         boolean removeResult = tempLL.remove(2);
-        assertEquals(true, removeResult);
+        assertTrue(removeResult);
         assertEquals(head, tempLL.head);
         assertEquals(head, tempLL.tail);
     }
@@ -203,23 +203,23 @@ public class LinkedList2_3 {
     @Test
     void testRemoveAll2() {
         ll2.removeAll(5);
-        assertEquals(null, ll2.head);
-        assertEquals(null, ll2.tail);
+        assertNull(ll2.head);
+        assertNull(ll2.tail);
     }
 
     @Test
     void testRemoveAll3() {
         ll3.removeAll(11);
-        assertEquals(null, ll3.head);
-        assertEquals(null, ll3.tail);
+        assertNull(ll3.head);
+        assertNull(ll3.tail);
     }
 
     @Test
     void testRemoveAll() {
         assertEquals(10, ll.count());
         ll.removeAll(5);
-        assertEquals(null, ll.head);
-        assertEquals(null, ll.tail);
+        assertNull(ll.head);
+        assertNull(ll.tail);
         assertEquals(0, ll.count());
     }
 
@@ -324,5 +324,32 @@ public class LinkedList2_3 {
     // Задача 7. Добавьте в класс LinkedList2 метод очистки всего содержимого (создание пустого списка).
     // Сложность решения по времени: O(1).
     // Сложность решения по пространству: О(1).
+    @Test
+    void testClear1() {
+        ll1.clear();
+        assertNull(ll1.head);
+        assertNull(ll1.tail);
+    }
+
+    @Test
+    void testClear2() {
+        ll2.clear();
+        assertNull(ll2.head);
+        assertNull(ll2.tail);
+    }
+
+    @Test
+    void testClear3() {
+        ll3.clear();
+        assertNull(ll3.head);
+        assertNull(ll3.tail);
+    }
+
+    @Test
+    void testClear() {
+        ll.clear();
+        assertNull(ll.head);
+        assertNull(ll.tail);
+    }
 
 }
