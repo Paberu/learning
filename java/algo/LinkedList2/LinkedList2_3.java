@@ -399,13 +399,52 @@ public class LinkedList2_3 {
     }
 
     // Задача 9. Добавьте метод, который "переворачивает" порядок элементов в связном списке, меняя его на противоположный.
-    // Упрощенный вариант решения: через создание временного списка.
+    // Усложненный вариант решения: без создания нового списка, манипуляцией над имеющимися узлами.
     // Сложность решения по времени: O(n) - всегда надо обойти весь список.
     // Сложность решения по пространству: О(n) - всегда создаётся новый список.
     @Test
     void testReverseList1(){
+        System.out.println(ll1.head);
+        System.out.println(ll1.tail);
         LinkedList2_2.reverseList(ll1);
+        System.out.println(ll1.head);
+        System.out.println(ll1.tail);
         assertEquals(0, ll1.head.value);
         assertEquals(5, ll1.tail.value);
+    }
+
+    @Test
+    void testReverseList2(){
+        LinkedList2_2.reversedList(ll2);
+        assertNull(ll2.head);
+        assertNull(ll2.tail);
+    }
+
+    @Test
+    void testReverseList3(){
+        LinkedList2_2.reversedList(ll3);
+        assertEquals(11, ll3.head.value);
+        assertEquals(11, ll3.tail.value);
+    }
+
+    @Test
+    void testReverseList(){
+        LinkedList2_2.reversedList(ll);
+        assertEquals(5, ll.head.value);
+        assertEquals(5, ll.tail.value);
+    }
+
+    @Test
+    void testReverseListFailed() {
+        LinkedList2 llFailed = new LinkedList2();
+        for (int i = 0; i < 10; i++) {
+            llFailed.addInTail(new Node(i));
+        }
+        LinkedList2_2.reversedList(llFailed);
+        Node node = llFailed.head;
+        for (int i = 9; i >= 0; i--) {
+            assertEquals(i, node.value);
+            node = node.next;
+        }
     }
 }
