@@ -28,24 +28,61 @@ public class LinkedList2_2 {
             return;
         }
         Node exHead = linkedList2.head;     // сохраняется указатель на прежний головной узел
-        linkedList2.head = linkedList2.tail;
+        linkedList2.head = linkedList2.tail;// хвост становится головой...
 
         Node stableNode = linkedList2.tail; // с чего начинается обход списка - с хвоста
         Node movingNode = stableNode.prev;  // перемещается относительно хвоста последняя из нетронутых
-        Node tempNode = movingNode.prev;    // временный указатель на предпредпоследнюю, чтобы не потерять
 
-        while (tempNode != null) {
-            movingNode.next = null;
+        while (movingNode != null) {
+            Node tempNode = movingNode.prev;    // временный указатель на предпредпоследнюю, чтобы не потерять
             movingNode.prev = stableNode;
+            stableNode.next = movingNode;
 
-            stableNode = stableNode.prev;
-            movingNode = movingNode.prev;
-            tempNode = tempNode.prev;
+            stableNode = movingNode;
+            movingNode = tempNode;
         }
 
-        linkedList2.tail = movingNode;
-        linkedList2.tail.next = null;       // хвост становится головой
+        linkedList2.tail = exHead;          //... а голова хвостом
+        linkedList2.tail.next = null;
         linkedList2.head.prev = null;
-
     }
+        // Задача 10. Добавьте булев метод, который сообщает, имеются ли циклы (замкнутые на себя по кругу) внутри списка.
+        // Сложность решения по времени: .
+        // Сложность решения по пространству: .
+
+        // Задача 11. Добавьте метод, сортирующий список.
+        // Сложность решения по времени: .
+        // Сложность решения по пространству: .
+    public static void sortList(LinkedList2 linkedList2) {
+        if (linkedList2.head == null || linkedList2.head == linkedList2.tail) {
+            return;
+        }
+        Node exHead = linkedList2.head;
+        Node exTail = linkedList2.tail;
+
+        Node movingNode = linkedList2.tail;
+        boolean moved = false;
+        Node startNode = linkedList2.head;
+
+        while (movingNode != exTail) {
+            if (movingNode.value < startNode.value) {
+                movingNode.next = startNode;
+                startNode.prev = movingNode;
+                if (startNode == exHead) {
+                    linkedList2.head = movingNode;
+                }
+                linkedList2.tail = movingNode.prev;
+                movingNode.prev = null;
+            }
+        }
+    }
+
+        // Задача 12. Добавьте метод, объединяющий два списка в третий.
+        // Сложность решения по времени: .
+        // Сложность решения по пространству: .
+
+        // Задача 13. Добавьте фиктивный/пустой (dummy) узел.
+        // Сложность решения по времени: .
+        // Сложность решения по пространству: .
+
 }
