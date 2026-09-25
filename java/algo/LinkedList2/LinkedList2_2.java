@@ -87,8 +87,8 @@ public class LinkedList2_2 {
                     sortedNode.next.prev = currentNode;
                     sortedNode.next = currentNode;
                 }
-                currentNode = nextNode;
             }
+            currentNode = nextNode;
         }
     }
 
