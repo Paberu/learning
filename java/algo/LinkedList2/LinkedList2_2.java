@@ -46,13 +46,13 @@ public class LinkedList2_2 {
         linkedList2.tail.next = null;
         linkedList2.head.prev = null;
     }
-        // Задача 10. Добавьте булев метод, который сообщает, имеются ли циклы (замкнутые на себя по кругу) внутри списка.
-        // Сложность решения по времени: .
-        // Сложность решения по пространству: .
+    // Задача 10. Добавьте булев метод, который сообщает, имеются ли циклы (замкнутые на себя по кругу) внутри списка.
+    // Сложность решения по времени: .
+    // Сложность решения по пространству: .
 
-        // Задача 11. Добавьте метод, сортирующий список.
-        // Сложность решения по времени: O(n^2). Для каждого из n узлов надо полностью пробежать список из n узлов.
-        // Сложность решения по пространству: О(1).
+    // Задача 11. Добавьте метод, сортирующий список.
+    // Сложность решения по времени: O(n^2). Для каждого из n узлов надо полностью пробежать список из n узлов.
+    // Сложность решения по пространству: О(1).
     public static void sortList(LinkedList2 linkedList2) {
         if (linkedList2.head == null || linkedList2.head == linkedList2.tail) {
             return;
@@ -92,15 +92,30 @@ public class LinkedList2_2 {
         }
     }
 
-        // Задача 12. Добавьте метод, объединяющий два списка в третий.
-        // Сложность решения по времени: .
-        // Сложность решения по пространству: .
+    // Задача 12. Добавьте метод, объединяющий два списка в третий.
+    // Сложность решения по времени: O(n). Оба списка пробегаются один раз.
+    // Сложность решения по пространству: O(n). Создаётся список размером в два предыдущих.
     public static LinkedList2 mergeTwoIntoOne(LinkedList2 firstList, LinkedList2 secondList) {
         sortList(firstList);
         sortList(secondList);
         LinkedList2 resultList = new LinkedList2();
+        if (firstList.head == null) {   // если первый список пустой, вернуть копию второго
+            return secondList.copy();
+        }
+        if (secondList.head == null) {  // если второй список пустой, вернуть копию первого
+            return firstList.copy();
+        }
         Node currentNode1 = firstList.head;
         Node currentNode2 = secondList.head;
+        Node firstNode = null;          // надо определить, какая из двух голов (уже известно, что обе не null) будет головой результирующего списка.
+        if (currentNode1.value > currentNode2.value) {
+            firstNode = new Node(currentNode2.value);
+            currentNode2 = currentNode2.next;
+        } else {
+            firstNode = new Node(currentNode1.value);
+            currentNode1 = currentNode1.next;
+        }
+        resultList.addInTail(firstNode); // положено начало новому списку
         while (currentNode1 != null && currentNode2 != null) {
             if (currentNode2 == null || currentNode1.value >= currentNode2.value) {
                 resultList.addInTail(new Node(currentNode1.value));
@@ -111,6 +126,7 @@ public class LinkedList2_2 {
                 currentNode2 = currentNode2.next;
             }
         }
+
         return resultList;
     }
 
