@@ -73,55 +73,23 @@ public class LinkedList2_2 {
                     currentNode.next.prev = currentNode.prev;   // если currentNode - не бывший хвост, то надо редактировать настройки следующего узла,
                 } else {                                        // а иначе следующего узла нет, и надо просто заменить хвост;
                     linkedList2.tail = currentNode.prev;        // и как в такой ситуации навсегда избавиться от else?
-                }
-            }
-            // а дальше простая вставка или в самое начало или в середину списка
-            if (sortedNode == null) {
-                currentNode.prev = null;
-                currentNode.next = linkedList2.head;
-                linkedList2.head.prev = currentNode;
-                linkedList2.head = currentNode;
-            } else {
-                currentNode.prev = sortedNode;
-                currentNode.next = sortedNode.next;
-                sortedNode.next.prev = currentNode;
-                sortedNode.next = currentNode;
-            }
-            currentNode = nextNode;
-        }
+                }                                               // нужен DummyNode из последней задачи
 
-       /*
-        while (movingNode != linkedList2.head) {
-            while (possibleNode != movingNode) {
-                if (movingNode.value > linkedList2.tail.value) {
-                    movingNode.prev.next = movingNode.next; // пограничный случай - перемещаемый узел больше всех прочих узлов в списке
-                    movingNode.next.prev = movingNode.prev;
-                    movingNode.prev = linkedList2.tail.prev;
-                    movingNode.next = null;
-                    linkedList2.tail = movingNode;
-                    break;
+                // а дальше простая вставка или в самое начало или в середину списка
+                if (sortedNode == null) {
+                    currentNode.prev = null;
+                    currentNode.next = linkedList2.head;
+                    linkedList2.head.prev = currentNode;
+                    linkedList2.head = currentNode;
+                } else {
+                    currentNode.prev = sortedNode;
+                    currentNode.next = sortedNode.next;
+                    sortedNode.next.prev = currentNode;
+                    sortedNode.next = currentNode;
                 }
-                if (movingNode.value < possibleNode.value) {
-                    if (movingNode == linkedList2.tail) {
-                        linkedList2.tail = movingNode.prev; //если хвост в ходе сортировки переместился, то у списка новый хвост
-                        linkedList2.tail.next = null;
-                    }
-                    if (possibleNode == linkedList2.head) {
-                        movingNode.next = possibleNode;        // если перемещаемое значение стало новой головой, то надо адекватно заменить голову
-                        movingNode.prev = null;
-                        possibleNode.prev = movingNode;
-                        linkedList2.head = movingNode;
-                        break;
-                    }
-                    movingNode.next = possibleNode;            // обычная ситуация: не хвостовой узел переместился куда-то не в начало списка
-                    movingNode.prev = possibleNode.prev;
-                    possibleNode.prev.next = movingNode;
-                    possibleNode.prev = movingNode;
-                }
-                possibleNode = possibleNode.next;
+                currentNode = nextNode;
             }
-            movingNode = movingNode.prev;
-        }*/
+        }
     }
 
         // Задача 12. Добавьте метод, объединяющий два списка в третий.
