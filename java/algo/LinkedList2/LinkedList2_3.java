@@ -285,6 +285,7 @@ public class LinkedList2_3 {
         assertEquals(tmpNode2, tempLL.tail);
 
     }
+
     // Задача 6. Добавьте в класс LinkedList2 метод вставки узла самым первым элементом.
     // Сложность решения по времени: O(1) - всегда в начало.
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
@@ -357,28 +358,28 @@ public class LinkedList2_3 {
     // Сложность решения по времени: O(n) - всегда надо обойти весь список.
     // Сложность решения по пространству: О(n) - всегда создаётся новый список.
     @Test
-    void testReversedList1(){
+    void testReversedList1() {
         LinkedList2 tempLL = LinkedList2_2.reversedList(ll1);
         assertEquals(0, tempLL.head.value);
         assertEquals(5, tempLL.tail.value);
     }
 
     @Test
-    void testReversedList2(){
+    void testReversedList2() {
         LinkedList2 tempLL = LinkedList2_2.reversedList(ll2);
         assertNull(tempLL.head);
         assertNull(tempLL.tail);
     }
 
     @Test
-    void testReversedList3(){
+    void testReversedList3() {
         LinkedList2 tempLL = LinkedList2_2.reversedList(ll3);
         assertEquals(11, tempLL.head.value);
         assertEquals(11, tempLL.tail.value);
     }
 
     @Test
-    void testReversedList(){
+    void testReversedList() {
         LinkedList2 tempLL = LinkedList2_2.reversedList(ll);
         assertEquals(5, tempLL.head.value);
         assertEquals(5, tempLL.tail.value);
@@ -403,28 +404,28 @@ public class LinkedList2_3 {
     // Сложность решения по времени: O(n) - всегда надо обойти весь список.
     // Сложность решения по пространству: О(n) - всегда создаётся новый список.
     @Test
-    void testReverseList1(){
+    void testReverseList1() {
         LinkedList2_2.reverseList(ll1);
         assertEquals(0, ll1.head.value);
         assertEquals(5, ll1.tail.value);
     }
 
     @Test
-    void testReverseList2(){
+    void testReverseList2() {
         LinkedList2_2.reverseList(ll2);
         assertNull(ll2.head);
         assertNull(ll2.tail);
     }
 
     @Test
-    void testReverseList3(){
+    void testReverseList3() {
         LinkedList2_2.reverseList(ll3);
         assertEquals(11, ll3.head.value);
         assertEquals(11, ll3.tail.value);
     }
 
     @Test
-    void testReverseList(){
+    void testReverseList() {
         LinkedList2_2.reverseList(ll);
         assertEquals(5, ll.head.value);
         assertEquals(5, ll.tail.value);
@@ -442,5 +443,51 @@ public class LinkedList2_3 {
             assertEquals(i, node.value);
             node = node.next;
         }
+    }
+
+    // Задача 11. Добавьте метод, сортирующий список.
+    // Сложность решения по времени: O(n^2). Для каждого из n узлов надо полностью пробежать список из n узлов.
+    // Сложность решения по пространству: О(1).
+    @Test
+    void testSortList1() {
+        LinkedList2_2.sortList(ll1);
+        assertEquals(0, ll1.head.value);
+        Node node = ll1.head.next;
+        assertEquals(2, node.value);
+        node = node.next;
+        assertEquals(5, node.value);
+        node = node.next;
+        assertEquals(5, node.value);
+        node = node.next;
+        assertEquals(7, node.value);
+        assertEquals(7, ll1.tail.prev.value);
+        assertEquals(10, ll1.tail.value);
+        assertNull(ll1.head.prev);
+        assertNull(ll1.tail.next);
+    }
+
+    @Test
+    void testSortList2() {
+        LinkedList2_2.sortList(ll2);
+        assertNull(ll2.head);
+        assertNull(ll2.tail);
+    }
+
+    @Test
+    void testSortList3() {
+        LinkedList2_2.sortList(ll3);
+        assertEquals(11, ll3.head.value);
+        assertEquals(11, ll3.tail.value);
+        assertNull(ll3.head.prev);
+        assertNull(ll3.tail.next);
+    }
+
+    @Test
+    void testSortList() {
+        LinkedList2_2.sortList(ll);
+        assertEquals(5, ll.head.value);
+        assertEquals(5, ll.tail.value);
+        assertNull(ll.head.prev);
+        assertNull(ll.tail.next);
     }
 }
