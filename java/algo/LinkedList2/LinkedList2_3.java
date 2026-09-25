@@ -490,4 +490,23 @@ public class LinkedList2_3 {
         assertNull(ll.head.prev);
         assertNull(ll.tail.next);
     }
+
+    // Задача 12. Добавьте метод, объединяющий два списка в третий.
+    // Сложность решения по времени: O(n). Оба списка пробегаются один раз.
+    // Сложность решения по пространству: O(n). Создаётся список размером в два предыдущих.
+    @Test
+    void testMergeLists1() {
+        LinkedList2 list2 = LinkedList2_2.mergeTwoIntoOne(ll1, ll);
+    }
+
+    @Test
+    void testMergeLists2() {
+        LinkedList2 list2 = LinkedList2_2.mergeTwoIntoOne(ll2, ll3);
+        assertEquals(11, list2.head.value);
+        assertEquals(11, list2.tail.value);
+        assertNull(list2.head.prev);
+        assertNull(list2.tail.next);
+        assertEquals(list2.head, list2.tail);
+
+    }
 }
