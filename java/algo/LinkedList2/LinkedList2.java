@@ -174,6 +174,16 @@ public class LinkedList2 {
         }
         return size; // здесь будет ваш код подсчёта количества элементов в списке
     }
+
+    public LinkedList2 copy() {
+        LinkedList2 copyList = new LinkedList2();
+        Node startNode = new Node(copyList.head);
+        while (startNode != null) {
+            copyList.addInTail(startNode);
+            startNode = startNode.next;
+        }
+        return copyList;
+    }
 }
 
 class Node {
@@ -185,5 +195,9 @@ class Node {
         value = _value;
         next = null;
         prev = null;
+    }
+
+    public Node(Node _node) {
+        this(_node.value);
     }
 }
