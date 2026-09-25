@@ -95,6 +95,24 @@ public class LinkedList2_2 {
         // Задача 12. Добавьте метод, объединяющий два списка в третий.
         // Сложность решения по времени: .
         // Сложность решения по пространству: .
+    public static LinkedList2 mergeTwoIntoOne(LinkedList2 firstList, LinkedList2 secondList) {
+        sortList(firstList);
+        sortList(secondList);
+        LinkedList2 resultList = new LinkedList2();
+        Node currentNode1 = firstList.head;
+        Node currentNode2 = secondList.head;
+        while (currentNode1 != null && currentNode2 != null) {
+            if (currentNode2 == null || currentNode1.value >= currentNode2.value) {
+                resultList.addInTail(new Node(currentNode1.value));
+                currentNode1 = currentNode1.next;
+            }
+            if (currentNode1 == null || currentNode1.value < currentNode2.value) {
+                resultList.addInTail(new Node(currentNode2.value));
+                currentNode2 = currentNode2.next;
+            }
+        }
+        return resultList;
+    }
 
         // Задача 13. Добавьте фиктивный/пустой (dummy) узел.
         // Сложность решения по времени: .
