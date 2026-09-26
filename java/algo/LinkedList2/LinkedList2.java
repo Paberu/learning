@@ -123,8 +123,7 @@ public class LinkedList2 {
     // Задача 5. Добавьте в класс LinkedList2 метод вставки узла после заданного узла.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
-    public void insertAfter(Node _nodeAfter, Node _nodeToInsert)
-    {
+    public void insertAfter(Node _nodeAfter, Node _nodeToInsert) {
         // здесь будет ваш код вставки узла после заданного узла
         if (_nodeAfter == null) {
             if (this.head == null) {
