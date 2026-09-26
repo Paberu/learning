@@ -51,7 +51,19 @@ public class LinkedList2_2 {
     // Сложность решения по времени: .
     // Сложность решения по пространству: .
     public static boolean hasCircles(LinkedList2 linkedList2) {
+        if (linkedList2.head == null) {     // если список пустой, то циклов в нём нет
+            return false;
+        }
+
+        if (linkedList2.head == linkedList2.tail) {     /// если список из одного элемента, то надо убедиться, что голова (она же хвост) не ссылается на себя же
+            return !(linkedList2.head.prev == null && linkedList2.tail.next == null);
+        }
+
         Node currentNode = linkedList2.head;
+        if (currentNode == null || currentNode.prev == currentNode || currentNode.next == currentNode
+                || linkedList2.head.prev != null || linkedList2.tail.next != null) {   // проверить адекватность head и tail до начала обхода
+            return true;
+        }
         while (currentNode != linkedList2.tail) {
             if (currentNode.prev == currentNode || currentNode.next == currentNode) {   // если где-то появляется ссылка на самого себя - это битый объект, есть микроцикл.
                 return true;
