@@ -46,9 +46,34 @@ public class LinkedList2_2 {
         linkedList2.tail.next = null;
         linkedList2.head.prev = null;
     }
+
     // Задача 10. Добавьте булев метод, который сообщает, имеются ли циклы (замкнутые на себя по кругу) внутри списка.
     // Сложность решения по времени: .
     // Сложность решения по пространству: .
+    public static boolean hasCircles(LinkedList2 linkedList2) {
+        Node currentNode = linkedList2.head;
+        while (currentNode != linkedList2.tail) {
+            if (currentNode.prev == currentNode || currentNode.next == currentNode) {   // если где-то появляется ссылка на самого себя - это битый объект, есть микроцикл.
+                return true;
+            }
+            Node checkNode = linkedList2.head;
+            while (checkNode != currentNode) {              // здесь я хочу проверить движение вперёд, бывают ли битые ссылки next
+                if (currentNode.next == checkNode) {
+                    return true;
+                }
+                checkNode = checkNode.next;
+            }
+
+            checkNode = linkedList2.tail;
+            while (checkNode != currentNode) {
+                if (currentNode.prev == checkNode) {
+                    return true;
+                }
+                checkNode = checkNode.prev;
+            }
+        return false;
+        }
+    }
 
     // Задача 11. Добавьте метод, сортирующий список.
     // Сложность решения по времени: O(n^2). Для каждого из n узлов надо полностью пробежать список из n узлов.
