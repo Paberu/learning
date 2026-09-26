@@ -48,42 +48,38 @@ public class LinkedList2_2 {
     }
 
     // Задача 10. Добавьте булев метод, который сообщает, имеются ли циклы (замкнутые на себя по кругу) внутри списка.
-    // Сложность решения по времени: .
-    // Сложность решения по пространству: .
+    // Сложность решения по времени: O(n) по алгоритму Флойда (в случаек, если цикла нет).
+    // Сложность решения по пространству: O(1). Ничего нового не создаётся.
     public static boolean hasCircles(LinkedList2 linkedList2) {
-        if (linkedList2.head == null) {     // если список пустой, то циклов в нём нет
+        if (linkedList2 == null || linkedList2.head == null) {     // если список пустой, то циклов в нём нет
             return false;
         }
 
-        if (linkedList2.head == linkedList2.tail) {     /// если список из одного элемента, то надо убедиться, что голова (она же хвост) не ссылается на себя же
-            return !(linkedList2.head.prev == null && linkedList2.tail.next == null);
+        if (linkedList2.head == linkedList2.tail) {     // если список из одного элемента, то надо убедиться, что голова (она же хвост) не ссылается на себя же
+            return (linkedList2.head.prev != null && linkedList2.tail.next != null);
         }
 
-        Node currentNode = linkedList2.head;
-        if (currentNode == null || currentNode.prev == currentNode || currentNode.next == currentNode
-                || linkedList2.head.prev != null || linkedList2.tail.next != null) {   // проверить адекватность head и tail до начала обхода
-            return true;
-        }
-        while (currentNode != linkedList2.tail) {
-            if (currentNode.prev == currentNode || currentNode.next == currentNode) {   // если где-то появляется ссылка на самого себя - это битый объект, есть микроцикл.
+        // моя реализация попала в бесконечный цикл -_- нагуглил алгоритм черепахи и зайца в Википедии, попробую реализовать его
+        Node turtle = linkedList2.head;
+        Node hare = linkedList2.head;
+        while (hare != null && hare.next != null) {
+            turtle = turtle.next;
+            hare = hare.next.next;
+            if (turtle == hare) {       // если на двойной скорости обхода случилось натолкнуться на тот же самый узел, что недавно проходили - это и есть признак цикла! до чего же просто, когда Флойд уже всё доказал!
                 return true;
             }
-            Node checkNode = linkedList2.head;
-            while (checkNode != currentNode) {              // здесь я хочу проверить движение вперёд, бывают ли битые ссылки next
-                if (currentNode.next == checkNode) {
-                    return true;
-                }
-                checkNode = checkNode.next;
-            }
-
-            checkNode = linkedList2.tail;
-            while (checkNode != currentNode) {
-                if (currentNode.prev == checkNode) {
-                    return true;
-                }
-                checkNode = checkNode.prev;
+        }
+        // и на всякий случай в обратном направлении
+        turtle = linkedList2.tail;
+        hare = linkedList2.tail;
+        while (hare != null && hare.prev != null) {
+            turtle = turtle.prev;
+            hare = hare.prev.prev;
+            if (turtle == hare) {
+                return true;
             }
         }
+
         return false;
     }
 
@@ -168,9 +164,37 @@ public class LinkedList2_2 {
         }
         return resultList;
     }
-
-        // Задача 13. Добавьте фиктивный/пустой (dummy) узел.
-        // Сложность решения по времени: .
-        // Сложность решения по пространству: .
-
 }
+
+
+// Задача 13. Добавьте фиктивный/пустой (dummy) узел.
+// Сложность решения по времени: O(1). Создаётся 2 дополнительных узла независимо от объёма списка.
+// Сложность решения по пространству: O(1). Создаётся 2 дополнительных узла независимо от объёма списка.
+class LinkedListWithDummy extends LinkedList2{
+    public LinkedListWithDummy() {
+        super();
+        this.head = new DummyNode();
+        this.tail = new DummyNode();
+    }
+    // теперь любой метод можно переписать с трёх случаев (для головы, для хвоста, для всех прочих) на единый метод для всех узлов.
+}
+
+class DummyNode extends Node {
+    public DummyNode() {
+        super(null);
+    }
+}
+
+/*
+Рефлексия.
+
+Поступила рекомендация избегать while... Очень неочевидно, как мне показалось, я прям крепко призадумался. Пошёл гуглить, узнал, что
+FOR (FORTRAN, 1957 год) появился на год раньше, чем WHILE (ALGOL, 1958 год). Зато благодаря WHILE в 1972 году в C появилась
+привычная нам форма for. Вот такой экскурс. Я сначал не понял: а как обходить структуры, где количество итераций всегда будет
+заранее неизвестно. Потом я придумал такой пример:
+for (Node node = linkedList.head; node != null; node = node.next) {}
+Это же чистый while, записанный в одну строку! Он не требуется внимания к последнему шагу с вызовом next(), что, как я понял,
+и послужило причиной создания трёхступенчатого for, т.к. программисты со всего мира постоянно забывали о приращении переменной
+и создавали бесконечные циклы. Мне даже жаль, что я не додумался до этого до того, как начал выполнять текущее задание.
+Со следующего обязательно перейду на for везде, где получится это сделать.
+ */
