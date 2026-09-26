@@ -181,7 +181,7 @@ class LinkedListWithDummy extends LinkedList2{
 
 class DummyNode extends Node {
     public DummyNode() {
-        super(null);
+        super(0);
     }
 }
 
