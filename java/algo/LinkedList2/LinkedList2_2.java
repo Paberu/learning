@@ -111,13 +111,13 @@ public class LinkedList2_2 {
         Node currentNode2 = newSecond.head;
 
         while (currentNode1 != null && currentNode2 != null) {
-            if (currentNode1.value >= currentNode2.value) {
-                resultList.addInTail(new Node(currentNode2.value));
-                currentNode2 = currentNode2.next;
-            }
-            else {
+            if (currentNode1.value <= currentNode2.value) {
                 resultList.addInTail(new Node(currentNode1.value));
                 currentNode1 = currentNode1.next;
+            }
+            else {
+                resultList.addInTail(new Node(currentNode2.value));
+                currentNode2 = currentNode2.next;
             }
         }
 
