@@ -177,9 +177,12 @@ public class LinkedList2 {
 
     public LinkedList2 copy() {
         LinkedList2 copyList = new LinkedList2();
-        Node startNode = new Node(copyList.head);
+        if (this.head == null) {
+            return copyList;
+        }
+        Node startNode = this.head;
         while (startNode != null) {
-            copyList.addInTail(startNode);
+            copyList.addInTail(new Node(startNode));
             startNode = startNode.next;
         }
         return copyList;
