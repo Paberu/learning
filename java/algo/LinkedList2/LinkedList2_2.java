@@ -107,17 +107,9 @@ public class LinkedList2_2 {
         if (newSecond.head == null) {  // если второй список пустой, вернуть копию первого
             return newFirst;
         }
-        Node currentNode1 = firstList.head;
-        Node currentNode2 = secondList.head;
-        Node firstNode;          // надо определить, какая из двух голов (уже известно, что обе не null) будет головой результирующего списка.
-        if (currentNode1.value > currentNode2.value) {
-            firstNode = new Node(currentNode2.value);
-            currentNode2 = currentNode2.next;
-        } else {
-            firstNode = new Node(currentNode1.value);
-            currentNode1 = currentNode1.next;
-        }
-        resultList.addInTail(firstNode); // положено начало новому списку
+        Node currentNode1 = newFirst.head;
+        Node currentNode2 = newSecond.head;
+
         while (currentNode1 != null && currentNode2 != null) {
             if (currentNode1.value >= currentNode2.value) {
                 resultList.addInTail(new Node(currentNode2.value));
