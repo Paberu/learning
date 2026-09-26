@@ -497,16 +497,96 @@ public class LinkedList2_3 {
     @Test
     void testMergeLists1() {
         LinkedList2 list2 = LinkedList2_2.mergeTwoIntoOne(ll1, ll);
+        Node node = list2.head;
+        assertEquals(0, node.value);
+        node = node.next;
+        assertEquals(2, node.value);
+        node = node.next;
+        assertEquals(5, node.value);
+        node = node.next;
+        assertEquals(5, node.value);
+        node = node.next;
+        assertEquals(5, node.value);
+        node = node.next;
+        assertEquals(5, node.value);
+        node = node.next;
+        assertEquals(5, node.value);
+        node = list2.tail;
+        assertEquals(10, node.value);
+        node = node.prev;
+        assertEquals(7, node.value);
+        node = node.prev;
+        assertEquals(5, node.value);
+        assertNull(list2.head.prev);
+        assertNull(list2.tail.next);
+        assertEquals(ll1.count()+ll.count(), list2.count());
     }
 
     @Test
     void testMergeLists2() {
-        LinkedList2 list2 = LinkedList2_2.mergeTwoIntoOne(ll2, ll3);
-        assertEquals(11, list2.head.value);
-        assertEquals(11, list2.tail.value);
+        LinkedList2 list2 = LinkedList2_2.mergeTwoIntoOne(ll1, ll2);
+        LinkedList2_2.sortList(ll1);
+        Node node1 = ll1.head;
+        Node node2 = list2.head;
+        assertEquals(ll1.count(), list2.count());
+        for (int i = 0; i < ll1.count(); i++) {
+            assertEquals(node1.value, node2.value);
+        }
         assertNull(list2.head.prev);
         assertNull(list2.tail.next);
-        assertEquals(list2.head, list2.tail);
-
     }
+
+    @Test
+    void testMergeLists() {
+        LinkedList2 list2 = LinkedList2_2.mergeTwoIntoOne(ll1, ll3);
+        Node node = list2.head;
+        assertEquals(0, node.value);
+        node = node.next;
+        assertEquals(2, node.value);
+        node = node.next;
+        assertEquals(5, node.value);
+        node = node.next;
+        assertEquals(5, node.value);
+        node = list2.tail;
+        assertEquals(11, node.value);
+        node = node.prev;
+        assertEquals(10, node.value);
+        node = node.prev;
+        assertEquals(7, node.value);
+        assertNull(list2.head.prev);
+        assertNull(list2.tail.next);
+    }
+
+    @Test
+    void testMergeListsFailed() {
+        LinkedList2 llFailed = new LinkedList2();
+        for (int i = 0; i < 4; i++) {
+            llFailed.addInTail(new Node(i));
+        }
+        LinkedList2 list2 = LinkedList2_2.mergeTwoIntoOne(llFailed, ll1);
+        Node node = list2.head;
+        assertEquals(0, node.value);
+        node = node.next;
+        assertEquals(0, node.value);
+        node = node.next;
+        assertEquals(1, node.value);
+        node = node.next;
+        assertEquals(2, node.value);
+        node = node.next;
+        assertEquals(2, node.value);
+        node = node.next;
+        assertEquals(3, node.value);
+        node = node.next;
+        assertEquals(5, node.value);
+        node = list2.tail;
+        assertEquals(10, node.value);
+        node = node.prev;
+        assertEquals(7, node.value);
+        node = node.prev;
+        assertEquals(5, node.value);
+        assertNull(list2.head.prev);
+        assertNull(list2.tail.next);
+        assertEquals(ll1.count()+llFailed.count(), list2.count());
+    }
+
 }
