@@ -79,6 +79,8 @@ public class LinkedList2_3 {
     }
 
     // Курс "Практика в программировании на АСД. Задание 2.
+    // Задача 8. Напишите проверочные тесты для каждого из предыдущих заданий.
+
     // Задача 1. Добавьте в класс LinkedList2 метод поиска первого узла по его значению.
     // Сложность решения по времени: O(n) - в худшем случае придётся пробежать весь список.
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
@@ -443,6 +445,41 @@ public class LinkedList2_3 {
             assertEquals(i, node.value);
             node = node.next;
         }
+    }
+
+    // Задача 10. Добавьте булев метод, который сообщает, имеются ли циклы (замкнутые на себя по кругу) внутри списка.
+    // Сложность решения по времени: O(n) по алгоритму Флойда (в случаек, если цикла нет).
+    // Сложность решения по пространству: O(1). Ничего нового не создаётся.
+
+    @Test
+    public void testHasCircles() {
+        LinkedList2 list2 = new LinkedList2();
+        Node node = new Node(5);
+        node.prev = node;
+        node.next = node;
+        list2.head = node;
+        list2.tail = node;
+        assertTrue(LinkedList2_2.hasCircles(list2));
+    }
+
+    @Test
+    public void testHasCircles1() {
+        assertFalse(LinkedList2_2.hasCircles(ll1));
+    }
+
+    @Test
+    public void testHasCircles2() {
+        assertFalse(LinkedList2_2.hasCircles(ll2));
+    }
+
+    @Test
+    public void testHasCircles3() {
+        assertFalse(LinkedList2_2.hasCircles(ll3));
+    }
+
+    @Test
+    public void testHasCircles4() {
+        assertFalse(LinkedList2_2.hasCircles(ll));
     }
 
     // Задача 11. Добавьте метод, сортирующий список.
