@@ -96,18 +96,20 @@ public class LinkedList2_2 {
     // Сложность решения по времени: O(n). Оба списка пробегаются один раз.
     // Сложность решения по пространству: O(n). Создаётся список размером в два предыдущих.
     public static LinkedList2 mergeTwoIntoOne(LinkedList2 firstList, LinkedList2 secondList) {
-        sortList(firstList);
-        sortList(secondList);
+        LinkedList2 newFirst = firstList.copy();
+        LinkedList2 newSecond = secondList.copy();
+        sortList(newFirst);
+        sortList(newSecond);
         LinkedList2 resultList = new LinkedList2();
-        if (firstList.head == null) {   // если первый список пустой, вернуть копию второго
-            return secondList.copy();
+        if (newFirst.head == null) {   // если первый список пустой, вернуть копию второго
+            return newSecond;
         }
-        if (secondList.head == null) {  // если второй список пустой, вернуть копию первого
-            return firstList.copy();
+        if (newSecond.head == null) {  // если второй список пустой, вернуть копию первого
+            return newFirst;
         }
         Node currentNode1 = firstList.head;
         Node currentNode2 = secondList.head;
-        Node firstNode = null;          // надо определить, какая из двух голов (уже известно, что обе не null) будет головой результирующего списка.
+        Node firstNode;          // надо определить, какая из двух голов (уже известно, что обе не null) будет головой результирующего списка.
         if (currentNode1.value > currentNode2.value) {
             firstNode = new Node(currentNode2.value);
             currentNode2 = currentNode2.next;
@@ -117,16 +119,24 @@ public class LinkedList2_2 {
         }
         resultList.addInTail(firstNode); // положено начало новому списку
         while (currentNode1 != null && currentNode2 != null) {
-            if (currentNode2 == null || currentNode1.value >= currentNode2.value) {
-                resultList.addInTail(new Node(currentNode1.value));
-                currentNode1 = currentNode1.next;
-            }
-            if (currentNode1 == null || currentNode1.value < currentNode2.value) {
+            if (currentNode1.value >= currentNode2.value) {
                 resultList.addInTail(new Node(currentNode2.value));
                 currentNode2 = currentNode2.next;
             }
+            else {
+                resultList.addInTail(new Node(currentNode1.value));
+                currentNode1 = currentNode1.next;
+            }
         }
 
+        while (currentNode1 != null) {  // если второй закончился, а первый ещё нет...
+            resultList.addInTail(new Node(currentNode1.value));
+            currentNode1 = currentNode1.next;
+        }
+        while (currentNode2 != null) {  // ...и наоборот
+            resultList.addInTail(new Node(currentNode2.value));
+            currentNode2 = currentNode2.next;
+        }
         return resultList;
     }
 
