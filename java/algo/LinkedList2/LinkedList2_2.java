@@ -71,8 +71,8 @@ public class LinkedList2_2 {
                 }
                 checkNode = checkNode.prev;
             }
-        return false;
         }
+        return false;
     }
 
     // Задача 11. Добавьте метод, сортирующий список.
