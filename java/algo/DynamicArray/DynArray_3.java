@@ -21,6 +21,10 @@ public class DynArray_3 {
         }
     }
 
+    // Курс "Практика в программировании на АСД. Задание 3.
+    // Задача 5. Напишите тесты, проверяющие работу методов Insert() и Remove():
+
+    //-- вставка элемента, когда в итоге размер буфера не превышен (проверьте также размер буфера);
     @Test
     void testInsertLight() {
         assertEquals(16, dynArray.capacity);
@@ -30,6 +34,7 @@ public class DynArray_3 {
         assertEquals(15, dynArray.count);
     }
 
+    //-- вставка элемента, когда в результате превышен размер буфера (проверьте также корректное изменение размера буфера);
     @Test
     void testInsertHeavy() {
         assertEquals(16, dynArray.capacity);
@@ -43,6 +48,7 @@ public class DynArray_3 {
         assertEquals(17, dynArray.count);
     }
 
+    //-- попытка вставки элемента в недопустимую позицию;
     @Test
     void testInsertWrong() {
         assertEquals(16, dynArray.capacity);
@@ -52,6 +58,7 @@ public class DynArray_3 {
         assertEquals(14, dynArray.count);
     }
 
+    //-- удаление элемента, когда в результате размер буфера остаётся прежним (проверьте также размер буфера);
     @Test
     void testRemoveLight() {
         assertEquals(64, dynArray2.capacity);
@@ -62,6 +69,7 @@ public class DynArray_3 {
         assertEquals(33, dynArray2.count);
     }
 
+    //-- удаление элемента, когда в результате понижается размер буфера (проверьте также корректное изменение размера буфера);
     @Test
     void testRemoveHeavy() {
         assertEquals(64, dynArray2.capacity);
@@ -74,5 +82,15 @@ public class DynArray_3 {
         dynArray2.remove(5);
         assertEquals(42, dynArray2.capacity);
         assertEquals(29, dynArray2.count);
+    }
+
+    //-- попытка удаления элемента в недопустимой позиции.
+    @Test
+    void testRemoveWrong() {
+        assertEquals(64, dynArray2.capacity);
+        assertEquals(35, dynArray2.count);
+        assertThrows(IndexOutOfBoundsException.class, () -> dynArray.remove(36));
+        assertEquals(64, dynArray2.capacity);
+        assertEquals(35, dynArray2.count);
     }
 }
