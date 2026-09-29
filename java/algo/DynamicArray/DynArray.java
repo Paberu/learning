@@ -24,7 +24,7 @@ public class DynArray<T> {
 
         T[] temp_array = (T[]) Array.newInstance(this.clazz, new_capacity);
         if (this.array != null) {
-            for (int i = 0; i < this.array.length; i++) {
+            for (int i = 0; i < this.count; i++) {
                 temp_array[i] = this.array[i];
             }
         }
@@ -82,7 +82,7 @@ public class DynArray<T> {
         this.array[this.count-1] = null;
         this.count--;
 
-        if (this.count - 1 < this.capacity / 2) {
+        if (this.count < this.capacity / 2) {
             makeArray((int)(this.capacity/1.5));
         }
     }
