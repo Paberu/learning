@@ -24,4 +24,17 @@ public class DynArray_3 {
         assertEquals(16, dynArray.capacity);
         assertEquals(15, dynArray.count);
     }
+
+    @Test
+    void testInsertHeavy() {
+        assertEquals(16, dynArray.capacity);
+        assertEquals(14, dynArray.count);
+        dynArray.append(17);
+        dynArray.append(19);
+        assertEquals(16, dynArray.capacity);
+        assertEquals(16, dynArray.count);
+        dynArray.append(21);
+        assertEquals(32, dynArray.capacity);
+        assertEquals(17, dynArray.count);
+    }
 }
