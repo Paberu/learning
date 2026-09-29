@@ -47,8 +47,8 @@ public class DynArray<T> {
         return this.array[index];
     }
 
-    // Сложность решения по времени: O(1). При расчёте по банковскому методу на серию "дешёвых" операций по добавлению в массив приходится одна "дорогая" по расширению массива. На балансе - О(1).
-    // Сложность решения по пространству: О(1). Ничего нового не создаётся.
+    // Сложность решения по времени: O(1). См. файл DynArray_2.java.
+    // Сложность решения по пространству: О(1). См. файл DynArray_2.java.
     public void append(T itm) {
         // ваш код
         if (this.count == this.capacity) {
@@ -58,6 +58,8 @@ public class DynArray<T> {
         this.count++;
     }
 
+    // Сложность решения по времени: O(1). См. файл DynArray_2.java.
+    // Сложность решения по пространству: О(1). См. файл DynArray_2.java.
     public void insert(T itm, int index) {
         // ваш код
         if (index < 0 || index > this.count) {          // если индекс больше, чем кол-во элементов, то какой же это insert?
@@ -79,6 +81,8 @@ public class DynArray<T> {
         this.count++;
     }
 
+    // Сложность решения по времени: O(1). См. файл DynArray_2.java.
+    // Сложность решения по пространству: О(1). См. файл DynArray_2.java.
     public void remove(int index) {
         // ваш код
         if (index < 0 || index >= this.count) {
