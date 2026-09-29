@@ -22,12 +22,14 @@ public class DynArray<T> {
             new_capacity = 16;
         if (new_capacity == this.capacity) return;
 
-        this.capacity = new_capacity;
         T[] temp_array = (T[]) Array.newInstance(this.clazz, new_capacity);
-        for (int i = 0; i < this.array.length; i++) {
-            temp_array[i] = this.array[i];
+        if (this.array != null) {
+            for (int i = 0; i < this.array.length; i++) {
+                temp_array[i] = this.array[i];
+            }
         }
         this.array = temp_array;
+        this.capacity = new_capacity;
     }
 
     public T getItem(int index) {
@@ -74,13 +76,15 @@ public class DynArray<T> {
             throw new IndexOutOfBoundsException("Index is out of bounds");
         }
 
+        for (int i = index; i < this.count - 1; i++) {
+            this.array[i] = this.array[i+1];
+        }
+        this.array[this.count-1] = null;
+        this.count--;
+
         if (this.count - 1 < this.capacity / 2) {
             makeArray((int)(this.capacity/1.5));
         }
-        for (int i = index; i < this.capacity; i++) {
-            this.array[i] = this.array[i+1];
-        }
-        this.count--;
     }
 
 }
