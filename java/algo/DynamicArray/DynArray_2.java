@@ -65,4 +65,18 @@ public class DynArray_2<T> {
         this.capacities = newCapacities;
     }
 
+    public T getItem(int[] indexes) {
+        for (int i = 0; i < indexes.length; i++) {
+            if (indexes[i] < 0 || indexes[i] >= this.counts[i]) {
+                throw new IndexOutOfBoundsException("Index is out of bounds");
+            }
+        }
+        int complexIndex = 0;
+        for (int index : indexes) {
+            complexIndex += index;
+        }
+        return this.array[complexIndex];
+        //ОШИБКА!ОШИБКА!!!
+    }
+
 }
