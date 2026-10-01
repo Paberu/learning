@@ -16,20 +16,29 @@ public class DynArray<T> {
         makeArray(16);
     }
 
+    // Курс "Практика в программировании на АСД. Задание 3.
+    // Задача 1. Реализовать базовые методы: makeArray(), getItem(), append().
+
+    // Сложность решения по времени: O(n). Всегда надо пробежать весь список при копировании значений в новый.
+    // Сложность решения по пространству: О(n). Всегда создаётся новый список, старый сотрёт сборщик мусора.
     public void makeArray(int new_capacity) {
         // ваш код
         if (new_capacity <= 16)
             new_capacity = 16;
         if (new_capacity == this.capacity) return;
 
-        this.capacity = new_capacity;
         T[] temp_array = (T[]) Array.newInstance(this.clazz, new_capacity);
-        for (int i = 0; i < this.array.length; i++) {
-            temp_array[i] = this.array[i];
+        if (this.array != null) {
+            for (int i = 0; i < this.count; i++) {
+                temp_array[i] = this.array[i];
+            }
         }
         this.array = temp_array;
+        this.capacity = new_capacity;
     }
 
+    // Сложность решения по времени: O(1). Просто берётся указанный элемент по смещению, указанному в аргументе.
+    // Сложность решения по пространству: О(1). Ничего нового не создаётся.
     public T getItem(int index) {
         // ваш код
         if (index < 0 || index >= count) {
@@ -38,6 +47,8 @@ public class DynArray<T> {
         return this.array[index];
     }
 
+    // Сложность решения по времени: O(1). См. файл DynArray_2.java.
+    // Сложность решения по пространству: О(1). См. файл DynArray_2.java.
     public void append(T itm) {
         // ваш код
         if (this.count == this.capacity) {
@@ -47,6 +58,8 @@ public class DynArray<T> {
         this.count++;
     }
 
+    // Сложность решения по времени: O(1). См. файл DynArray_2.java.
+    // Сложность решения по пространству: О(1). См. файл DynArray_2.java.
     public void insert(T itm, int index) {
         // ваш код
         if (index < 0 || index > this.count) {          // если индекс больше, чем кол-во элементов, то какой же это insert?
@@ -68,19 +81,23 @@ public class DynArray<T> {
         this.count++;
     }
 
+    // Сложность решения по времени: O(1). См. файл DynArray_2.java.
+    // Сложность решения по пространству: О(1). См. файл DynArray_2.java.
     public void remove(int index) {
         // ваш код
         if (index < 0 || index >= this.count) {
             throw new IndexOutOfBoundsException("Index is out of bounds");
         }
 
-        if (this.count - 1 < this.capacity / 2) {
-            makeArray((int)(this.capacity/1.5));
-        }
-        for (int i = index; i < this.capacity; i++) {
+        for (int i = index; i < this.count - 1; i++) {
             this.array[i] = this.array[i+1];
         }
+        this.array[this.count-1] = null;
         this.count--;
+
+        if (this.count < this.capacity / 2) {
+            makeArray((int)(this.capacity/1.5));
+        }
     }
 
 }
