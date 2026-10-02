@@ -74,21 +74,24 @@ public class DynArray_2<T> {
     }
 
     public void append(T itm) {
-        int freeCellIndex = getFreeCellIndex();
-        if (freeCellIndex == -1) {
+        int freeCellIndex = this.totalCount;
+        if (freeCellIndex >= this.array.length) {
             int dimensionForExpand = getDimensionToExpand();
             int[] newCapacities = this.capacities.clone();
             newCapacities[dimensionForExpand] *= 2;
+
             makeArray(newCapacities);
-            freeCellIndex = getFreeCellIndex();
         }
         this.array[freeCellIndex] = itm;
+        this.totalCount++;
+
         int tempIndex = freeCellIndex;
         for (int i = 0; i < this.capacities.length; i++) {
             int coordinate = tempIndex / this.steps[i];
             if (coordinate >= this.counts[i]) {
-                this.counts[i] += 1
+                this.counts[i] = coordinate + 1;
             }
+            tempIndex %= this.steps[i];
         }
 
     }
