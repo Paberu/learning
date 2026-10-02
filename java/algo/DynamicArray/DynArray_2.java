@@ -100,42 +100,39 @@ public class DynArray_2<T> {
         if (indexes.length != this.capacities.length) {
             throw new IllegalArgumentException("Количество индексов должно совпадать с размерностью массива.");
         }
-		for (int i = 0; i < indexes.length; i++) {
-            if (indexes[i] < 0 || indexes[i] > this.counts[i]) {
-                throw new IndexOutOfBoundsException("Индекс не может быть отрицательным.");
-            }
-		}
 
-        // 1. Проверяем, не выходят ли запрашиваемые индексы за текущую емкость (capacities)
-        boolean needExpand = false;
-        int[] newCapacities = this.capacities.clone();
+        // 1. Считаем целевой линейный индекс для вставки
+        int targetLinearIndex = getLinearIndex(indexes, this.steps);
 
-        for (int i = 0; i < indexes.length; i++) {
-            // Если индекс больше или равен текущей емкости — ось нужно расширять!
-            if (indexes[i] >= this.capacities[i]) {
-                needExpand = true;
-                // Умножаем емкость оси на 2, пока она не станет строго больше запрашиваемого индекса
-                while (newCapacities[i] <= indexes[i]) {
-                    newCapacities[i] *= 2;
-                }
-            }
+        // Валидация: в плотную структуру нельзя вставить элемент "в воздух" дальше текущего хвоста
+        if (targetLinearIndex < 0 || targetLinearIndex > this.totalCount) {
+            throw new IndexOutOfBoundsException("Вставка возможна только в существующий диапазон или в конец данных.");
         }
 
-        // 2. Если обнаружили нехватку места по какой-то оси, вызываем наш makeArray
-        if (needExpand) {
-            makeArray(newCapacities);
+        // 2. Проверяем переполнение физической памяти
+        if (this.totalCount >= this.array.length) {
+            int dimToExpand = getDimensionToExpand(); // Ищем ось с наименьшей емкостью
+            int[] newCapacities = this.capacities.clone();
+            newCapacities[dimToExpand] *= 2;         // Удваиваем её
+
+            makeArray(newCapacities);                // Перестраиваем структуру и обновляем steps
+
+            // После изменения шагов (steps) старые N-мерные координаты будут указывать на другое плоское место!
+            // Пересчитываем целевой плоский индекс в новых реалиях
+            targetLinearIndex = getLinearIndex(indexes, this.steps);
         }
 
-        // 3. Обновляем counts для каждого измерения
-        for (int i = 0; i < indexes.length; i++) {
-            if (indexes[i] >= this.counts[i]) {
-                this.counts[i] = indexes[i] + 1;
-            }
+        // 3. Сдвигаем элементы вправо, освобождая ячейку для нового элемента
+        if (this.totalCount - targetLinearIndex > 0) {
+            System.arraycopy(this.array, targetLinearIndex, this.array, targetLinearIndex + 1, this.totalCount - targetLinearIndex);
         }
 
-        // 4. Записываем элемент по вычисленному линейному индексу
-        int linearIndex = getLinearIndex(indexes, this.steps);
-        this.array[linearIndex] = itm;
+        // 4. Записываем элемент и инкрементируем общий счетчик
+        this.array[targetLinearIndex] = itm;
+        this.totalCount++;
+
+        // 5. Пересчитываем counts для актуализации N-мерных границ
+        recalculateCounts();
     }
 
     public void remove(int[] indexes) {
@@ -143,46 +140,54 @@ public class DynArray_2<T> {
             throw new IllegalArgumentException("Количество индексов должно совпадать с размерностью массива.");
         }
 
-        // 1. Валидация границ
+        // Валидация границ через getItem (или по вашему условию)
         for (int i = 0; i < indexes.length; i++) {
-            if (indexes[i] < 0 || indexes[i] >= this.capacities[i]) {
-                throw new IndexOutOfBoundsException("Индекс за пределами массива.");
+            if (indexes[i] < 0 || indexes[i] >= this.counts[i]) {
+                throw new IndexOutOfBoundsException("Индекс за пределами заполненного массива.");
             }
         }
 
-        // 2. Зануляем удаляемый элемент
-        int linearIndex = getLinearIndex(indexes, this.steps);
-        this.array[linearIndex] = null;
+        // 1. Получаем плоский индекс удаляемого элемента
+        int targetLinearIndex = getLinearIndex(indexes, this.steps);
 
-        // 3. Пересчитываем counts[i] для осей.
-        // Нам нужно узнать новый максимальный занятый индекс по каждой оси, так как мы могли удалить "крайний" элемент.
+        // 2. Сдвигаем все последующие элементы влево, уплотняя данные ("по циклу")
+        int elementsToShift = this.totalCount - targetLinearIndex - 1;
+        if (elementsToShift > 0) {
+            System.arraycopy(this.array, targetLinearIndex + 1, this.array, targetLinearIndex, elementsToShift);
+        }
+
+        // Зануляем освободившийся хвост и декрементируем счетчик элементов
+        this.array[this.totalCount - 1] = null;
+        this.totalCount--;
+
+        // 3. Актуализируем counts под новую заполненность
         recalculateCounts();
 
-        // 4. Проверяем условия сжатия массива
+        // 4. Логика сжатия: проверяем заполненность по осям
         boolean needShrink = false;
         int[] newCapacities = this.capacities.clone();
 
         for (int i = 0; i < this.capacities.length; i++) {
             // Условие: заполненность (counts) строго меньше половины емкости (capacities / 2)
-            // И при этом текущая емкость строго больше минимальной
+            // И текущая емкость позволяет уменьшение (строго больше MINIMUM_CAPACITY)
             if (this.counts[i] < (double) this.capacities[i] / 2 && this.capacities[i] > MINIMUM_CAPACITY) {
-                int shrunkCapacity = (int) (this.capacities[i] / 1.5);
+                // Находим ось, которую стратегически правильнее всего сжать (самую раздутую)
+                int dimToShrink = getDimensionToShrink();
 
-                // Новая емкость не должна упасть ниже MINIMUM_CAPACITY
-                newCapacities[i] = Math.max(shrunkCapacity, MINIMUM_CAPACITY);
+                int shrunkCapacity = (int) (newCapacities[dimToShrink] / 1.5);
+                newCapacities[dimToShrink] = Math.max(shrunkCapacity, MINIMUM_CAPACITY);
 
-                // Также новая емкость не должна урезать уже существующие элементы (counts)
-                if (newCapacities[i] < this.counts[i]) {
-                    newCapacities[i] = this.counts[i];
+                // Защита: новая емкость не должна отсечь уже существующие элементы по этой оси
+                if (newCapacities[dimToShrink] < this.counts[dimToShrink]) {
+                    newCapacities[dimToShrink] = this.counts[dimToShrink];
                 }
 
-                if (newCapacities[i] != this.capacities[i]) {
-                    needShrink = true;
-                }
+                needShrink = true;
+                break; // Сжимаем по одной оси за одну операцию remove
             }
         }
 
-        // 5. Если какое-то измерение можно сузить, вызываем makeArray
+        // 5. Если сжатие одобрено — пересобираем массив
         if (needShrink) {
             makeArray(newCapacities);
         }
