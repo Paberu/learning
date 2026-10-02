@@ -1,68 +1,111 @@
 package DynamicArray;
 
 import java.lang.reflect.Array;
+// Курс "Практика в программировании на АСД. Задание 3.
+// Задание 6. Динамический массив на основе банковского метода амортизационного анализа.
+// Структура данных уже реализована на основе указанного метода, т.к. это техника анализа, а не реализации.
+// Рассмотрим функцию append():
+// Реальная стоимость: O(1) в среднем, O(n) при расширении. Но нас-то интересует амортизированная стоимость:
+// при прохождении подобного курса на Python каждой операции присваивали 3 токена.
+// 1 токен тратится при добавлении элемента в конец списка, а 2 попадают на "банковский счёт".
+// Т.е., если нарушить общепринятую нотацию, добавление элемента - О(3), а не О(1).
+// При расширении встроенного массива вдвое происходит копирование элементов, эти затраты учитываются со "счёта", т.е.
+// если в массиве уже n элементов, то на "счёте" находится 2*n токенов, из которых n вычитается при учёте операции
+// копирования. Т.к. операция копирования стоит O(1), но на балансе находится уже не 2*n, а n токенов.
+// При дальнейшем расширении динамического массива баланс только продолжает нарастать.
+
+
 
 public class DynArray_2<T> {
-    // Курс "Практика в программировании на АСД. Задание 3.
-    // Задание 6. Динамический массив на основе банковского метода амортизационного анализа.
-    // Структура данных уже реализована на основе указанного метода, т.к. это техника анализа, а не реализации.
-    // Рассмотрим функцию append():
-    // Реальная стоимость: O(1) в среднем, O(n) при расширении. Но нас-то интересует амортизированная стоимость:
-    // при прохождении подобного курса на Python каждой операции присваивали 3 токена.
-    // 1 токен тратится при добавлении элемента в конец списка, а 2 попадают на "банковский счёт".
-    // Т.е., если нарушить общепринятую нотацию, добавление элемента - О(3), а не О(1).
-    // При расширении встроенного массива вдвое происходит копирование элементов, эти затраты учитываются со "счёта", т.е.
-    // если в массиве уже n элементов, то на "счёте" находится 2*n токенов, из которых n вычитается при учёте операции
-    // копирования. Т.к. операция копирования стоит O(1), но на балансе находится уже не 2*n, а n токенов.
-    // При дальнейшем расширении динамического массива баланс только продолжает нарастать.
-
     // Задание 7. Реализуйте многомерный динамический массив: произвольное количество измерений, при этом каждое
     // измерение может внутри масштабироваться по потребности.
-    private T [] array;
-    private int[] counts;
+    public static final int MINIMUM_CAPACITY = 4;   // для удобства тестирования, мне же принцип понять надо
+
+    private T[] array;
     private int[] capacities;
-    private int dimensions;
+    private int[] steps;
+    private int[] counts;
     Class clazz;
 
-    public DynArray_2(Class clz, int dimensions, int[] capacities) {
+    public DynArray_2(Class<T> clz, int dimensions, int... capacities) {
         if (dimensions != capacities.length) {
-            throw new IllegalArgumentException("Число размерностей измерений не соответствует указанному количеству измерений");
+            throw new IllegalArgumentException("Размерность должна совпадать с количеством измерений.");
         }
-        this.clazz = clz; // нужен для безопасного приведения типов
-        // new DynArray<Integer>(Integer.class);
-        this.dimensions = dimensions;
-        this.counts = new int[]{};
+        this.clazz = clz;
         this.capacities = capacities.clone();
-        makeArray(capacities);
+        this.steps = calculateSteps(capacities);
+        this.counts = new int[capacities.length];
+        this.array = (T[]) Array.newInstance(this.clazz, getTotalSize());
     }
 
-    public void makeArray(int[] newCapacities) {
+    public int getTotalSize() {
+        return getTotalSize(this.capacities);
+    }
+
+    private int getTotalSize(int[] newCapacities) {
+        int totalSize = 1;
+        for (int capacity : newCapacities) {
+            totalSize *= capacity;
+        }
+        return totalSize;
+    }
+
+    private int getLinearIndex(int[] axises, int[] steps) {
+        int linearIndex = 0;
+        for (int i = 0; i < axises.length; i++){
+            linearIndex += axises[i] * steps[i];
+        }
+        return linearIndex;
+    }
+
+    public T[] makeArray(int[] newCapacities) {
+        int[] newCaps = new int[newCapacities.length];
         for (int i = 0; i < newCapacities.length; i++) {
-            if (newCapacities[i] <= 16)
-                newCapacities[i] = 16;
+            newCaps[i] = Math.max(newCapacities[i], MINIMUM_CAPACITY);
         }
 
-        boolean needs_to_remake = false;
-        for (int i = 0; i < newCapacities.length; i++) {
-            if (newCapacities[i] != this.capacities[i])
-                needs_to_remake = true;
-                break;
-        }
-        if (!needs_to_remake) return;
+        if (!needsToRemake(newCaps)) return this.array;
 
-        T[] temp_array = (T[]) Array.newInstance(this.clazz, this.dimensions, newCapacities);
+        int[] newSteps = calculateSteps(newCaps);
+        T[] temp_array = (T[]) Array.newInstance(this.clazz, getTotalSize(newCaps));
 
-        int totalCount = 0;
-        for (int count : this.counts) {
-            totalCount += count;
+        int[] currentCoordinates = new int[this.capacities.length];
+        copyElementsRecursively(temp_array, newSteps, currentCoordinates, 0);
+
+        return temp_array;
+    }
+
+    private void copyElementsRecursively(T[] temp_array, int[] newSteps, int[] currentCoordinates, int currentDimension) {
+        if (currentDimension == this.capacities.length) {
+            int oldLink = getLinearIndex(currentCoordinates, this.steps);
+            int newLink = getLinearIndex(currentCoordinates, newSteps);
+            temp_array[newLink] = this.array[oldLink];
+            return;
         }
-        if (this.array != null) {
-            for (int i = 0; i < totalCount; i++) {
-                temp_array[i] = this.array[i];
+
+        for (int i = 0; i < this.counts[currentDimension]; i++) {
+            currentCoordinates[currentDimension] = i;
+            copyElementsRecursively(temp_array, newSteps, currentCoordinates, currentDimension + 1);
+        }
+    }
+
+    public boolean needsToRemake(int[] capacitiesToCheck) {
+        for (int i = 0; i < capacitiesToCheck.length; i++) {
+            if (capacitiesToCheck[i] != this.capacities[i]) {
+                return true;
             }
         }
-        this.array = temp_array;
-        this.capacities = newCapacities;
+        return false;
+    }
+
+    private static int[] calculateSteps(int... capacities) {
+        int totalCapacities = capacities.length;
+        int[] steps = new int[totalCapacities]; // при движении по осям x,y,z, например, в кубе значений 10*10*10, смещение по оси x в одномерном массиве равно 1, по оси y - 10, по оси z - 100.
+        steps[totalCapacities -1] = 1;           // начинаем с оси x (у которой 1).
+        for (int i = totalCapacities - 2; i >=0; i--) {
+            steps[i] = steps[i+1] * capacities[i+1];    //смещение по следующей оси равно смещению по текущей оси, помноженному на размерность этой оси.
+        }
+        return steps;
     }
 
     public T getItem(int[] indexes) {
@@ -72,11 +115,23 @@ public class DynArray_2<T> {
             }
         }
         int complexIndex = 0;
-        for (int index : indexes) {
-            complexIndex += index;
+        for (int i = 0; i < indexes.length - 1; i++) {
+            complexIndex += indexes[i] * counts[i];
         }
+        complexIndex += indexes[indexes.length-1];
         return this.array[complexIndex];
-        //ОШИБКА!ОШИБКА!!!
+    }
+
+    public void append(T itm) {
+
+    }
+
+    public void insert(T itm, int[] indexes){
+
+    }
+
+    public void remove(int[] indexes) {
+
     }
 
 }
