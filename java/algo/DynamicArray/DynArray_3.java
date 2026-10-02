@@ -93,4 +93,12 @@ public class DynArray_3 {
         assertEquals(64, dynArray2.capacity);
         assertEquals(35, dynArray2.count);
     }
+
+    //--тестирование N-мерного массива
+    @Test
+    void testNDArray() {
+        DynArray_2<Integer> nDArray = new DynArray_2<>(Integer.class, 3, 4, 5, 6);
+        assertEquals(120, nDArray.getTotalSize());
+
+    }
 }
