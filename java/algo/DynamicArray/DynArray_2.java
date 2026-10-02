@@ -58,21 +58,22 @@ public class DynArray_2<T> {
         return linearIndex;
     }
 
-    public T[] makeArray(int[] newCapacities) {
+    public void makeArray(int[] newCapacities) {
         int[] newCaps = new int[newCapacities.length];
         for (int i = 0; i < newCapacities.length; i++) {
             newCaps[i] = Math.max(newCapacities[i], MINIMUM_CAPACITY);
         }
 
-        if (!needsToRemake(newCaps)) return this.array;
+        if (!needsToRemake(newCaps)) return;
 
         int[] newSteps = calculateSteps(newCaps);
         T[] temp_array = (T[]) Array.newInstance(this.clazz, getTotalSize(newCaps));
 
         int[] currentCoordinates = new int[this.capacities.length];
         copyElementsRecursively(temp_array, newSteps, currentCoordinates, 0);
-
-        return temp_array;
+        this.capacities = newCaps;
+        this.steps = newSteps;
+        this.array = temp_array;
     }
 
     private void copyElementsRecursively(T[] temp_array, int[] newSteps, int[] currentCoordinates, int currentDimension) {
@@ -108,18 +109,17 @@ public class DynArray_2<T> {
         return steps;
     }
 
-    public T getItem(int[] indexes) {
+    public T getItem(int... indexes) {
+        if (indexes.length != this.capacities.length) {
+            throw new IllegalArgumentException("Indexes count must be equal to array dimensions.");
+        }
         for (int i = 0; i < indexes.length; i++) {
             if (indexes[i] < 0 || indexes[i] >= this.counts[i]) {
                 throw new IndexOutOfBoundsException("Index is out of bounds");
             }
         }
-        int complexIndex = 0;
-        for (int i = 0; i < indexes.length - 1; i++) {
-            complexIndex += indexes[i] * counts[i];
-        }
-        complexIndex += indexes[indexes.length-1];
-        return this.array[complexIndex];
+        int linearIndex = getLinearIndex(indexes, this.steps);
+        return this.array[linearIndex];
     }
 
     public void append(T itm) {
