@@ -126,16 +126,17 @@ public class DynArray_2<T> {
         if (indexes.length != this.capacities.length) {
             throw new IllegalArgumentException("Количество индексов должно совпадать с размерностью массива.");
         }
+		for (int i = 0; i < indexes.length; i++) {
+            if (indexes[i] < 0 || indexes[i] > this.counts[i]) {
+                throw new IndexOutOfBoundsException("Индекс не может быть отрицательным.");
+            }
+		}
 
         // 1. Проверяем, не выходят ли запрашиваемые индексы за текущую емкость (capacities)
         boolean needExpand = false;
         int[] newCapacities = this.capacities.clone();
 
         for (int i = 0; i < indexes.length; i++) {
-            if (indexes[i] < 0) {
-                throw new IndexOutOfBoundsException("Индекс не может быть отрицательным.");
-            }
-
             // Если индекс больше или равен текущей емкости — ось нужно расширять!
             if (indexes[i] >= this.capacities[i]) {
                 needExpand = true;
