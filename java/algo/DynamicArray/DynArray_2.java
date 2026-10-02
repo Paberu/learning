@@ -58,6 +58,26 @@ public class DynArray_2<T> {
         return linearIndex;
     }
 
+    private int getDimensionToExpand() {
+        int dimensionToExpand = this.capacities.length - 1;
+        for(int i = this.capacities.length - 1; i >= 0; i--) {
+            if (capacities[i] < capacities[dimensionToExpand]) {
+                dimensionToExpand = i;
+            }
+        }
+        return dimensionToExpand;
+    }
+
+    private int getDimensionToShrink() {
+        int dimensionToShrink = 0;
+        for(int i = 0; i < this.capacities.length; i++) {
+            if (capacities[i] > capacities[dimensionToShrink]) {
+                dimensionToShrink = i;
+            }
+        }
+        return dimensionToShrink;
+    }
+
     public void makeArray(int[] newCapacities) {
         int[] newCaps = new int[newCapacities.length];
         for (int i = 0; i < newCapacities.length; i++) {
