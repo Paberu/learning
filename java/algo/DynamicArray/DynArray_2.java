@@ -96,7 +96,7 @@ public class DynArray_2<T> {
 
     }
 
-    public void insert(T itm, int[] indexes) {
+    public void insert(T itm, int... indexes) {
         if (indexes.length != this.capacities.length) {
             throw new IllegalArgumentException("Количество индексов должно совпадать с размерностью массива.");
         }
@@ -135,7 +135,7 @@ public class DynArray_2<T> {
         recalculateCounts();
     }
 
-    public void remove(int[] indexes) {
+    public void remove(int... indexes) {
         if (indexes.length != this.capacities.length) {
             throw new IllegalArgumentException("Количество индексов должно совпадать с размерностью массива.");
         }
