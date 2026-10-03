@@ -99,6 +99,35 @@ public class DynArray_3 {
     void testNDArray() {
         DynArray_2<Integer> nDArray = new DynArray_2<>(Integer.class, 3, 4, 5, 6);
         assertEquals(120, nDArray.getTotalSize());
+        nDArray.append(10);
+        nDArray.append(20);
+        nDArray.append(30);
+        assertEquals(10, nDArray.getItem(0, 0, 0));
+        assertEquals(20, nDArray.getItem(0, 0, 1));
+        assertEquals(30, nDArray.getItem(0, 0, 2));
+        nDArray.insert(99, 0, 0, 1);
+        assertEquals(10, nDArray.getItem(0, 0, 0));
+        assertEquals(99, nDArray.getItem(0, 0, 1));
+        assertEquals(20, nDArray.getItem(0, 0, 2));
+        assertEquals(30, nDArray.getItem(0, 0, 3));
+        nDArray.remove(0, 0, 1);
+        assertEquals(10, nDArray.getItem(0, 0, 0));
+        assertEquals(20, nDArray.getItem(0, 0, 1));
+        assertEquals(30, nDArray.getItem(0, 0, 2));
+        assertThrows(IndexOutOfBoundsException.class, () -> nDArray.getItem(0, 0, 3));
+    }
 
+    @Test
+    void testNDArray2() {
+        DynArray_2<Integer> smallNDArray = new DynArray_2<>(Integer.class, 3, 4, 4, 4);
+        int initialSize = smallNDArray.getTotalSize();
+
+        for (int i = 0; i < initialSize; i++) {
+            smallNDArray.append(i);
+        }
+
+        smallNDArray.append(999);
+        assertEquals(initialSize * 2, smallNDArray.getTotalSize());
+        assertEquals(999, smallNDArray.getItem(2, 0, 0));
     }
 }
