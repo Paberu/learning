@@ -140,10 +140,12 @@ public class Stack_3 {
     @Test
     public void testBalanced1() {
         String test = "(()((())()))";
+        assertTrue(Stack_2.balanced(test));
     }
 
     @Test
     public void testBalanced2() {
         String test =  "(()()(()";
+        assertFalse(Stack_2.balanced(test));
     }
 }
