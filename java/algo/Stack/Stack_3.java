@@ -48,6 +48,39 @@ public class Stack_3 {
     }
 
     @Test
+    public void testPop1() {
+        assertNull(stack1.peek());
+        assertEquals(0, stack1.size());
+        assertNull(stack1.pop());
+        assertEquals(0, stack1.size());
+    }
+
+    @Test
+    public void testPop2() {
+        assertEquals(2, stack2.peek());
+        assertEquals(1, stack2.size());
+        assertEquals(2, stack2.pop());
+        assertEquals(0, stack2.size());
+    }
+
+    @Test
+    public void testPop3() {
+        assertEquals(10, stack3.peek());
+        assertEquals(5, stack3.size());
+        assertEquals(10, stack3.pop());
+        assertEquals(4, stack3.size());
+    }
+
+    @Test
+    public void testPop4() {
+        assertEquals(18, stack4.peek());
+        assertEquals(10, stack4.size());
+        assertEquals(18, stack4.pop());
+        assertEquals(16, stack4.peek());
+        assertEquals(9, stack4.size());
+    }
+
+    @Test
     public void testPush1() {
         assertNull(stack1.peek());
         assertEquals(0, stack1.size());
@@ -84,36 +117,33 @@ public class Stack_3 {
     }
 
     @Test
-    public void testPop1() {
+    public void testPeek1() {
         assertNull(stack1.peek());
-        assertEquals(0, stack1.size());
-        assertNull(stack1.pop());
-        assertEquals(0, stack1.size());
     }
 
     @Test
-    public void testPop2() {
+    public void testPeek2() {
         assertEquals(2, stack2.peek());
-        assertEquals(1, stack2.size());
-        assertEquals(2, stack2.pop());
-        assertEquals(0, stack2.size());
     }
 
     @Test
-    public void testPop3() {
+    public void testPeek3() {
         assertEquals(10, stack3.peek());
-        assertEquals(5, stack3.size());
-        assertEquals(10, stack3.pop());
-        assertEquals(4, stack3.size());
     }
 
     @Test
-    public void testPop4() {
+    public void testPeek4() {
         assertEquals(18, stack4.peek());
-        assertEquals(10, stack4.size());
-        assertEquals(18, stack4.pop());
-        assertEquals(16, stack4.peek());
-        assertEquals(9, stack4.size());
     }
 
+    // Задание 5.
+    @Test
+    public void testBalanced1() {
+        String test = "(()((())()))";
+    }
+
+    @Test
+    public void testBalanced2() {
+        String test =  "(()()(()";
+    }
 }
