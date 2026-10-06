@@ -160,4 +160,30 @@ public class Stack_3 {
         String test = ")))))))))";
         assertFalse(Stack_2.balanced(test));
     }
+
+
+    // Задание 6.
+    @Test
+    public void testBalancedExtended1() {
+        String test = "(({{}})((([[[]]]))()))";
+        assertTrue(Stack_2.balancedExtended(test));
+    }
+
+    @Test
+    public void testBalancedExtended2() {
+        String test =  "(()())[[(())";
+        assertFalse(Stack_2.balancedExtended(test));
+    }
+
+    @Test
+    public void testBalancedExtended3() {
+        String test = "({{{[[[(((((";
+        assertFalse(Stack_2.balancedExtended(test));
+    }
+
+    @Test
+    public void testBalancedExtended4() {
+        String test = ")))))))))";
+        assertFalse(Stack_2.balancedExtended(test));
+    }
 }
