@@ -9,6 +9,9 @@ public class Stack_2 {
             if (symbol == '(') {
                 checkerStack.push('(');
             } else if (symbol == ')') {
+                if (checkerStack.peek() == null) {
+                    return false;
+                }
                 char checkSymbol = (char)checkerStack.pop();
                 if (checkSymbol != '(') {
                     return false;
