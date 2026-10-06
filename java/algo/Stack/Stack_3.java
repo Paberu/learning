@@ -148,4 +148,16 @@ public class Stack_3 {
         String test =  "(()()(()";
         assertFalse(Stack_2.balanced(test));
     }
+
+    @Test
+    public void testBalanced3() {
+        String test = "(((((((((";
+        assertFalse(Stack_2.balanced(test));
+    }
+
+    @Test
+    public void testBalanced4() {
+        String test = ")))))))))";
+        assertFalse(Stack_2.balanced(test));
+    }
 }
