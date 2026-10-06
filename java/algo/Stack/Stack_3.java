@@ -136,7 +136,7 @@ public class Stack_3 {
         assertEquals(18, stack4.peek());
     }
 
-    // Задание 5.
+    // Задание 4.
     @Test
     public void testBalanced1() {
         String test = "(()((())()))";
@@ -162,7 +162,7 @@ public class Stack_3 {
     }
 
 
-    // Задание 6.
+    // Задание 5.
     @Test
     public void testBalancedExtended1() {
         String test = "(({{}})((([[[]]]))()))";
