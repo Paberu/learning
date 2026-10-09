@@ -45,6 +45,7 @@ public class Stack_2<T extends Number & Comparable> {
     // Сложность по времени: O(1) - берётся верхняя из стека минимумов.
     // Сложность по памяти: O(n) - создаётся дополнительный стек, равный по размеру предыдущему.
     public T min() {
+        if (this.size == 0) throw new ArithmeticException("У пустого списка нет минимального значения.");
         return this.minimums.peek();
     }
 
@@ -52,6 +53,7 @@ public class Stack_2<T extends Number & Comparable> {
     // Сложность по времени: O(1) - переменная double делится на переменную int.
     // Сложность по памяти: O(1) - поддерживается две лишних переменных.
     public double average() {
+        if (this.size == 0) throw new ArithmeticException("У пустого списка нет среднего арифметического.");
         return this.sum/this.size;
     }
 }
