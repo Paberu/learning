@@ -103,21 +103,42 @@ class StackUtilities {
         return (checkerStack.size() == 0);
     }
 
-    //Задача 6. Добавьте в стек функцию, возвращающую текущий минимальный элемент в нём за O(1) (подсказка: используйте второй стек).
-    // Я помню, что задачи со звёздочкой мы выносим в файл с постфиксом _2. Но в таком случае мы получим сложно O(n) и изуродуем исходный стек.
-    // Я выношу эту функцию в Stack.java. Здесь оставлю этот говнокод как пример того, как нельзя писать.
-    public static int minInStack(Stack<Integer> stack) {
-        if (stack.size() == 0) throw new IllegalArgumentException("Этой функции нельзя скармливать пустой стек");
-        Stack<Integer> stackForCheck = new Stack<Integer>();
-        stackForCheck.push(stack.pop()); // инициализация, как она есть (мне не нравится, что в процессе поиска наименьшего значения я корёжу исходный стек, это надо менять)
-        int iterations = stack.size();
-        for (int i = 0; i < iterations; i++) {
-            int element = stack.pop();
-            if (element < stackForCheck.peek()) {
-                stackForCheck.push(element);
+    //Задача 8. Постфиксная запись выражения -- это запись, в которой порядок вычислений определяется не скобками и приоритетами, а только позицией элемента в выражении.
+    // Рассчитайте с её помощью например такое выражение:
+    // 8 2 + 5 * 9 + =
+    public static int fortranLike(String parameters) {
+        Stack<String> firstStack = new Stack<String>();
+        Stack<Integer> secondStack = new Stack<Integer>();
+        String[] params = parameters.split("\\s+");
+        for (int i = params.length - 1; i >= 0; i--) {
+            firstStack.push(params[i]);
+        }
+        for (int i = 0; i < params.length; i++) {
+            String element = firstStack.pop();
+            switch (element) {
+                case "=" -> {
+                    return secondStack.pop();
+                }
+                case "+" -> {
+                    int b = secondStack.pop();
+                    int a = secondStack.pop();
+                    secondStack.push(a + b);
+                }
+                case "*" -> {
+                    int b = secondStack.pop();
+                    int a = secondStack.pop();
+                    secondStack.push(a * b);
+                }
+                default -> {
+                    try {
+                        secondStack.push(Integer.parseInt(element));
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("В эту функцию можно передавать только числа и символы '*', '+' и '=' !!!");
+                    }
+                }
             }
         }
-        return stackForCheck.peek();
+        return secondStack.pop();
     }
 }
 
