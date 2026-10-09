@@ -109,7 +109,7 @@ class StackUtilities {
     public static int fortranLike(String parameters) {
         Stack<String> firstStack = new Stack<String>();
         Stack<Integer> secondStack = new Stack<Integer>();
-        String[] params = parameters.split("\\s+");
+        String[] params = parameters.strip().split("\\s+");
         for (int i = params.length - 1; i >= 0; i--) {
             firstStack.push(params[i]);
         }
