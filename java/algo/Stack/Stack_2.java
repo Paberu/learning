@@ -57,6 +57,10 @@ public class Stack_2<T extends Number & Comparable> {
 }
 
 class StackUtilities {
+    // Задача 4. Напишите функцию, которая получает на вход строку, состоящую из открывающих и закрывающих скобок и, используя только
+    // стек и оператор цикла, определите, сбалансированы ли скобки в этой строке.
+    // Сложность по времени: O(n) - всегда надо пробежать весь стек.
+    // Сложность по памяти: O(n) - для анализа строки длиной n создаётся стек длиной n.
     public static boolean balanced(String s) {
         Stack<Character> checkerStack = new Stack<Character>();
         for (int i = 0; i < s.length(); i++) {
@@ -73,6 +77,9 @@ class StackUtilities {
         return (checkerStack.size() == 0);
     }
 
+    // Задача 5. Расширьте фукнцию из предыдущего примера, если скобки могут быть трех типов: (), {}, [].
+    // Сложность по времени: O(n) - всегда надо пробежать весь стек.
+    // Сложность по памяти: O(n) - для анализа строки длиной n создаётся стек длиной n.
     public static boolean balancedExtended(String s) {
         Stack<Character> checkerStack = new Stack<Character>();
         for (int i = 0; i < s.length(); i++) {
