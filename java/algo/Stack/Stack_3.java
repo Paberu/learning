@@ -260,4 +260,24 @@ public class Stack_3 {
         }
         assertEquals(9.0, stack.average());
     }
+
+    //Задача 8. Постфиксная запись выражения -- это запись, в которой порядок вычислений определяется не скобками и приоритетами, а только позицией элемента в выражении.
+    // Рассчитайте с её помощью например такое выражение:
+    @Test
+    public void testFortranLike1() {
+        String test = "8 2 + 5 * 9 + =";
+        assertEquals(59, StackUtilities.fortranLike(test));
+    }
+
+    @Test
+    public void testFortranLike2() {
+        String test = "Молилась ли ты на ночь, Дездемона!?";
+        assertThrows(IllegalArgumentException.class, () -> StackUtilities.fortranLike(test));
+    }
+
+    @Test
+    public void testFortranLike3() {
+        String test = "   5 5 + 5 * 50 + ";
+        assertEquals(100, StackUtilities.fortranLike(test));
+    }
 }
