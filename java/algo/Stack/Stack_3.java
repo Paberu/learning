@@ -192,4 +192,72 @@ public class Stack_3 {
         String test = ")))))))))";
         assertFalse(StackUtilities.balancedExtended(test));
     }
+
+    // Задача 6. Добавьте в стек функцию, возвращающую текущий минимальный элемент в нём за O(1) (подсказка: используйте второй стек).
+    // Сложность по времени: O(1) - берётся верхняя из стека минимумов.
+    // Сложность по памяти: O(n) - создаётся дополнительный стек, равный по размеру предыдущему.
+    @Test
+    public void testMin1() {
+        Stack_2<Integer> stack = new Stack_2<Integer>();
+        assertThrows(ArithmeticException.class, () -> stack.min());
+    }
+
+    @Test
+    public void testMin2() {
+        Stack_2<Integer> stack = new Stack_2<Integer>();
+        stack.push(2);
+        assertEquals(2, stack.min());
+    }
+
+    @Test
+    public void testMin3() {
+        Stack_2<Integer>stack = new Stack_2<Integer>();
+        for (int i = 0; i < 5; i++) {
+            stack.push(10);
+        }
+        assertEquals(10, stack.min());
+    }
+
+    @Test
+    public void testMin4() {
+        Stack_2<Integer> stack = new Stack_2<Integer>();
+        for (int i = 0; i < 10; i++) {
+            stack.push(i * 2);
+        }
+        assertEquals(0, stack.min());
+    }
+
+    // Задача 7. Добавьте в стек функцию, которая возвращает среднее значение всех элементов в стеке. Она должна выполняться за O(1).
+    // Сложность по времени: O(1) - переменная double делится на переменную int.
+    // Сложность по памяти: O(1) - поддерживается две лишних переменных.
+    @Test
+    public void testAverage1() {
+        Stack_2<Integer> stack = new Stack_2<Integer>();
+        assertThrows(ArithmeticException.class, () -> stack.average());
+    }
+
+    @Test
+    public void testAverage2() {
+        Stack_2<Integer> stack = new Stack_2<Integer>();
+        stack.push(2);
+        assertEquals(2.0, stack.average());
+    }
+
+    @Test
+    public void testAverage3() {
+        Stack_2<Integer>stack = new Stack_2<Integer>();
+        for (int i = 0; i < 5; i++) {
+            stack.push(10);
+        }
+        assertEquals(10.0, stack.average());
+    }
+
+    @Test
+    public void testAverage4() {
+        Stack_2<Integer> stack = new Stack_2<Integer>();
+        for (int i = 0; i < 10; i++) {
+            stack.push(i * 2);
+        }
+        assertEquals(9.0, stack.average());
+    }
 }
