@@ -3,13 +3,13 @@ package Stack;
 import java.util.*;
 // я решил, что эта строка - это подсказка: я буду использовать ArrayList для внутреннего хранилища
 
-public class Stack<T> {
-    ArrayList storage;
+public class Stack<T extends Comparable> {
+    ArrayList<T> storage;
 
     // Курс "Практика в программировании на АСД. Задание 1.
     // Подберите в вашем языке программирования подходящую динамическую структуру данных для хранения стека. Реализуйте методы size(), pop(), push() и peek().
     public Stack() {
-        this.storage = new ArrayList();
+        this.storage = new ArrayList<>();
     }
 
     // Задание 2. Переписать с хвоста на голову, код от задания 1 будет в комментариях.
