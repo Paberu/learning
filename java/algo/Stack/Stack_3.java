@@ -140,25 +140,25 @@ public class Stack_3 {
     @Test
     public void testBalanced1() {
         String test = "(()((())()))";
-        assertTrue(Stack_2.balanced(test));
+        assertTrue(StackUtilities.balanced(test));
     }
 
     @Test
     public void testBalanced2() {
         String test =  "(()()(()";
-        assertFalse(Stack_2.balanced(test));
+        assertFalse(StackUtilities.balanced(test));
     }
 
     @Test
     public void testBalanced3() {
         String test = "(((((((((";
-        assertFalse(Stack_2.balanced(test));
+        assertFalse(StackUtilities.balanced(test));
     }
 
     @Test
     public void testBalanced4() {
         String test = ")))))))))";
-        assertFalse(Stack_2.balanced(test));
+        assertFalse(StackUtilities.balanced(test));
     }
 
 
@@ -166,24 +166,24 @@ public class Stack_3 {
     @Test
     public void testBalancedExtended1() {
         String test = "(({{}})((([[[]]]))()))";
-        assertTrue(Stack_2.balancedExtended(test));
+        assertTrue(StackUtilities.balancedExtended(test));
     }
 
     @Test
     public void testBalancedExtended2() {
         String test =  "(()())[[(())";
-        assertFalse(Stack_2.balancedExtended(test));
+        assertFalse(StackUtilities.balancedExtended(test));
     }
 
     @Test
     public void testBalancedExtended3() {
         String test = "({{{[[[(((((";
-        assertFalse(Stack_2.balancedExtended(test));
+        assertFalse(StackUtilities.balancedExtended(test));
     }
 
     @Test
     public void testBalancedExtended4() {
         String test = ")))))))))";
-        assertFalse(Stack_2.balancedExtended(test));
+        assertFalse(StackUtilities.balancedExtended(test));
     }
 }
