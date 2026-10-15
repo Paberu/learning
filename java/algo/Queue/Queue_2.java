@@ -16,7 +16,7 @@ public class Queue_2 {
 }
 
 // Задача 4. Реализуйте очередь с помощью двух стеков.
-class StackedQueue<T> {
+class StackedQueue<T extends Comparable> {      // потому что в моей реализации стека T наследует Comparable
     private Stack<T> main;
     private Stack<T> temp;
     int size;
@@ -46,10 +46,10 @@ class StackedQueue<T> {
             this.temp.push(this.main.pop());
         }
         T value = this.temp.pop();
+        this.size--;
         for (int i = 0; i < this.size; i++) {
             this.main.push(this.temp.pop());
         }
-        this.size--;
         return value;
     }
 }
