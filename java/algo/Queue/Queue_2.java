@@ -8,9 +8,22 @@ public class Queue_2 {
     // Задача 3. Напишите функцию, которая "вращает" очередь по кругу на N элементов.
     // Сложность решения по времени: O(n). В худшем случае n может превышать длину очереди в r+1 раз.
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
-    public static void rotate (Queue queue, int shift) {
+    public static void rotate(Queue queue, int shift) {
         for (int i = 0; i < shift; i++) {
             queue.enqueue(queue.dequeue());
+        }
+    }
+    // Задача 5. Добавьте функцию, которая обращает все элементы в очереди в обратном порядке.
+    // Сложность решения по времени: O(n). Всегда надо пробежать всю очередь.
+    // Сложность решения по пространству: О(n). Создаётся стек размера n.
+    public static void reverse(Queue queue) {
+        Stack<Integer> tempStack = new Stack<Integer>();
+        int size = queue.size();
+        for(int i = 0; i < size; i++) {
+            tempStack.push(queue.dequeue());
+        }
+        for(int i = 0; i < size; i++) {
+            queue.enqueue(tempStack.pop());
         }
     }
 }
