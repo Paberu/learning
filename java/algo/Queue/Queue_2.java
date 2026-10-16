@@ -54,6 +54,13 @@ class StackedQueue<T extends Comparable> {      // потому что в мое
     }
 
     public T dequeue() {
+    // Сложность решения по времени: O(n). Мы дважды перекладываем из одного стека в другой, целиком. Сегодня на работе я
+    // рисовал, как плавают значения из стека в стек и понял, что достаточно перекладывать всё из первой очереди во вторую, лишь
+    // когда вторая полностью опустее из-за dequeue(). В таком случае все операции будут O(1). Но я оставляю вчерашнее решение,
+    // что называется, "в лоб", благодаря которому "вся дурость видна". Этот комментарий и нижеследующее решение будут напоминанием,
+    // не все хорошие решения приходят сразу, иногда следует сделать то, что работает, а на следующий день, с утра, можно переделать,
+    // с O(n) на O(1). Главное, не сломать интерфейсы, создавая реализацию.
+    // Сложность решения по пространству: О(n).
         if (isEmpty()) throw new IllegalStateException("Нельзя достать что-то из пустой очереди.");
         for (int i = 0; i < this.size; i++) {
             this.temp.push(this.main.pop());
@@ -66,6 +73,60 @@ class StackedQueue<T extends Comparable> {      // потому что в мое
         return value;
     }
 }
+
+// Задача 6. Реализуйте круговую (циклическую буферную) очередь статическим массивом фиксированного размера.
+class RoundQueue {
+    private int capacity;
+    private int size;
+    private int begin;
+    private int end;
+    private int[] array;
+
+    public RoundQueue(int capacity) {
+        this.capacity = capacity;
+        this.size = 0;
+        this.begin = 0;
+        this.end = 0;
+        this.array = new int[capacity];
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public boolean isFull() {
+        return size == capacity;
+    }
+
+    // Сложность решения по времени: O(1).
+    // Сложность решения по пространству: О(1).
+    public void enqueue(int value) {
+        if (isFull()) {
+            throw new IllegalStateException("Нельзя добавлять новые значения в циклическую очередь");
+        }
+        array[end] = value;
+        end = (end + 1) % capacity;
+        size++;
+    }
+
+    // Сложность решения по времени: O(1).
+    // Сложность решения по пространству: О(1).
+    public int dequeue() {
+        if (isEmpty()) {
+            throw new IllegalStateException("Нельзя достать что-то из пустой очереди.");
+        }
+        int toReturn = array[begin];
+        begin = (begin + 1) % capacity;
+        size--;
+
+        return toReturn;
+    }
+}
+
 
 // Рефлексия.
 //
