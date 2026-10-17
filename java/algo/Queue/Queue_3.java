@@ -70,5 +70,20 @@ public class Queue_3 {
         assertThrows(IllegalStateException.class, () -> queue2.dequeue());
     }
 
+    @Test
+    void testRotate1() {
+        assertTrue(queue1.isEmpty());
+        assertThrows(IllegalStateException.class, () -> Queue_2.rotate(queue1, 4));
+    }
+
+    @Test
+    void testRotate2() {
+        Queue_2.rotate(queue2, 4);
+        assertEquals(2, queue2.dequeue());
+        assertEquals(3, queue2.dequeue());
+        assertEquals(1, queue2.dequeue());
+        assertThrows(IllegalStateException.class, () -> queue2.dequeue());
+    }
+
 
 }
