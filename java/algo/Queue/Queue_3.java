@@ -154,4 +154,20 @@ public class Queue_3 {
         assertEquals(5, queue.dequeue());
     }
 
+    @Test
+    void testRoundQueue() {
+        RoundQueue queue = new RoundQueue(4);
+        assertEquals(0, queue.size());
+        queue.enqueue(14);
+        queue.enqueue(10);
+        queue.enqueue(5);
+        queue.enqueue(0);
+        assertEquals(4, queue.size());
+        assertTrue(queue.isFull());
+        assertThrows(IllegalStateException.class, () -> queue3.dequeue());
+        assertEquals(14, queue.dequeue());
+        assertEquals(10, queue.dequeue());
+        assertEquals(5, queue.dequeue());
+    }
+
 }
