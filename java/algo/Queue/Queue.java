@@ -1,13 +1,13 @@
 package Queue;
 
-public class Queue {
-    private Node head;
-    private Node tail;
+public class Queue<T> {
+    private Node<T> head;
+    private Node<T> tail;
     private int size;
 
     public Queue() {
-        this.head = new DummyNode();
-        this.tail = new DummyNode();
+        this.head = new DummyNode<T>();
+        this.tail = new DummyNode<T>();
         this.tail.prev = this.head;
         this.head.next = this.tail;
         this.size = 0;
@@ -29,8 +29,8 @@ public class Queue {
     // Задача 2. Оцените меру сложности для операций enqueue() (добавление) и dequeue() (удаление) в данной реализации.
     // Сложность решения по времени: O(1). Реализовал через связный список с использованием DummyNode (зря я их что ли реализовывал).
     // Сложность решения по пространству: О(1). Создаётся один новый узел, который и добавляется в очередь.
-    public void enqueue(int value) {
-        Node node = new Node(value);
+    public void enqueue(T item) {
+        Node<T> node = new Node<>(item);
         node.prev = this.tail.prev;
         node.next = this.tail;
 
@@ -43,9 +43,9 @@ public class Queue {
     // Задача 2. Оцените меру сложности для операций enqueue() (добавление) и dequeue() (удаление) в данной реализации.
     // Сложность решения по времени: O(1). Связный список позволяет не сдвигать весь массив данных на единицу, а наличие DummyNode не проверять пограничные случаи.
     // Сложность решения по пространству: О(1). Создаётся один новый указатель на уже существующий узел.
-    public int dequeue() {
-        if (isEmpty()) throw new IllegalStateException("Нельзя достать что-то из пустой очереди.");
-        Node first = this.head.next;
+    public T dequeue() {
+        if (isEmpty()) return null;
+        Node<T> first = this.head.next;
         first.next.prev = this.head;
         this.head.next = first.next;
         this.size--;
@@ -53,20 +53,20 @@ public class Queue {
     }
 }
 
-class Node {
-    public int value;
-    public Node next;
-    public Node prev;
+class Node<T> {
+    T value;
+    Node<T> next;
+    Node<T> prev;
 
-    public Node(int _value) {
-        value = _value;
+    public Node(T value) {
+        this.value = value;
         next = null;
         prev = null;
     }
 }
 
-class DummyNode extends Node {
+class DummyNode<T> extends Node {
     public DummyNode() {
-        super(0);
+        super(null);
     }
 }
