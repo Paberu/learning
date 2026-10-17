@@ -81,7 +81,7 @@ public class Queue_3 {
     @Test
     void testDequeue1() {
         assertTrue(queue1.isEmpty());
-        assertThrows(IllegalStateException.class, () -> queue1.dequeue());
+        assertNull(queue1.dequeue());
     }
 
     @Test
@@ -89,19 +89,19 @@ public class Queue_3 {
         assertEquals(1, queue2.dequeue());
         assertEquals(2, queue2.dequeue());
         assertEquals(3, queue2.dequeue());
-        assertThrows(IllegalStateException.class, () -> queue2.dequeue());
+        assertNull(queue2.dequeue());
     }
 
     @Test
     void testDequeue3() {
         assertEquals(10, queue3.dequeue());
-        assertThrows(IllegalStateException.class, () -> queue3.dequeue());
+        assertNull(queue3.dequeue());
     }
 
     @Test
     void testRotate1() {
         assertTrue(queue1.isEmpty());
-        assertThrows(IllegalStateException.class, () -> Queue_2.rotate(queue1, 4));
+        Queue_2.rotate(queue1, 4);
     }
 
     @Test
@@ -110,14 +110,22 @@ public class Queue_3 {
         assertEquals(2, queue2.dequeue());
         assertEquals(3, queue2.dequeue());
         assertEquals(1, queue2.dequeue());
-        assertThrows(IllegalStateException.class, () -> queue2.dequeue());
+        assertNull(queue2.dequeue());
     }
 
     @Test
     void testRotate3() {
         Queue_2.rotate(queue3, 4);
         assertEquals(10, queue3.dequeue());
-        assertThrows(IllegalStateException.class, () -> queue3.dequeue());
+        assertNull(queue3.dequeue());
+    }
+
+    @Test
+    void testRotate4() {
+        Queue_2.rotate(queue2, -11);
+        assertEquals(2, queue2.dequeue());
+        assertEquals(3, queue2.dequeue());
+        assertEquals(1, queue2.dequeue());
     }
 
     @Test
@@ -133,14 +141,14 @@ public class Queue_3 {
         assertEquals(3, queue2.dequeue());
         assertEquals(2, queue2.dequeue());
         assertEquals(1, queue2.dequeue());
-        assertThrows(IllegalStateException.class, () -> queue2.dequeue());
+        assertNull(queue2.dequeue());
     }
 
     @Test
     void testReverse3() {
         Queue_2.reverse(queue3);
         assertEquals(10, queue3.dequeue());
-        assertThrows(IllegalStateException.class, () -> queue3.dequeue());
+        assertNull(queue3.dequeue());
     }
 
     @Test
