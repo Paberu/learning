@@ -143,4 +143,15 @@ public class Queue_3 {
         assertThrows(IllegalStateException.class, () -> queue3.dequeue());
     }
 
+    @Test
+    void testStackedQueue() {
+        StackedQueue queue = new StackedQueue();
+        queue.enqueue(14);
+        queue.enqueue(10);
+        queue.enqueue(5);
+        assertEquals(14, queue.dequeue());
+        assertEquals(10, queue.dequeue());
+        assertEquals(5, queue.dequeue());
+    }
+
 }
