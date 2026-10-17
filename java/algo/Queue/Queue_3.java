@@ -35,7 +35,7 @@ public class Queue_3 {
 
     @Test
     void testEmpty2() {
-        assertFalse(queue1.isEmpty());
+        assertFalse(queue2.isEmpty());
     }
 
     @Test
@@ -50,10 +50,24 @@ public class Queue_3 {
     @Test
     void testEnqueue2() {
         assertFalse(queue2.isEmpty());
-        assertEquals(3, queue1.size());
+        assertEquals(3, queue2.size());
         queue2.enqueue(5);
         queue2.enqueue(5);
-        assertEquals(5, queue1.size());
+        assertEquals(5, queue2.size());
+    }
+
+    @Test
+    void testDequeue1() {
+        assertTrue(queue1.isEmpty());
+        assertThrows(IllegalStateException.class, () -> queue1.dequeue());
+    }
+
+    @Test
+    void testDequeue2() {
+        assertEquals(1, queue2.dequeue());
+        assertEquals(2, queue2.dequeue());
+        assertEquals(3, queue2.dequeue());
+        assertThrows(IllegalStateException.class, () -> queue2.dequeue());
     }
 
 
