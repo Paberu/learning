@@ -106,7 +106,7 @@ class RoundQueue {
     // Сложность решения по пространству: О(1).
     public void enqueue(int value) {
         if (isFull()) {
-            throw new IllegalStateException("Нельзя добавлять новые значения в циклическую очередь");
+            throw new IllegalStateException("Нельзя добавлять новые значения в полную очередь");
         }
         array[end] = value;
         end = (end + 1) % capacity;
