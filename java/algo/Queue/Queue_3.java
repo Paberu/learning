@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class Queue_3 {
     Queue queue1;
     Queue queue2;
+    Queue queue3;
 
     @BeforeEach
     void setUp() {
@@ -16,6 +17,8 @@ public class Queue_3 {
         queue2.enqueue(1);
         queue2.enqueue(2);
         queue2.enqueue(3);
+        queue3 = new Queue();
+        queue3.enqueue(10);
     }
 
     @Test
@@ -29,6 +32,11 @@ public class Queue_3 {
     }
 
     @Test
+    void testSize3() {
+        assertEquals(1, queue3.size());
+    }
+
+    @Test
     void testEmpty1() {
         assertTrue(queue1.isEmpty());
     }
@@ -36,6 +44,11 @@ public class Queue_3 {
     @Test
     void testEmpty2() {
         assertFalse(queue2.isEmpty());
+    }
+
+    @Test
+    void testEmpty3() {
+        assertFalse(queue3.isEmpty());
     }
 
     @Test
@@ -78,6 +91,21 @@ public class Queue_3 {
 
     @Test
     void testRotate2() {
+        Queue_2.rotate(queue2, 4);
+        assertEquals(2, queue2.dequeue());
+        assertEquals(3, queue2.dequeue());
+        assertEquals(1, queue2.dequeue());
+        assertThrows(IllegalStateException.class, () -> queue2.dequeue());
+    }
+
+    @Test
+    void testReverse1() {
+        assertTrue(queue1.isEmpty());
+        assertThrows(IllegalStateException.class, () -> Queue_2.rotate(queue1, 4));
+    }
+
+    @Test
+    void testReverse2() {
         Queue_2.rotate(queue2, 4);
         assertEquals(2, queue2.dequeue());
         assertEquals(3, queue2.dequeue());
