@@ -70,6 +70,15 @@ public class Queue_3 {
     }
 
     @Test
+    void testEnqueue3() {
+        assertFalse(queue3.isEmpty());
+        assertEquals(1, queue3.size());
+        queue3.enqueue(5);
+        queue3.enqueue(5);
+        assertEquals(3, queue3.size());
+    }
+
+    @Test
     void testDequeue1() {
         assertTrue(queue1.isEmpty());
         assertThrows(IllegalStateException.class, () -> queue1.dequeue());
@@ -81,6 +90,12 @@ public class Queue_3 {
         assertEquals(2, queue2.dequeue());
         assertEquals(3, queue2.dequeue());
         assertThrows(IllegalStateException.class, () -> queue2.dequeue());
+    }
+
+    @Test
+    void testDequeue3() {
+        assertEquals(10, queue3.dequeue());
+        assertThrows(IllegalStateException.class, () -> queue3.dequeue());
     }
 
     @Test
