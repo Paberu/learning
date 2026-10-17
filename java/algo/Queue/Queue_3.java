@@ -38,5 +38,23 @@ public class Queue_3 {
         assertFalse(queue1.isEmpty());
     }
 
+    @Test
+    void testEnqueue1() {
+        assertTrue(queue1.isEmpty());
+        queue1.enqueue(5);
+        queue1.enqueue(5);
+        assertFalse(queue1.isEmpty());
+        assertEquals(2, queue1.size());
+    }
+
+    @Test
+    void testEnqueue2() {
+        assertFalse(queue2.isEmpty());
+        assertEquals(3, queue1.size());
+        queue2.enqueue(5);
+        queue2.enqueue(5);
+        assertEquals(5, queue1.size());
+    }
+
 
 }
