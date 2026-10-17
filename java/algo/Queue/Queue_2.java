@@ -9,6 +9,9 @@ public class Queue_2 {
     // Сложность решения по времени: O(n). В худшем случае n может превышать длину очереди в r+1 раз.
     // Сложность решения по пространству: О(1). Ничего нового не создаётся.
     public static void rotate(Queue queue, int shift) {
+        int size = queue.size();
+        if (size == 0) return;
+        shift = ((shift % size) + size) % size; // при отрицательном смещении его надо докрутить до положительного, и по-другому у меня не вышло.
         for (int i = 0; i < shift; i++) {
             queue.enqueue(queue.dequeue());
         }
@@ -16,8 +19,8 @@ public class Queue_2 {
     // Задача 5. Добавьте функцию, которая обращает все элементы в очереди в обратном порядке.
     // Сложность решения по времени: O(n). Всегда надо пробежать всю очередь.
     // Сложность решения по пространству: О(n). Создаётся стек размера n.
-    public static void reverse(Queue queue) {
-        Stack<Integer> tempStack = new Stack<Integer>();
+    public static <T extends Comparable<T>> void reverse(Queue<T> queue) {
+        Stack<T> tempStack = new Stack<T>();
         int size = queue.size();
         for(int i = 0; i < size; i++) {
             tempStack.push(queue.dequeue());
