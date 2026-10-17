@@ -164,10 +164,12 @@ public class Queue_3 {
         queue.enqueue(0);
         assertEquals(4, queue.size());
         assertTrue(queue.isFull());
-        assertThrows(IllegalStateException.class, () -> queue3.dequeue());
+        assertThrows(IllegalStateException.class, () -> queue.enqueue(9));
         assertEquals(14, queue.dequeue());
         assertEquals(10, queue.dequeue());
         assertEquals(5, queue.dequeue());
+        assertEquals(0, queue.dequeue());
+        assertThrows(IllegalStateException.class, () -> queue.dequeue());
     }
 
 }
