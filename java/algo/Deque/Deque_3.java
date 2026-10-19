@@ -91,4 +91,52 @@ public class Deque_3 {
         assertEquals("Hello", deque.peekFront());
         assertEquals("Amigos!", deque.peekTail());
     }
+
+    @Test
+    void testRemoveFront1() {
+        assertNull(deque1.peekFront());
+        assertNull(deque1.removeFront());
+    }
+
+    @Test
+    void testRemoveFront2() {
+        assertNotNull(deque2.peekFront());
+        assertEquals(1, deque2.removeFront());
+    }
+
+    @Test
+    void testRemoveFront3() {
+        assertNotNull(deque3.peekFront());
+        assertEquals(2, deque3.removeFront());
+    }
+
+    @Test
+    void testRemoveFront() {
+        assertNotNull(deque.peekFront());
+        assertEquals("Hello", deque.removeFront());
+    }
+
+    @Test
+    void testRemoveTail1() {
+        assertNull(deque1.peekTail());
+        assertNull(deque1.removeTail());
+    }
+
+    @Test
+    void testRemoveTail2() {
+        assertNotNull(deque2.peekFront());
+        assertEquals(1, deque2.removeTail());
+    }
+
+    @Test
+    void testRemoveTail3() {
+        assertNotNull(deque3.peekFront());
+        assertEquals(4, deque3.removeTail());
+    }
+
+    @Test
+    void testRemoveTail() {
+        assertNotNull(deque.peekFront());
+        assertEquals("!", deque.removeTail());
+    }
 }
