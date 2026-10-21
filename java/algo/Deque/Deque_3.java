@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class Deque_3 {
+    // Курс "Практика в программировании на АСД. Задание 6.
+    // Задача 3. Добавьте для каждого из четырёх вышеупомянутых методов тесты: проверяйте изменившуюся длину очереди
+    // и наличие или отстутствие в ней добавляемого/удаляемого элемента.
     Deque<Integer> deque1;
     Deque<Integer> deque2;
     Deque<Integer> deque3;
