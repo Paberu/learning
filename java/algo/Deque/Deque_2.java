@@ -1,9 +1,23 @@
 package Deque;
 
-public class Deque_2 {
+import DynamicArray.DynArray;
+
+import java.lang.reflect.Array;
+
+public class Deque_2<T> {
     // Задача 6. Реализуйте двустороннюю очередь с помощью динамического массива. Методы добавления и удаления элементов
     // с обоих концов деки должны работать за амортизированное время O(1).
-    
+    private T [] array;
+    private int capacity;
+    private int begin;
+    private int end;
+
+    public Deque_2() {
+        begin = 0;
+        end = 0;
+        capacity = 16;
+        array = (T[]) Array.newInstance(T, capacity);
+    }
 
 
 
