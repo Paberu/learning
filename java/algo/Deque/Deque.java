@@ -1,10 +1,11 @@
 package Deque;
 import java.util.*;
 
-public class Deque<T>  {
+public class Deque<T> {
     private Node<T> head;
     private Node<T> tail;
     private int size;
+    private TreeMap<T, Integer> mins = new TreeMap<>();
 
     // Курс "Практика в программировании на АСД. Задание 6.
     // Задача 1. Реализуйте упомянутые выше класс Deque и соответствующие методы.
@@ -36,7 +37,7 @@ public class Deque<T>  {
 
         head.next.prev = node;
         head.next = node;
-
+        mins.merge(item, 1, Integer::sum);
         size++;
     }
 
@@ -47,7 +48,7 @@ public class Deque<T>  {
 
         tail.prev.next = node;
         tail.prev = node;
-
+        mins.merge(item, 1, Integer::sum);
         size++;
     }
 
@@ -58,6 +59,7 @@ public class Deque<T>  {
         head.next = node.next;
         node.prev = null;
         node.next = null;
+        removeMin(node.value);
         size--;
         return node.value;
     }
@@ -69,8 +71,14 @@ public class Deque<T>  {
         tail.prev = node.prev;
         node.prev = null;
         node.next = null;
+        removeMin(node.value);
         size--;
         return node.value;
+    }
+
+    public T min() {
+        if (isEmpty()) return null;
+        return mins.firstKey();
     }
 
     public T peekFront() {
@@ -82,8 +90,16 @@ public class Deque<T>  {
         if (isEmpty()) return null;
         return tail.prev.value;
     }
-}
 
+    private void removeMin(T value) {
+        int minimalCount = mins.get(value);
+        if (minimalCount == 1) {
+            mins.remove(value);
+            return;
+        }
+        mins.put(value, minimalCount-1);
+    }
+}
 
 class Node<T> {
     T value;
