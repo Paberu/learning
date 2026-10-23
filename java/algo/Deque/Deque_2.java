@@ -10,13 +10,83 @@ public class Deque_2<T> {
     private T [] array;
     private int capacity;
     private int begin;
-    private int end;
+    private int size;
+    private final Class<T> clazz;
 
-    public Deque_2() {
-        begin = 0;
-        end = 0;
-        capacity = 16;
-        array = (T[]) Array.newInstance(T, capacity);
+    private static final int MIN_CAPACITY = 16;
+
+    public Deque_2(Class<T> clazz) {
+        this.clazz = clazz;
+        this.begin = 0;
+        this.size = 0;
+        this.capacity = MIN_CAPACITY;
+        this.array = (T[]) Array.newInstance(clazz, this.capacity);
+    }
+
+    public int size() {
+        return this.size;
+    }
+
+    public boolean isEmpty() {
+        return this.size == 0;
+    }
+
+    public void addFront(T item) {
+        if (size == capacity) {
+            changeArray(capacity * 2);
+        }
+        begin = (begin - 1 + capacity) % capacity; // и всё из-за того, что в java нельзя, как в Python, обратиться к последнему элементу по [-1]
+        array[begin] = item;
+        size++;
+    }
+
+    public void addTail(T item) {
+        if (size == capacity) {
+            changeArray(capacity * 2);
+        }
+        int tail = (begin + size) % capacity;
+        array[tail] = item;
+        size++;
+    }
+
+    public T removeFront() {
+        if (isEmpty())
+            return null;
+
+        T value = array[begin];
+        array[begin] = null;
+        begin = (begin + 1) % capacity;
+        size--;
+        if (size < capacity/2)
+            changeArray((int) (capacity / 1.5));
+        return value;
+    }
+
+    public T removeTail() {
+        if (isEmpty())
+            return null;
+
+        T value = array[begin + size];
+        array[begin + size] = null;
+        size--;
+        if (size < capacity/2)
+            changeArray((int) (capacity / 1.5));
+        return value;
+    }
+
+    private void changeArray(int newCapacity) {
+        if (capacity == MIN_CAPACITY)
+            return;
+        if (newCapacity < MIN_CAPACITY)
+            newCapacity = MIN_CAPACITY;
+        T[] newArray =  (T[]) Array.newInstance(clazz, newCapacity);
+
+        for (int i = 0; i < size; i++) {
+            newArray[i] = array[(begin + i ) % capacity];
+        }
+        this.array = newArray;
+        this.capacity = newCapacity;
+        this.begin = 0;
     }
 
 
