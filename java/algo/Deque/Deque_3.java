@@ -174,4 +174,25 @@ public class Deque_3 {
         assertEquals("!", deque.removeTail());
         assertEquals(3, deque.size());
     }
+
+    @Test
+    void testDeque2() {
+        Deque_2<Integer> deque = new Deque_2<Integer>(Integer.class);
+        assertTrue(deque.isEmpty());
+        for (int i = 0; i < 15; i++) {
+            deque.addTail(i+1);
+        }
+        assertEquals(15, deque.size());
+        assertEquals(16, deque.checkCapacity());
+        deque.addFront(21);
+        deque.addFront(22);
+        assertEquals(17, deque.size());
+        assertEquals(32, deque.checkCapacity());
+        assertEquals(15, deque.removeTail());
+        assertEquals(14, deque.removeTail());
+        assertEquals(22, deque.removeFront());
+        assertEquals(21, deque.removeFront());
+        assertEquals(13, deque.size());
+        assertEquals(21, deque.checkCapacity());
+    }
 }
