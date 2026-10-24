@@ -69,8 +69,9 @@ public class Deque_2<T> {
         if (isEmpty())
             return null;
 
-        T value = array[begin + size];
-        array[begin + size] = null;
+        int tail = (begin - 1 + size) % capacity;
+        T value = array[tail];
+        array[tail] = null;
         size--;
         if (size < capacity/2)
             changeArray((int) (capacity / 1.5));
@@ -78,10 +79,11 @@ public class Deque_2<T> {
     }
 
     private void changeArray(int newCapacity) {
-        if (capacity == MIN_CAPACITY)
-            return;
         if (newCapacity < MIN_CAPACITY)
             newCapacity = MIN_CAPACITY;
+        if (newCapacity == this.capacity)
+            return;
+
         T[] newArray =  (T[]) Array.newInstance(clazz, newCapacity);
 
         for (int i = 0; i < size; i++) {
