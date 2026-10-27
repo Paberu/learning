@@ -121,8 +121,22 @@ public class OrderedList_3 {
         assertNull(ol2.tail);
     }
 
+    @Test
     void testDelete3() {
-        
+        ol3.delete(1);
+        ol3.delete(1);
+        ol3.delete(11);
+        ol3.delete(11);
+        assertEquals(10, ol3.head.value);
+        assertEquals(13, ol3.tail.value);
+        assertEquals(2, ol3.count());
     }
-    //void testDelete4() {}
+
+    @Test
+    void testDelete4() {
+        ol4.delete(1);
+        ol4.delete(5);
+        assertEquals(4, ol4.head.value);
+        assertEquals(2, ol4.tail.value);
+    }
 }
