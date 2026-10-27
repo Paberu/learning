@@ -66,6 +66,12 @@ public class OrderedList<T extends Comparable> {
     }
 
     public Node<T> find(T val) {
+        if (head == tail) {  // 0 или 1 элемент
+            if (head == null || compare(val, head.value) != 0) {
+                return null;
+            }
+            return head;
+        }
         Node<T> startNode = head;
         while (startNode != tail) {
             if (compare(startNode.value, val) == 0) {
