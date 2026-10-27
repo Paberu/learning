@@ -84,4 +84,14 @@ public class OrderedList_3 {
         assertEquals(8, ol4.count());
     }
 
+    @Test
+    void testFind1() {
+        assertNull(ol1.find(10));
+    }
+
+    @Test
+    void testFind2() {
+        assertEquals(8, ol2.find(8).value);
+        assertNull(ol2.find(9));
+    }
 }
