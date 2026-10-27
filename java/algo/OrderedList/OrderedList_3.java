@@ -91,7 +91,38 @@ public class OrderedList_3 {
 
     @Test
     void testFind2() {
-        assertEquals(8, ol2.find(8).value);
+        assertEquals(ol2.tail, ol2.find(8));
         assertNull(ol2.find(9));
     }
+
+    @Test
+    void testFind3() {
+        assertEquals(ol3.head, ol3.find(1));
+        assertEquals(ol3.tail, ol3.find(13));
+    }
+
+    @Test
+    void testFind4() {
+        assertEquals(ol4.head, ol4.find(5));
+        assertEquals(ol4.tail, ol4.find(1));
+    }
+
+    @Test
+    void testDelete1() {
+        // какой сюда вписать assert? assertNothingHappened? с другой стороны, проверить delete() на пустом списке надо
+        ol1.delete(0);
+    }
+
+    @Test
+    void testDelete2() {
+        assertEquals(8, ol2.head.value);
+        ol2.delete(8);
+        assertNull(ol2.head);
+        assertNull(ol2.tail);
+    }
+
+    void testDelete3() {
+        
+    }
+    //void testDelete4() {}
 }
