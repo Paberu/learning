@@ -73,7 +73,7 @@ public class OrderedList<T extends Comparable> {
             return head;
         }
         Node<T> startNode = head;
-        while (startNode != tail) {
+        while (startNode != null) {
             if (compare(startNode.value, val) == 0) {
                 return startNode;
             }
@@ -83,6 +83,11 @@ public class OrderedList<T extends Comparable> {
     }
 
     public void delete(T val) {
+        if (head == null) return;
+        if (head == tail && compare(head.value, val) == 0) {
+            head = tail = null;
+            return;
+        }
         if (compare(head.value, val) == 0) {    // удалить из головы
             head.next.prev = null;
             head = head.next;
