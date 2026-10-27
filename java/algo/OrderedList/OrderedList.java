@@ -105,6 +105,7 @@ public class OrderedList<T extends Comparable> {
                 startNode.prev.next = startNode.next;
                 return;
             }
+            startNode = startNode.next;
         }
     }
 
