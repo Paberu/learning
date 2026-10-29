@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class OrderedList_3 {
+    // Курс "Практика в программировании на АСД. Задание 7.
+    // Задача 7. Добавьте тесты для добавления, удаления и поиска элемента по его значению.
 
     OrderedList<Integer> ol1;
     OrderedList<Integer> ol2;
