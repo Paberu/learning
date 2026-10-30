@@ -53,4 +53,31 @@ public class OrderedList_2 {
         }
         return resultList;
     }
+
+    // Задача 10. Напишите метод проверки наличия заданного упорядоченного под-списка (параметр метода) в текущем списке.
+    // Сложность решения по времени: O(n+m). Придётся линейно пройти оба списка.
+    // Сложность решения по пространству: О(1). Создаётся несколько новых переменных.
+    public static boolean checkEntry(OrderedList mainList, OrderedList subList) {
+        if (mainList.getAsc() != subList.getAsc()) return false;
+        Node mainStart = mainList.head;
+        Node subStart = subList.head;
+        while (mainStart != null && subStart != null) {
+            int compare = mainList.compare(mainStart.value, subStart.value);
+            if (compare == 0) {
+                mainStart = mainStart.next;
+                subStart = subStart.next;
+            } else if ((compare < 0 && mainList.getAsc()) || (compare > 0 && !mainList.getAsc())) {
+                mainStart = mainStart.next;
+            } else {
+                return false;
+            }
+        }
+        return subStart == null;
+    }
+
+
+    // Задача 11. Добавьте метод, который находит наиболее часто встречающееся значение в списке.
+    // Сложность решения по времени: O(n+m). Придётся линейно пройти оба списка.
+    // Сложность решения по пространству: О(n+m). Создаётся новый список длиной в два предыдущих. Это лучшее, что я смог
+    // придумать, потому что менять списки, переданные в качестве аргументов - дурной тон.
 }
