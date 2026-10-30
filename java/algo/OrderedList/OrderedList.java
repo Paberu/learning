@@ -180,4 +180,8 @@ public class OrderedList<T extends Comparable> {
         }
         return r;
     }
+
+    public boolean getAsc() {
+        return _ascending;
+    }
 }
