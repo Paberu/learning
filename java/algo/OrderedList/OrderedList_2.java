@@ -1,8 +1,6 @@
 package OrderedList;
 
 
-import DynamicArray.DynArray;
-
 import java.lang.reflect.Array;
 
 public class OrderedList_2<T extends Comparable> {
@@ -22,6 +20,63 @@ public class OrderedList_2<T extends Comparable> {
         this.capacity = MIN_CAPACITY;
         this.size = 0;
         this.array = (T[]) Array.newInstance(clazz, this.capacity);
+    }
+
+    public int size() {
+        return this.size;
+    }
+
+    public boolean isEmpty() {
+        return this.size == 0;
+    }
+
+    public int compare(T v1, T v2) {
+        if (v1 == null || v2 == null) {
+            throw new IllegalArgumentException("Ни один из аргументов не может быть null");
+        }
+        return Integer.signum(v1.compareTo(v2));
+    }
+
+    public void add(T value) {
+        if (size == capacity)
+            resize(2 * capacity);
+
+        boolean check = (compare(array[size-1], value) <= 0 && ascending) || (compare(array[size-1], value) >= 0 && !ascending);
+        if (check) {        // вставка в хвост
+            array[size] = value;
+            return;
+        }
+
+        check = (compare(array[0], value) >= 0 && ascending) || (compare(array[0], value) <= 0 && !ascending);
+        if (check) {        // вставка в голову
+            System.arraycopy(array, 0, array, 1, size);
+            array[0] = value;
+            return;
+        }
+
+        // ни в хвост, ни в гриву
+        int index = findInsertIndex(value);
+        System.arraycopy(array, index, array, index+1, size-index);
+        array[index] = value;
+        size++;
+    }
+
+    private void resize(int newCapacity) {
+        if (newCapacity < MIN_CAPACITY)
+            newCapacity = MIN_CAPACITY;
+        if (newCapacity == this.capacity)
+            return;
+
+        T[] newArray =  (T[]) Array.newInstance(clazz, newCapacity);
+        System.arraycopy(this.array, 0, newArray, 0, this.size);
+
+        this.array = newArray;
+        this.capacity = newCapacity;
+    }
+
+    private int findInsertIndex(T value) {
+        int index = size / 2;
+        return index;
     }
 
     // Задача 8. Добавьте метод удаления всех дубликатов из упорядоченного списка.
