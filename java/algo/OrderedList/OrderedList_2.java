@@ -3,20 +3,26 @@ package OrderedList;
 
 import DynamicArray.DynArray;
 
-import java.util.HashMap;
+import java.lang.reflect.Array;
 
 public class OrderedList_2<T extends Comparable> {
     // Задача 12. Добавьте в упорядоченный список возможность найти индекс элемента (параметр) в списке, которая должна
     // работать за O(log N). Внутреннюю реализацию списка для этого можно сменить.
-    private DynArray<T> array;
-    private boolean ascending;
+    private T[] array;
+    private int size;
+    private int capacity;
+    private final boolean ascending;
+    private final Class<T> clazz;
 
-    public OrderedList_2(boolean asc) {
-        ascending = asc;
-        array = new DynArray<>(array.getClass());
+    private final static int MIN_CAPACITY = 16;
+
+    public OrderedList_2(Class<T> clazz, boolean asc) {
+        this.clazz = clazz;
+        this.ascending = asc;
+        this.capacity = MIN_CAPACITY;
+        this.size = 0;
+        this.array = (T[]) Array.newInstance(clazz, this.capacity);
     }
-
-
 
     // Задача 8. Добавьте метод удаления всех дубликатов из упорядоченного списка.
     // Сложность решения по времени: O(n). Приходится пробежать весь список.
