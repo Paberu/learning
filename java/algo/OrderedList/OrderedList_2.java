@@ -38,12 +38,19 @@ public class OrderedList_2<T extends Comparable> {
     }
 
     public void add(T value) {
+        if (size == 0) {
+            array[0] = value;
+            size++;
+            return;
+        }
+
         if (size == capacity)
             resize(2 * capacity);
 
         boolean check = (compare(array[size-1], value) <= 0 && ascending) || (compare(array[size-1], value) >= 0 && !ascending);
         if (check) {        // вставка в хвост
             array[size] = value;
+            size++;
             return;
         }
 
@@ -51,6 +58,7 @@ public class OrderedList_2<T extends Comparable> {
         if (check) {        // вставка в голову
             System.arraycopy(array, 0, array, 1, size);
             array[0] = value;
+            size++;
             return;
         }
 
@@ -75,8 +83,20 @@ public class OrderedList_2<T extends Comparable> {
     }
 
     private int findInsertIndex(T value) {
-        int index = size / 2;
-        return index;
+        int left = 0;
+        int right = size;
+        while(left < right) {
+            int index = (left + right) / 2;
+            int compare = compare(array[index], value);
+            if (!ascending) {
+                compare = -compare;
+            }
+            if (compare >= 0)
+                right = index;
+            else
+                left = index + 1;
+        }
+        return left;
     }
 
     // Задача 8. Добавьте метод удаления всех дубликатов из упорядоченного списка.
