@@ -175,4 +175,40 @@ public class OrderedList_3 {
         assertEquals(1, ol.count());
         assertEquals(10, ol.head.value);
     }
+
+    @Test
+    void testConcatenateLists1(){
+        OrderedList ol = OrderedList_2.concatenateLists(ol1, ol2);
+        assertEquals(ol.head, ol.tail);
+        assertEquals(1, ol.count());
+        assertEquals(8, ol.head.value);
+    }
+
+    @Test
+    void testConcatenateLists2(){
+        OrderedList ol = OrderedList_2.concatenateLists(ol2, ol3);
+        int[] values = new int[]{1, 8, 10, 11, 11, 13};
+        Node node = ol.head;
+        for (int i = 0; i < values.length; i++) {
+            assertEquals(values[i], node.value);
+            node = node.next;
+        }
+    }
+
+    @Test
+    void testConcatenateLists3(){
+        OrderedList olTmp = new OrderedList<Integer>(false);
+        for (int i = 0; i < 7; i++) {
+            olTmp.add(i+2);
+        }
+        OrderedList ol = OrderedList_2.concatenateLists(olTmp, ol4);
+        int[] values = new int[]{8, 7, 6, 5, 5, 4, 4, 3, 3, 2, 2, 1};
+        Node node = ol.head;
+        for (int i = 0; i < values.length; i++) {
+            assertEquals(values[i], node.value);
+            node = node.next;
+        }
+    }
+
+
 }
