@@ -141,4 +141,38 @@ public class OrderedList_3 {
         assertEquals(4, ol4.head.value);
         assertEquals(2, ol4.tail.value);
     }
+
+    @Test
+    void testRemoveDuplicates1(){
+        OrderedList_2.removeDuplicate(ol1);
+        assertNull(ol1.head);
+    }
+
+    @Test
+    void testRemoveDuplicates2(){
+        OrderedList_2.removeDuplicate(ol2);
+        assertEquals(ol2.head, ol2.tail);
+    }
+    @Test
+    void testRemoveDuplicates3(){
+        OrderedList_2.removeDuplicate(ol3);
+        int[] values = new int[]{1, 10, 11, 13};
+        Node node = ol3.head;
+        for (int i = 0; i < values.length; i++) {
+            assertEquals(values[i], node.value);
+            node = node.next;
+        }
+    }
+
+    @Test
+    void testRemoveDuplicates4(){
+        OrderedList<Integer> ol = new OrderedList<Integer>(true);
+        for (int i = 0; i < 6; i++) {
+            ol.add(10);
+        }
+        assertEquals(6, ol.count());
+        OrderedList_2.removeDuplicate(ol);
+        assertEquals(1, ol.count());
+        assertEquals(10, ol.head.value);
+    }
 }
