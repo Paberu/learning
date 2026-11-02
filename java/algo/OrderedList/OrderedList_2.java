@@ -26,6 +26,10 @@ public class OrderedList_2<T extends Comparable> {
         return this.size;
     }
 
+    public int checkCapacity() {
+        return this.capacity;
+    }
+
     public boolean isEmpty() {
         return this.size == 0;
     }
