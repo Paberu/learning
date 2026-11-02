@@ -89,10 +89,41 @@ public class OrderedList_2<T extends Comparable> {
             else if (compare > 0) {
                 right = index;
             } else {
-                left = index;
+                left = index + 1;
             }
         }
         return -1;  // не нашлось
+    }
+
+    public void delete(T value) {
+        int found = -1;
+        int left = 0;
+        int right = size;
+        while (left < right) {
+            int index = (left + right) / 2;
+
+            int compare = compare(array[index], value);
+            if (!ascending) {
+                compare = -compare;
+            }
+
+            if (compare == 0) {
+                found = index;
+                break;
+            }
+            else if (compare > 0) {
+                right = index;
+            } else {
+                left = index;
+            }
+        }
+        if (found == -1) return;
+        System.arraycopy(array, found + 1, array, found, size - found - 1);
+        array[size-1] = null;
+        size--;
+        if (size < capacity / 2) {
+            resize((int)(capacity/1.5));
+        }
     }
 
     private void resize(int newCapacity) {
