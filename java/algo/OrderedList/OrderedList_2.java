@@ -69,6 +69,32 @@ public class OrderedList_2<T extends Comparable> {
         size++;
     }
 
+    public int find(T value){
+        int index = -1; // возвращает отрицательное значение, если искомого значения нет ни по одному индексу
+        if (isEmpty()) return -1;
+
+        int left = 0;
+        int right = size;
+        while (left < right) {
+            index = (left + right) / 2;
+
+            int compare = compare(array[index], value);
+            if (!ascending) {
+                compare = -compare;
+            }
+
+            if (compare == 0) {
+                return index;
+            }
+            else if (compare > 0) {
+                right = index;
+            } else {
+                left = index;
+            }
+        }
+        return -1;  // не нашлось
+    }
+
     private void resize(int newCapacity) {
         if (newCapacity < MIN_CAPACITY)
             newCapacity = MIN_CAPACITY;
