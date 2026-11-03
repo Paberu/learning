@@ -175,4 +175,98 @@ public class OrderedList_3 {
         assertEquals(1, ol.count());
         assertEquals(10, ol.head.value);
     }
+
+    @Test
+    void testConcatenateLists1(){
+        OrderedList ol = OrderedList_2.concatenateLists(ol1, ol2);
+        assertEquals(ol.head, ol.tail);
+        assertEquals(1, ol.count());
+        assertEquals(8, ol.head.value);
+    }
+
+    @Test
+    void testConcatenateLists2(){
+        OrderedList ol = OrderedList_2.concatenateLists(ol2, ol3);
+        int[] values = new int[]{1, 8, 10, 11, 11, 13};
+        Node node = ol.head;
+        for (int i = 0; i < values.length; i++) {
+            assertEquals(values[i], node.value);
+            node = node.next;
+        }
+    }
+
+    @Test
+    void testConcatenateLists3(){
+        OrderedList olTmp = new OrderedList<Integer>(false);
+        for (int i = 0; i < 7; i++) {
+            olTmp.add(i+2);
+        }
+        OrderedList ol = OrderedList_2.concatenateLists(olTmp, ol4);
+        int[] values = new int[]{8, 7, 6, 5, 5, 4, 4, 3, 3, 2, 2, 1};
+        Node node = ol.head;
+        for (int i = 0; i < values.length; i++) {
+            assertEquals(values[i], node.value);
+            node = node.next;
+        }
+    }
+
+    @Test
+    void testCheckEntry1() {
+        assertTrue(OrderedList_2.checkEntry(ol2, ol1));
+    }
+
+    @Test
+    void testCheckEntry2() {
+        assertFalse(OrderedList_2.checkEntry(ol3, ol2));
+    }
+
+    @Test
+    void testCheckEntry3() {
+        assertFalse(OrderedList_2.checkEntry(ol4, ol1));
+    }
+
+    @Test
+    void testGetMostFrequent1() {
+        assertNull(OrderedList_2.getMostFrequent(ol1));
+    }
+
+    @Test
+    void testGetMostFrequent2() {
+        assertEquals(8, OrderedList_2.getMostFrequent(ol2));
+    }
+
+    @Test
+    void testGetMostFrequent3() {
+        assertEquals(11, OrderedList_2.getMostFrequent(ol3));
+    }
+
+    @Test
+    void testGetMostFrequent4() {
+        assertEquals(5, OrderedList_2.getMostFrequent(ol4));
+    }
+
+    @Test
+    void testArrayOrderedList1() {
+        OrderedList_2<Integer> ol = new OrderedList_2<>(Integer.class, true);
+        for (int i = 0; i < 10; i++) {
+            ol.add(i+1);
+        }
+        for (int i = 0; i < 10; i++) {
+            ol.add(i+2);
+        }
+        for (int i = 0; i < 10; i++) {
+            ol.add(i+3);
+        }
+        //int[] values = new int[]{ 1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11};
+        assertEquals(30, ol.size());
+        assertEquals(15, ol.find(7));
+        assertEquals(32, ol.checkCapacity());
+        for (int i = 3; i <= 10; i++) {
+            for (int j = 0; j < 3; j++) {
+                ol.delete(i);
+            }
+        }
+        assertEquals(6, ol.size());
+        assertEquals(16, ol.checkCapacity());
+    }
 }

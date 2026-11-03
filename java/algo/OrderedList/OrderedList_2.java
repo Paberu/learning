@@ -26,6 +26,10 @@ public class OrderedList_2<T extends Comparable> {
         return this.size;
     }
 
+    public int checkCapacity() {
+        return this.capacity;
+    }
+
     public boolean isEmpty() {
         return this.size == 0;
     }
@@ -38,12 +42,19 @@ public class OrderedList_2<T extends Comparable> {
     }
 
     public void add(T value) {
+        if (size == 0) {
+            array[0] = value;
+            size++;
+            return;
+        }
+
         if (size == capacity)
             resize(2 * capacity);
 
         boolean check = (compare(array[size-1], value) <= 0 && ascending) || (compare(array[size-1], value) >= 0 && !ascending);
         if (check) {        // вставка в хвост
             array[size] = value;
+            size++;
             return;
         }
 
@@ -51,6 +62,7 @@ public class OrderedList_2<T extends Comparable> {
         if (check) {        // вставка в голову
             System.arraycopy(array, 0, array, 1, size);
             array[0] = value;
+            size++;
             return;
         }
 
@@ -59,6 +71,63 @@ public class OrderedList_2<T extends Comparable> {
         System.arraycopy(array, index, array, index+1, size-index);
         array[index] = value;
         size++;
+    }
+
+    public int find(T value){
+        int index = -1; // возвращает отрицательное значение, если искомого значения нет ни по одному индексу
+        if (isEmpty()) return -1;
+
+        int left = 0;
+        int right = size;
+        while (left < right) {
+            index = (left + right) / 2;
+
+            int compare = compare(array[index], value);
+            if (!ascending) {
+                compare = -compare;
+            }
+
+            if (compare == 0) {
+                return index;
+            }
+            else if (compare > 0) {
+                right = index;
+            } else {
+                left = index + 1;
+            }
+        }
+        return -1;  // не нашлось
+    }
+
+    public void delete(T value) {
+        int found = -1;
+        int left = 0;
+        int right = size;
+        while (left < right) {
+            int index = (left + right) / 2;
+
+            int compare = compare(array[index], value);
+            if (!ascending) {
+                compare = -compare;
+            }
+
+            if (compare == 0) {
+                found = index;
+                break;
+            }
+            else if (compare > 0) {
+                right = index;
+            } else {
+                left = index;
+            }
+        }
+        if (found == -1) return;
+        System.arraycopy(array, found + 1, array, found, size - found - 1);
+        array[size-1] = null;
+        size--;
+        if (size < capacity / 2) {
+            resize((int)(capacity/1.5));
+        }
     }
 
     private void resize(int newCapacity) {
@@ -75,8 +144,20 @@ public class OrderedList_2<T extends Comparable> {
     }
 
     private int findInsertIndex(T value) {
-        int index = size / 2;
-        return index;
+        int left = 0;
+        int right = size;
+        while(left < right) {
+            int index = (left + right) / 2;
+            int compare = compare(array[index], value);
+            if (!ascending) {
+                compare = -compare;
+            }
+            if (compare >= 0)
+                right = index;
+            else
+                left = index + 1;
+        }
+        return left;
     }
 
     // Задача 8. Добавьте метод удаления всех дубликатов из упорядоченного списка.
