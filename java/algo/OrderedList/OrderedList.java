@@ -60,7 +60,7 @@ public class OrderedList<T extends Comparable> {
     // на предпредпоследнем, пардон, месте то придётся пробежать весь список. Индексов нет, двоичный поиск не прикрутить.
     // Сложность решения по пространству: О(1). Просто добавляется новый узел.
     public void add(T value) {
-        Node node = new Node(value);
+        Node<T> node = new Node(value);
         if (head == null) {     // если первый в списке
             head = node;
             tail = node;
@@ -79,7 +79,7 @@ public class OrderedList<T extends Comparable> {
             return;
         }
         Node<T> startNode = head;  // на все прочие случаи
-        while (startNode != tail) {
+        while (startNode != null) {
             if ((_ascending && compare(value, startNode.value) > 0) || (!_ascending && compare(value, startNode.value) < 0)) {
                 startNode = startNode.next;
             } else {

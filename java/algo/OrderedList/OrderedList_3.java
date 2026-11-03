@@ -257,7 +257,6 @@ public class OrderedList_3 {
         for (int i = 0; i < 10; i++) {
             ol.add(i+3);
         }
-        //int[] values = new int[]{ 1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11};
         assertEquals(30, ol.size());
         assertEquals(15, ol.find(7));
         assertEquals(32, ol.checkCapacity());

@@ -4,6 +4,7 @@ package OrderedList;
 import java.lang.reflect.Array;
 
 public class OrderedList_2<T extends Comparable> {
+
     // Задача 12. Добавьте в упорядоченный список возможность найти индекс элемента (параметр) в списке, которая должна
     // работать за O(log N). Внутреннюю реализацию списка для этого можно сменить.
     private T[] array;
