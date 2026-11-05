@@ -73,14 +73,14 @@ class MultiHashTable {
             hash_indexes[i] = hashFunK(value, i) % size;
         }
         for (int i = 0; i < k; i++) {
-            if (slots[hash_indexes[i]].equals(value)) {
+            if (slots[hash_indexes[i]] != null && slots[hash_indexes[i]].equals(value)) {
                 return hash_indexes[i]; // эквивалентно seekSlot()
             }
         }
         for (int j = 0; j < size; j++) {
             for (int i = 0; i < k; i++) {
                 hash_indexes[i] = (hash_indexes[i] + step) % size;
-                if (slots[hash_indexes[i]].equals(value)) {
+                if (slots[hash_indexes[i]] != null && slots[hash_indexes[i]].equals(value)) {
                     return hash_indexes[i]; // на каждом шаге проверяем, вдруг значение там
                 }
             }
