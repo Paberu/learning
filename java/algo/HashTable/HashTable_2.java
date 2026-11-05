@@ -57,5 +57,35 @@ class MultiHashTable {
         }
         return -1; // таблица полна под завязку
     }
+
+    public int put(String value) {
+        int index = seekSlot(value);
+        if (index > -1) {
+            slots[index] = value;
+            return index;
+        }
+        return -1;
+    }
+
+    public int find(String value) {
+        int[] hash_indexes = new int[k];
+        for (int i = 0; i < k; i++) {
+            hash_indexes[i] = hashFunK(value, i) % size;
+        }
+        for (int i = 0; i < k; i++) {
+            if (slots[hash_indexes[i]].equals(value)) {
+                return hash_indexes[i]; // эквивалентно seekSlot()
+            }
+        }
+        for (int j = 0; j < size; j++) {
+            for (int i = 0; i < k; i++) {
+                hash_indexes[i] += step;
+                if (slots[hash_indexes[i]].equals(value)) {
+                    return hash_indexes[i]; // на каждом шаге проверяем, вдруг значение там
+                }
+            }
+        }
+        return -1;  // обошли всю таблицу, нет его
+    }
 }
 
