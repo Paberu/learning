@@ -49,7 +49,7 @@ class MultiHashTable {
         }
         for (int j = 0; j < size; j++) {
             for (int i = 0; i < k; i++) {
-                hash_indexes[i] += step;
+                hash_indexes[i] = (hash_indexes[i] + step) % size;
                 if (slots[hash_indexes[i]] == null) {
                     return hash_indexes[i]; // на каждом шаге проверяем, вдруг один из слотов свободен
                 }
@@ -79,7 +79,7 @@ class MultiHashTable {
         }
         for (int j = 0; j < size; j++) {
             for (int i = 0; i < k; i++) {
-                hash_indexes[i] += step;
+                hash_indexes[i] = (hash_indexes[i] + step) % size;
                 if (slots[hash_indexes[i]].equals(value)) {
                     return hash_indexes[i]; // на каждом шаге проверяем, вдруг значение там
                 }
