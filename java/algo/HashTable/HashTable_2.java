@@ -8,7 +8,79 @@ public class HashTable_2 {
 }
 
 class DynamicHashTable {
+    public int size;
+    public int step;
+    public String[] slots;
 
+    public DynamicHashTable(int size, int step) {
+        this.size = size;
+        this.step = step;
+        this.slots = new String[size];
+        for(int i = 0; i < size; i++)
+            this.slots[i] = null;
+    }
+
+    public int hashFun(String value) {
+        int hash = 0;
+        for (int i = 0; i < value.length(); i++) {
+            hash += value.charAt(i);
+        }
+        return hash;
+    }
+
+    public int seekSlot(String value) {
+        int index = hashFun(value) % size;
+        for (int i = 0; i < size; i++) {
+            if (slots[index] == null)
+                return index;
+            index = (index + step) % size;
+        }
+        return -1;
+    }
+
+    public int put(String value) {
+        int index = seekSlot(value);
+        if(index == -1) {
+            int newSize = size * 2;
+            String[] newSlots = new String[newSize];
+            for (int i = 0; i < size; i++) {
+                int newIndex = seekSlotInNewSlots(slots[i], newSize, newSlots);
+                if (newIndex == -1)
+                    throw new IllegalStateException("Программа оказалась в невозможном состоянии");
+                newSlots[newIndex] = slots[i];
+            }
+            this.size =  newSize;
+            this.slots = newSlots;
+        }
+        index = seekSlot(value);    // надо заново пересчитать, таблица изменилась
+        slots[index] = value;
+        return index;
+    }
+
+    public int find(String value) {
+        int index = hashFun(value) % size;
+        for (int i = 0; i < size; i++) {
+            if (slots[index] == null)
+                return -1;
+            if (slots[index].equals(value)) {
+                return index;
+            }
+            index = (index + step) % size;
+        }
+        return -1;
+    }
+
+    private int seekSlotInNewSlots(String value, int newSize, String[] newSlots) {
+        int newIndex = hashFun(value) % newSize;
+        if (newSlots[newIndex] == null)
+            return newIndex;
+        for (int i = 0; i < newSize; i++) {
+            newIndex = (newIndex + step) % newSize;
+            if (newSlots[newIndex] == null)
+                return newIndex;
+        }
+        return -1;  // нештатная ситуация, здесь невозможно оказаться
+    }
 }
 
 class MultiHashTable {
@@ -32,7 +104,7 @@ class MultiHashTable {
         int hash = 0;
         int weight = SIMPLE_WEIGHTS[kI%SIMPLE_WEIGHTS.length];
         for (int i = 0; i < value.length(); i++) {
-            hash += value.charAt(i) * weight + kI;  // да, отбитая функция, зато сам делал )))
+            hash += value.charAt(i) * (kI + 1) + weight;  // да, отбитая функция, зато сам делал )))
         }
         return (hash + weight + kI);
     }
