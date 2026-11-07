@@ -24,8 +24,8 @@ public class HashTable_3 {
 
     @BeforeEach
     void setUp() {
-        empty = new HashTable(5, 2);
-        table = new HashTable(5, 2);
+        empty = new HashTable(5, 3);
+        table = new HashTable(5, 3);
 
         full = new HashTable(3, 1);
         full.put("a");
@@ -33,7 +33,7 @@ public class HashTable_3 {
         full.put("c");
 
         dynamic = new DynamicHashTable(3, 1);
-        dynamicSmall = new DynamicHashTable(2, 1);
+        dynamicSmall = new DynamicHashTable(3, 1);
 
         multi = new MultiHashTable(5, 1, 2);
         helper = new HashTable_2();
@@ -41,31 +41,36 @@ public class HashTable_3 {
 
     @Test
     void testHashFunEmptyString() {
-        assertEquals(0, empty.hashFun(""));
+        assertEquals(empty.salt, empty.hashFun(""));
     }
 
     @Test
     void testHashFunOneChar() {
-        assertEquals(97, empty.hashFun("a"));
+        int hash = empty.hashFun("a");
+        assertEquals(hash, empty.hashFun("a"));
+        assertTrue(hash >= 0);
     }
 
     @Test
     void testHashFunSeveralChars() {
-        assertEquals(195, empty.hashFun("ab"));
+        assertEquals(empty.hashFun("ab"), empty.hashFun("ab"));
+        assertNotEquals(empty.hashFun("ab"), empty.hashFun("ba"));
     }
 
     @Test
     void testSeekSlotEmpty() {
-        assertEquals(2, empty.seekSlot("a"));
+        assertEquals(empty.hashFun("a") % empty.size, empty.seekSlot("a"));
         assertArrayEquals(new String[5], empty.slots);
     }
 
     @Test
     void testSeekSlotCollision() {
-        assertEquals(2, table.put("a"));
-        assertEquals(4, table.seekSlot("f"));
-        assertEquals("a", table.slots[2]);
-        assertNull(table.slots[4]);
+        int index = table.put("a");
+        String other = keyInBucket(table, table.hashFun("a") % table.size);
+        int probed = (index + table.step) % table.size;
+        assertEquals(probed, table.seekSlot(other));
+        assertEquals("a", table.slots[index]);
+        assertNull(table.slots[probed]);
     }
 
     @Test
@@ -75,18 +80,24 @@ public class HashTable_3 {
 
     @Test
     void testPutEmpty() {
-        assertEquals(2, table.put("a"));
-        assertEquals("a", table.slots[2]);
+        int index = table.put("a");
+        assertEquals(table.hashFun("a") % table.size, index);
+        assertEquals("a", table.slots[index]);
     }
 
     @Test
     void testPutCollision() {
-        table.put("a");
-        assertEquals(4, table.put("f"));
-        assertEquals(1, table.put("k"));
-        assertEquals("a", table.slots[2]);
-        assertEquals("f", table.slots[4]);
-        assertEquals("k", table.slots[1]);
+        int first = table.put("a");
+        int bucket = table.hashFun("a") % table.size;
+        String secondKey = keyInBucket(table, bucket);
+        String thirdKey = keyInBucket(table, bucket, secondKey);
+        int second = table.put(secondKey);
+        int third = table.put(thirdKey);
+        assertEquals((first + table.step) % table.size, second);
+        assertEquals((second + table.step) % table.size, third);
+        assertEquals("a", table.slots[first]);
+        assertEquals(secondKey, table.slots[second]);
+        assertEquals(thirdKey, table.slots[third]);
     }
 
     @Test
@@ -103,12 +114,15 @@ public class HashTable_3 {
 
     @Test
     void testFindPresent() {
-        table.put("a");
-        table.put("f");
-        table.put("k");
-        assertEquals(2, table.find("a"));
-        assertEquals(4, table.find("f"));
-        assertEquals(1, table.find("k"));
+        int a = table.put("a");
+        int bucket = table.hashFun("a") % table.size;
+        String secondKey = keyInBucket(table, bucket);
+        String thirdKey = keyInBucket(table, bucket, secondKey);
+        int second = table.put(secondKey);
+        int third = table.put(thirdKey);
+        assertEquals(a, table.find("a"));
+        assertEquals(second, table.find(secondKey));
+        assertEquals(third, table.find(thirdKey));
     }
 
     @Test
@@ -122,9 +136,9 @@ public class HashTable_3 {
 
     @Test
     void testFindInFullTable() {
-        assertEquals(1, full.find("a"));
-        assertEquals(2, full.find("b"));
-        assertEquals(0, full.find("c"));
+        assertEquals(indexOf(full, "a"), full.find("a"));
+        assertEquals(indexOf(full, "b"), full.find("b"));
+        assertEquals(indexOf(full, "c"), full.find("c"));
         assertEquals(-1, full.find("d"));
     }
 
@@ -178,14 +192,17 @@ public class HashTable_3 {
 
     @Test
     void testDynamicPutRehashesWithCollision() {
-        assertEquals(0, dynamicSmall.put("aa"));
-        assertEquals(1, dynamicSmall.put("b"));
-        assertEquals(0, dynamicSmall.put("c"));
-        assertEquals(4, dynamicSmall.size);
-        assertEquals("c", dynamicSmall.slots[0]);
-        assertNull(dynamicSmall.slots[1]);
-        assertEquals("aa", dynamicSmall.slots[2]);
-        assertEquals("b", dynamicSmall.slots[3]);
+        assertEquals(2, dynamicSmall.put("aa"));
+        assertEquals(0, dynamicSmall.put("b"));
+        assertEquals(1, dynamicSmall.put("a"));
+        assertEquals(4, dynamicSmall.put("c"));
+        assertEquals(6, dynamicSmall.size);
+        assertNull(dynamicSmall.slots[0]);
+        assertEquals("a", dynamicSmall.slots[1]);
+        assertEquals("b", dynamicSmall.slots[2]);
+        assertEquals("aa", dynamicSmall.slots[3]);
+        assertEquals("c", dynamicSmall.slots[4]);
+        assertNull(dynamicSmall.slots[5]);
     }
 
     @Test
@@ -205,10 +222,12 @@ public class HashTable_3 {
     void testDynamicFindAfterCollisionResize() {
         dynamicSmall.put("aa");
         dynamicSmall.put("b");
+        dynamicSmall.put("a");
         dynamicSmall.put("c");
-        assertEquals(2, dynamicSmall.find("aa"));
-        assertEquals(3, dynamicSmall.find("b"));
-        assertEquals(0, dynamicSmall.find("c"));
+        assertEquals(3, dynamicSmall.find("aa"));
+        assertEquals(2, dynamicSmall.find("b"));
+        assertEquals(1, dynamicSmall.find("a"));
+        assertEquals(4, dynamicSmall.find("c"));
         assertEquals(-1, dynamicSmall.find("d"));
     }
 
@@ -292,6 +311,46 @@ public class HashTable_3 {
 
     @Test
     void testDdos() {
-        assertDoesNotThrow(() -> helper.ddos(empty));
+        helper.ddos(empty);
+        int bucket = rawSum(empty.slots[0]) % empty.size;
+        for (String slot : empty.slots) {
+            assertNotNull(slot);
+            assertEquals(bucket, rawSum(slot) % empty.size);
+        }
+        assertNotEquals(empty.hashFun("ab"), empty.hashFun("ba"));
+    }
+
+    private int rawSum(String value) {
+        int hash = 0;
+        for (int i = 0; i < value.length(); i++)
+            hash += value.charAt(i);
+        return hash;
+    }
+
+    private int indexOf(HashTable ht, String value) {
+        for (int i = 0; i < ht.slots.length; i++) {
+            if (value.equals(ht.slots[i]))
+                return i;
+        }
+        return -1;
+    }
+
+    private String keyInBucket(HashTable ht, int bucket, String... excluded) {
+        for (int i = 0; i < 20000; i++) {
+            String candidate = "k" + i;
+            if (ht.hashFun(candidate) % ht.size != bucket)
+                continue;
+            boolean used = false;
+            for (String excludedKey : excluded) {
+                if (candidate.equals(excludedKey)) {
+                    used = true;
+                    break;
+                }
+            }
+            if (!used)
+                return candidate;
+        }
+        fail("Не удалось подобрать ключ для корзины " + bucket);
+        return null;
     }
 }

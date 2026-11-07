@@ -2,9 +2,15 @@ package HashTable;
 
 public class HashTable_2 {
     public void ddos(HashTable hashTable) {
-
+        // Исходная hashFun складывала коды символов. Строка из n копий символа с кодом size
+        // имеет сумму n * size, то есть все такие ключи шли в один и тот же слот.
+        char symbol = (char) hashTable.size;
+        StringBuilder key = new StringBuilder();
+        for (int i = 0; i < hashTable.size; i++) {
+            key.append(symbol);
+            hashTable.put(key.toString());
+        }
     }
-
 }
 
 class DynamicHashTable {

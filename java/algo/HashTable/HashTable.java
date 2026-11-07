@@ -1,11 +1,14 @@
 package HashTable;
 
 
+import java.util.Random;
+
 public class HashTable
 {
     public int size;
     public int step;
     public String [] slots;
+    public int salt;
 
     public HashTable(int sz, int stp) {
         size = sz;
@@ -13,14 +16,17 @@ public class HashTable
         slots = new String[size];
         for(int i = 0; i < size; i++)
             slots[i] = null;
+        salt = 1 + new Random().nextInt(Integer.MAX_VALUE - 1);
     }
 
     public int hashFun(String value) {
-        int hash = 0;
+        // Соль участвует в каждом символе. Прибавлять её к сумме один раз бесполезно:
+        // ключи с одинаковой суммой кодов всё равно попадали бы в один слот.
+        int hash = salt;
         for (int i = 0; i < value.length(); i++) {
-            hash += value.charAt(i);
+            hash = 31 * hash + value.charAt(i);
         }
-        return hash;
+        return hash & 0x7fffffff;
     }
 
     public int seekSlot(String value) {
