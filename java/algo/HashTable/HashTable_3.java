@@ -8,10 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class HashTable_3 {
     // Курс "Практика в программировании на АСД. Задание 8.
     // Напишите тесты, которые проверяют работу этих четырёх методов.
-
-    // Тесты публичных методов HashTable, DynamicHashTable и MultiHashTable.
-    // Конструкторы не проверяются.
-
     HashTable empty;
     HashTable table;
     HashTable full;
