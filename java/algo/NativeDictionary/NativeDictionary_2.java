@@ -13,7 +13,7 @@ class SortedDictionary<T extends Comparable> {
     // Задача 5. Реализуйте класс NativeDictionary, как описано выше.
     // Исполнено. Пришлось добавить private полей и методов, но оно того стоило.
     public int size;
-    public OrderedList_2<T extends Comparable> slots;
+    public OrderedList_2<T> slots;
     public DynArray<T> values;
     private int salt;
     private int step;
@@ -21,7 +21,7 @@ class SortedDictionary<T extends Comparable> {
 
     public SortedDictionary(int sz, Class clazz) {
         size = sz;
-        slots = new OrderedList_2<T extends Comparable>();
+        slots = new OrderedList_2<T>(clazz, true);
         cls = clazz;
         // values = (T[]) Array.newInstance(clazz, this.size);
         values = new DynArray<T>(clazz);
@@ -33,9 +33,22 @@ class SortedDictionary<T extends Comparable> {
         return slots.find(key) != -1;
     }
 
+    public T get(T key) {
+        int index = slots.find(key);
+        if (index == -1)
+            return null;
+        return values.getItem(index);
+    }
+
     public void put(T key, T value) {
-        int index = slots.add(key);
-        values[index] = value;
+        int index = slots.find(key);
+        if (index != -1) {
+            values.set(index, value);
+            return;
+        }
+        slots.add(key);
+        index = slots.find(key);
+        values.insert(value, index);
     }
 
 }
