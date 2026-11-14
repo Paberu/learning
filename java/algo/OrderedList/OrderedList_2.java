@@ -42,11 +42,11 @@ public class OrderedList_2<T extends Comparable> {
         return Integer.signum(v1.compareTo(v2));
     }
 
-    public void add(T value) {
+    public int add(T value) {   // возвращает индекс места вставки
         if (size == 0) {
             array[0] = value;
             size++;
-            return;
+            return 0;
         }
 
         if (size == capacity)
@@ -56,7 +56,7 @@ public class OrderedList_2<T extends Comparable> {
         if (check) {        // вставка в хвост
             array[size] = value;
             size++;
-            return;
+            return (size-1);
         }
 
         check = (compare(array[0], value) >= 0 && ascending) || (compare(array[0], value) <= 0 && !ascending);
@@ -64,7 +64,7 @@ public class OrderedList_2<T extends Comparable> {
             System.arraycopy(array, 0, array, 1, size);
             array[0] = value;
             size++;
-            return;
+            return 0;
         }
 
         // ни в хвост, ни в гриву
@@ -72,6 +72,7 @@ public class OrderedList_2<T extends Comparable> {
         System.arraycopy(array, index, array, index+1, size-index);
         array[index] = value;
         size++;
+        return index;
     }
 
     public int find(T value){
