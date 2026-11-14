@@ -58,6 +58,12 @@ public class DynArray<T> {
         this.count++;
     }
 
+    // добавочка для решения NativeDictionary_2
+    public void set(int index, T value) {
+        if (index < 0 || index >= count) throw new IndexOutOfBoundsException("Index is out of bounds");
+        array[index] = value;
+    }
+
     // Сложность решения по времени: O(1). См. файл DynArray_2.java.
     // Сложность решения по пространству: О(1). См. файл DynArray_2.java.
     public void insert(T itm, int index) {
