@@ -226,6 +226,25 @@ public class OrderedList_3 {
     }
 
     @Test
+    void testCheckEntry() {
+        OrderedList<Integer> testOL1 = new OrderedList<Integer>(true);
+        OrderedList<Integer> testOL2 = new OrderedList<Integer>(true);
+        testOL1.add(1);
+        testOL1.add(2);
+        testOL1.add(3);
+        testOL1.add(3);
+        testOL1.add(3);
+        testOL1.add(4);
+        testOL1.add(5);
+        testOL1.add(6);
+
+        testOL2.add(3);
+        testOL2.add(4);
+        testOL2.add(5);
+        assertTrue(OrderedList_2.checkEntry(testOL1, testOL2));
+    }
+
+    @Test
     void testGetMostFrequent1() {
         assertNull(OrderedList_2.getMostFrequent(ol1));
     }
