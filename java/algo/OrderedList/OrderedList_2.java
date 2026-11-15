@@ -42,7 +42,11 @@ public class OrderedList_2<T extends Comparable> {
         return Integer.signum(v1.compareTo(v2));
     }
 
-    public int add(T value) {   // возвращает индекс места вставки
+    public void add(T value) {
+        addAndGetIndex(value);
+    }
+
+    public int addAndGetIndex(T value) {   // возвращает индекс места вставки
         if (size == 0) {
             array[0] = value;
             size++;
