@@ -6,7 +6,16 @@ import OrderedList.OrderedList_2;
 import java.lang.reflect.Array;
 import java.util.Random;
 
-public class NativeDictionary_2 {
+public class NativeDictionary_2<T> {
+    public int keyLength;
+    public T [] values;
+    private int salt;
+    private int step;
+    private Class cls;
+
+    public NativeDictionary_2(Class cls, int keyLength) {
+        this.cls = cls;
+    }
 }
 
 class SortedDictionary<T extends Comparable> {
