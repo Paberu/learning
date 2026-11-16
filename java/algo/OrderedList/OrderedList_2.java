@@ -124,7 +124,7 @@ public class OrderedList_2<T extends Comparable> {
             else if (compare > 0) {
                 right = index;
             } else {
-                left = index;
+                left = index + 1;   // было left = index: искомое строго правее, иначе поиск зацикливался
             }
         }
         if (found == -1) return;
