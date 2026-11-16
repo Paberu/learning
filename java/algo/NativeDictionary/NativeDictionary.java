@@ -30,7 +30,28 @@ class NativeDictionary<T> {
         cls = clazz;
         values = (T[]) Array.newInstance(clazz, this.size);
         salt = 1 + new Random().nextInt(Integer.MAX_VALUE - 1);
+        updateStep();
+    }
+
+    // Вот так нейропомощник взломал мой выбор значения для step и предложил подправить. Ну а кто я такой, чтобы ему
+    // запрещать. :) Это пугает.
+    // Шаг пробирования обязан быть взаимно прост с размером таблицы, иначе последовательность
+    // (index + step) % size зациклится, не обойдя все ячейки: таблица будет считаться полной,
+    // хотя в ней ещё есть места. Плюс шаг зависит от размера, поэтому его надо пересчитывать
+    // при каждом расширении таблицы.
+    private void updateStep() {
         step = size < 4 ? 1 : (size / 2) - 1;
+        while (gcd(step, size) != 1)
+            step++;
+    }
+
+    private static int gcd(int a, int b) {
+        while (b != 0) {
+            int temp = a % b;
+            a = b;
+            b = temp;
+        }
+        return a;
     }
 
     public int hashFun(String key)  {
@@ -71,14 +92,17 @@ class NativeDictionary<T> {
             int newSize = size * 2;
             String[] newSlots = new String[newSize];
             T [] newValues = (T[]) Array.newInstance(cls, newSize);
-            for (int i = 0; i < size; i++) {
+            this.size =  newSize;
+            updateStep();
+            for (int i = 0; i < slots.length; i++) {
+                if (slots[i] == null)   // пустые ячейки переносить некуда
+                    continue;
                 int newIndex = seekSlotInNewSlots(slots[i], newSize, newSlots);
                 if (newIndex == -1)
                     throw new IllegalStateException("Программа оказалась в невозможном состоянии");
                 newSlots[newIndex] = slots[i];
                 newValues[newIndex] = values[i];
             }
-            this.size =  newSize;
             this.slots = newSlots;
             this.values = newValues;
             index = seekSlot(key);    // надо заново пересчитать, таблица изменилась
