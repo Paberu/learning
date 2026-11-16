@@ -3,55 +3,167 @@ package NativeDictionary;
 import DynamicArray.DynArray;
 import OrderedList.OrderedList_2;
 
-import java.lang.reflect.Array;
-import java.util.Random;
-
 public class NativeDictionary_2<T> {
     // Задача 6. Создайте словарь, в котором ключи представлены битовыми строками фиксированной длины. Реализуйте методы
     // добавления, удаления и поиска элементов, используя битовые операции для ускорения работы.
     //
-    // По-моему, моё решение выродилось в банальный массив. Подозреваю, это оттого, что я неверно понял задание.
-    // Сложность решения по времени - О(1). Т.к. идёт прямое обращение к встроенному массиву по индексу.
-    // Сложность решения по пространству - О(1). Аналогично.
-    private T [] values;
-    private int tableSize;
-    private int count;
+    // В Java словарь реализуется через интерфейс Map. Но интерфейс к делу не пришьёшь, поэтому у него есть несколько
+    // реализаций. Самая ходовая - это HashMap. Прям классическая реализация, пока под капот не посмотришь. Сначала
+    // создаётся массив на 16 ячеек (каждая называется, почему-то, ведро). В каждый bucket кладётся значение по хеш-коду
+    // ключа (здесь всё по классике), пока не случится коллизия. При коллизии уже имеющееся значение становится головой
+    // связного списка, и до тех пор, пока его длина меньше 8, он таковым и остаётся. Потом он преобразуется в сбалансированное
+    // красно-черное дерево (ААААА!). А при уменьшении размеров (меньше 6) дерева преобразуется обратно в связный список.
+    // Также есть ещё LinkedHashMap, который хранит порядок вставки и TreeMap, у которого ключи отсортированы (снова красно-
+    // черное дерево! придётся вспоминать), но это не так сильно впечатляет, как изначальный HashMap.
+    private final int keyBits;
+    private Long[] slots;   // ключи; null - ячейка свободна
+    private T[] values;     // значения; значение лежит под тем же индексом, что и его ключ
+    private int count;      // число пар в словаре
 
-    public NativeDictionary_2(Class<T> cls, int keyLength) {
-        if (keyLength <= 0 || keyLength > 30) {
-            throw new IllegalArgumentException("Длина ключа должна попадать в диапазон от 0 до 30!");
-        }
-        this.tableSize = 1 << keyLength;
-        this.values = (T[]) Array.newInstance(cls, tableSize);
+    private final static int MIN_CAPACITY = 8;
+
+    // Дробная часть золотого сечения в 64 разрядах: классический множитель для мультипликативного хеширования.
+    // Особенно ценно, что в Linux-ядре используется как GOLDEN_RATIO_64 для хеширования указателей. Мой шок в шоке!
+    // Без AI-консультанта я бы взял значение "от балды".
+    private final static long MULTIPLIER = 0x9E3779B97F4A7C15L;
+
+    public NativeDictionary_2(int keyBits) {
+        if (keyBits <= 0 || keyBits > Long.SIZE)
+            throw new IllegalArgumentException("Длина ключа должна попадать в диапазон от 1 до " + Long.SIZE + "!");
+        this.keyBits = keyBits;
+        this.slots = new Long[MIN_CAPACITY];
+        this.values = newValues(MIN_CAPACITY);
     }
 
-    public boolean isKey(int key) {
-        return values[index(key)] != null;
-    }
-
-    public T get(int key) {
-        return values[index(key)];
-    }
-
-    public void put(int key, T value) {
-        if (value == null) {
+    public void put(long key, T value) {
+        checkKey(key);
+        if (value == null)
             throw new IllegalArgumentException("Значение не может быть null");
+
+        int index = find(key);
+        if (index != -1) {              // ключ уже есть - перезаписываем значение
+            values[index] = value;
+            return;
         }
-        int index = this.index(key);
-        if (values[index] == null)
-            count++;
+        if (2 * (count + 1) > slots.length)   // держим нагрузку ниже 1/2: иначе цепочки пробирования растут
+            resize(2 * slots.length);
+        index = seekSlot(key);          // в таблице заведомо есть свободная ячейка
+        slots[index] = key;
         values[index] = value;
+        count++;
+    }
+
+    public boolean isKey(long key) {
+        checkKey(key);
+        return find(key) != -1;
+    }
+
+    public T get(long key) {
+        checkKey(key);
+        int index = find(key);
+        return index == -1 ? null : values[index];
+    }
+
+    // Сложность решения по времени - О(1) в среднем. Находим пару, а затем подтягиваем хвост цепочки пробирования.
+    // Сложность решения по пространству - О(1). Ничего нового не создаётся.
+    public T remove(long key) {
+        checkKey(key);
+        int index = find(key);
+        if (index == -1)
+            return null;                // такого ключа нет
+
+        T value = values[index];
+        shiftBack(index);
+        count--;
+        return value;
     }
 
     public int size() {
         return count;
     }
 
-    private int index(int key) {
-        if (key < 0 || key >= tableSize) {
-            throw new IllegalArgumentException("Ключ должен быть в диапазоне от 0 до " +  (tableSize - 1) + "!");
+    // Номер ячейки: верхние bits битов произведения ключа на константу. Всего одно умножение и один сдвиг, зато
+    // старшие биты произведения зависят от всех битов ключа, поэтому ключи распределяются равномерно.
+    private int indexFor(long key, int capacity) {
+        int bits = Integer.numberOfTrailingZeros(capacity);   // capacity всегда степень двойки
+        return (int) ((key * MULTIPLIER) >>> (Long.SIZE - bits));
+    }
+
+    // Ищем ячейку с ключом (возвращаем её индекс) либо первую свободную (для вставки). Возвращаем -1, если таблица полна.
+    private int seekSlot(long key) {
+        int mask = slots.length - 1;
+        int index = indexFor(key, slots.length);
+        for (int i = 0; i < slots.length; i++) {
+            if (slots[index] == null || slots[index] == key)
+                return index;
+            index = (index + 1) & mask;
         }
-        return key;
+        return -1;
+    }
+
+    // Ищем ячейку с ключом. Пустая ячейка обрывает цепочку пробирования: дальше искомого ключа быть не может.
+    private int find(long key) {
+        int mask = slots.length - 1;
+        int index = indexFor(key, slots.length);
+        for (int i = 0; i < slots.length; i++) {
+            if (slots[index] == null)
+                return -1;
+            if (slots[index] == key)
+                return index;
+            index = (index + 1) & mask;
+        }
+        return -1;
+    }
+
+    // Удаление при открытой адресации нельзя сделать «в лоб»: если просто обнулить ячейку, оборвётся цепочка
+    // пробирования, и элементы, сдвинутые дальше из-за коллизии, станут недостижимы. Поэтому освобождаем ячейку и
+    // подтягиваем к ней те элементы цепочки, для которых она всё ещё лежит на пути от их «домашнего» адреса.
+    private void shiftBack(int index) {
+        int mask = slots.length - 1;
+        slots[index] = null;
+        values[index] = null;
+        int hole = index;
+        int next = (index + 1) & mask;
+        while (slots[next] != null) {
+            int home = indexFor(slots[next], slots.length);
+            if (((next - home) & mask) >= ((next - hole) & mask)) {   // home не дальше дыры по ходу пробирования
+                slots[hole] = slots[next];
+                values[hole] = values[next];
+                slots[next] = null;
+                values[next] = null;
+                hole = next;
+            }
+            next = (next + 1) & mask;
+        }
+    }
+
+    // Ключ - битовая строка фиксированной длины, поэтому он обязан помещаться в keyBits битов.
+    // Для 64-битных ключей проверять нечего: под них подходит любое значение.
+    private void checkKey(long key) {
+        if (keyBits < Long.SIZE && (key >>> keyBits) != 0)
+            throw new IllegalArgumentException("Ключ " + key + " не помещается в " + keyBits + " битов!");
+    }
+
+    @SuppressWarnings("unchecked")
+    private T[] newValues(int capacity) {
+        return (T[]) new Object[capacity];
+    }
+
+    // Сложность решения по времени - О(n + m): надо разложить все пары по новой таблице.
+    private void resize(int newCapacity) {
+        Long[] oldSlots = slots;
+        T[] oldValues = values;
+        slots = new Long[newCapacity];
+        values = newValues(newCapacity);
+        count = 0;
+        for (int i = 0; i < oldSlots.length; i++) {
+            if (oldSlots[i] == null)
+                continue;
+            int index = seekSlot(oldSlots[i]);   // в новой таблице места заведомо хватает
+            slots[index] = oldSlots[i];
+            values[index] = oldValues[i];
+            count++;
+        }
     }
 }
 
@@ -59,21 +171,14 @@ class SortedDictionary<T extends Comparable> {
     // Задача 5. Реализуйте словарь с использованием упорядоченного списка по ключу для оптимизации производительности
     // поиска. Оцените временную сложность операций вставки, удаления и поиска в таком словаре.
     // Исполнено. Пришлось добавить private полей и методов, но оно того стоило.
-    public int size;
+    // Ключи хранятся в упорядоченном списке, значения - в динамическом массиве по тем же индексам, поэтому
+    // ни размер таблицы, ни шаг пробирования здесь не нужны: ёмкость контейнеров растёт сама.
     public OrderedList_2<T> slots;
     public DynArray<T> values;
-    private int salt;
-    private int step;
-    private Class cls;
 
-    public SortedDictionary(int sz, Class clazz) {
-        size = sz;
+    public SortedDictionary(Class clazz) {
         slots = new OrderedList_2<T>(clazz, true);
-        cls = clazz;
-        // values = (T[]) Array.newInstance(clazz, this.size);
         values = new DynArray<T>(clazz);
-        salt = 1 + new Random().nextInt(Integer.MAX_VALUE - 1);
-        step = size < 4 ? 1 : (size / 2) - 1;
     }
 
     // Сложность решения по времени - О(log n). Двоичный поиск на упорядоченном массиве.
@@ -105,6 +210,19 @@ class SortedDictionary<T extends Comparable> {
         slots.add(key);
         index = slots.find(key);
         values.insert(value, index);
+    }
+
+    // Сложность решения по времени - О(log n). Два двоичных поиска (find до удаления и delete внутри списка) плюс сдвиг
+    // хвостов обоих контейнеров. Сдвиг хвоста по банковскому методу имеет амортизированную сложность О(1).
+    // Сложность решения по пространству - О(1). Ничего нового не создаётся.
+    public T remove(T key) {
+        int index = slots.find(key);
+        if (index == -1)
+            return null;                 // такого ключа нет, удалять нечего
+        T value = values.getItem(index);
+        slots.delete(key);               // ключ и значение стоят под одним индексом, поэтому удаляем синхронно
+        values.remove(index);
+        return value;
     }
 
 }
