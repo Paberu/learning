@@ -7,22 +7,57 @@ import java.lang.reflect.Array;
 import java.util.Random;
 
 public class NativeDictionary_2<T> {
-    private int keyLength;
+    // Задача 6. Создайте словарь, в котором ключи представлены битовыми строками фиксированной длины. Реализуйте методы
+    // добавления, удаления и поиска элементов, используя битовые операции для ускорения работы.
+    //
+    // По-моему, моё решение выродилось в банальный массив. Подозреваю, это оттого, что я неверно понял задание.
+    // Сложность решения по времени - О(1). Т.к. идёт прямое обращение к встроенному массиву по индексу.
+    // Сложность решения по пространству - О(1). Аналогично.
     private T [] values;
-    private int salt;
-    private int step;
-    private Class cls;
+    private int tableSize;
+    private int count;
 
-    public NativeDictionary_2(Class cls, int keyLength) {
-        this.cls = cls;
-        this.keyLength = keyLength;
-        int tableSize = 1 << keyLength;
+    public NativeDictionary_2(Class<T> cls, int keyLength) {
+        if (keyLength <= 0 || keyLength > 30) {
+            throw new IllegalArgumentException("Длина ключа должна попадать в диапазон от 0 до 30!");
+        }
+        this.tableSize = 1 << keyLength;
         this.values = (T[]) Array.newInstance(cls, tableSize);
+    }
+
+    public boolean isKey(int key) {
+        return values[index(key)] != null;
+    }
+
+    public T get(int key) {
+        return values[index(key)];
+    }
+
+    public void put(int key, T value) {
+        if (value == null) {
+            throw new IllegalArgumentException("Значение не может быть null");
+        }
+        int index = this.index(key);
+        if (values[index] == null)
+            count++;
+        values[index] = value;
+    }
+
+    public int size() {
+        return count;
+    }
+
+    private int index(int key) {
+        if (key < 0 || key >= tableSize) {
+            throw new IllegalArgumentException("Ключ должен быть в диапазоне от 0 до " +  (tableSize - 1) + "!");
+        }
+        return key;
     }
 }
 
 class SortedDictionary<T extends Comparable> {
-    // Задача 5. Реализуйте класс NativeDictionary, как описано выше.
+    // Задача 5. Реализуйте словарь с использованием упорядоченного списка по ключу для оптимизации производительности
+    // поиска. Оцените временную сложность операций вставки, удаления и поиска в таком словаре.
     // Исполнено. Пришлось добавить private полей и методов, но оно того стоило.
     public int size;
     public OrderedList_2<T> slots;
@@ -41,10 +76,14 @@ class SortedDictionary<T extends Comparable> {
         step = size < 4 ? 1 : (size / 2) - 1;
     }
 
+    // Сложность решения по времени - О(log n). Двоичный поиск на упорядоченном массиве.
+    // Сложность решения по пространству - О(1). Ничего нового не создаётся.
     public boolean isKey(T key) {
         return slots.find(key) != -1;
     }
 
+    // Сложность решения по времени - О(log n). Снова двоичный поиск на упорядоченном массиве.
+    // Сложность решения по пространству - О(1). Ничего нового не создаётся.
     public T get(T key) {
         int index = slots.find(key);
         if (index == -1)
@@ -52,6 +91,11 @@ class SortedDictionary<T extends Comparable> {
         return values.getItem(index);
     }
 
+    // Сложность решения по времени - О(log n). Но при соблюдении ряда условий. Во-первых, здесь дважды вызывается find,
+    // следовательно 2*log n, просто константы принято отбрасывать. Во-вторых, метод add в упорядоченном списке и метод
+    // insert в динамическом массиве работают со сложностью О(1) только при расчёте сложности по банковскому методу.
+    // При соблюдении этих условий сложность остаётся О(log n).
+    // Сложность решения по пространству - О(1). Ничего нового не создаётся.
     public void put(T key, T value) {
         int index = slots.find(key);
         if (index != -1) {
