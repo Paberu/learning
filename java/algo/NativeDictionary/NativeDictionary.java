@@ -59,7 +59,7 @@ class NativeDictionary<T> {
         for (int i = 0; i < key.length(); i++) {
             hash = 17 * hash + key.charAt(i);
         }
-        return hash & 0x7fffffff;
+        return (hash & 0x7fffffff) % size;
     }
 
     // Задача 3. Добавьте в этот класс три метода.
@@ -67,7 +67,7 @@ class NativeDictionary<T> {
     // Сложность решения по времени - О(n). В худшем случае придётся обежать весь массив.
     // Сложность решения по пространству - О(1). Создаётся одна целочисленная переменная.
     public boolean isKey(String key) {
-        int index = hashFun(key) % size;
+        int index = hashFun(key);
         for (int i = 0; i < size; i++) {
             if (slots[index] == null)   // если будет remove(), незамедлительно убрать
                 return false;
@@ -112,7 +112,7 @@ class NativeDictionary<T> {
     }
 
     private int seekSlot(String key) {
-        int index = hashFun(key) % size;
+        int index = hashFun(key);
         for (int i = 0; i < size; i++) {
             if (slots[index] == null || slots[index].equals(key))   // добавляем новый ключ или перезаписываем значение у старого
                 return index;                                       // а ведь забыл
@@ -122,7 +122,7 @@ class NativeDictionary<T> {
     }
 
     private int seekSlotInNewSlots(String key, int newSize, String[] newSlots) {
-        int newIndex = hashFun(key) % newSize;
+        int newIndex = hashFun(key);
         if (newSlots[newIndex] == null)
             return newIndex;
         for (int i = 0; i < newSize; i++) {
@@ -140,7 +140,7 @@ class NativeDictionary<T> {
     public T get(String key) {
         // возвращает value для key,
         // или null если ключ не найден
-        int index = hashFun(key) % size;
+        int index = hashFun(key);
         for (int i = 0; i < size; i++) {
             if (slots[index] == null) {   // если будет remove(), незамедлительно убрать
                 return null;
