@@ -1,6 +1,7 @@
 package HashTable;
 
 
+import java.util.ArrayList;
 import java.util.Random;
 
 // Курс "Практика в программировании на АСД. Задание 8.
@@ -27,6 +28,14 @@ public class HashTable {
             slots[i] = null;
         salt = 1 + new Random().nextInt(Integer.MAX_VALUE - 1);
         tombstoneCount = 0;
+    }
+
+    public ArrayList<String> values() {     // выдать все элементы хэш-таблицы
+        ArrayList<String> r = new ArrayList<>();
+        for (String s : slots)
+            if (s != null && s != TOMBSTONE)
+                r.add(s);
+        return r;
     }
 
     public int hashFun(String value) {
