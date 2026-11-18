@@ -9,14 +9,13 @@ public class PowerSet {
 
 
     public PowerSet() {
-
+        length = 0;
         // ваша реализация хранилища
     }
 
-    public int size()
-    {
+    public int size() {
         // количество элементов в множестве
-        return 0;
+        return length;
     }
 
 
