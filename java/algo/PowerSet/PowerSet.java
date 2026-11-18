@@ -50,7 +50,7 @@ public class PowerSet {
     public PowerSet intersection(PowerSet set2) {
         // пересечение текущего множества и set2
         PowerSet intersection = new PowerSet();
-        for (String key : hashTable.slots) {
+        for (String key : hashTable.values()) {
             if (set2.get(key))
                 intersection.put(key);
         }
@@ -60,10 +60,10 @@ public class PowerSet {
     public PowerSet union(PowerSet set2) {
         // объединение текущего множества и set2
         PowerSet union = new PowerSet();
-        for (String key : hashTable.slots) {
+        for (String key : hashTable.values()) {
             union.put(key);
         }
-        for (String key : set2.hashTable.slots) {
+        for (String key : set2.hashTable.values()) {
             union.put(key);
         }
         return union;
@@ -72,7 +72,7 @@ public class PowerSet {
     public PowerSet difference(PowerSet set2) {
         // разница текущего множества и set2
         PowerSet difference = new PowerSet();
-        for (String key : hashTable.slots) {
+        for (String key : hashTable.values()) {
             if (!set2.get(key))
                 difference.put(key);
         }
@@ -83,8 +83,8 @@ public class PowerSet {
         // возвращает true, если set2 есть
         // подмножество текущего множества,
         // иначе false
-        for (String key : hashTable.slots) {
-            if (!set2.get(key))
+        for (String key : set2.hashTable.values()) {
+            if (!get(key))
                 return false;
         }
         return true;
@@ -96,7 +96,7 @@ public class PowerSet {
         // иначе false
         if (length != set2.length)
             return false;
-        for (String key : hashTable.slots) {
+        for (String key : hashTable.values()) {
             if (!set2.get(key))
                 return false;
         }
