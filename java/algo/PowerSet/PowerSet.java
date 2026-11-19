@@ -2,6 +2,8 @@ package PowerSet;
 
 import HashTable.HashTable;
 
+import java.util.ArrayList;
+
 public class PowerSet {
     // Курс "Практика в программировании на АСД. Задание 10.
     // Задача 1. Создайте реализующий множество класс PowerSet... поэтому для внутреннего хранения множества можно взять
@@ -12,13 +14,17 @@ public class PowerSet {
 
     public PowerSet() {
         length = 0;
-        hashTable = new HashTable(40031, 13);
+        hashTable = new HashTable(20000, 13);
         // ваша реализация хранилища
     }
 
     public int size() {
         // количество элементов в множестве
         return length;
+    }
+
+    public ArrayList<String> values() {
+        return hashTable.values();
     }
 
     public void put(String value) {
