@@ -62,10 +62,6 @@ public class HashTable {
     }
 
     public int put(String value) {
-        /*int existing = find(value);
-        if (existing != -1)
-            return existing;
-*/
         int index = seekSlot(value);
         if (index > -1) {
             if (slots[index] == TOMBSTONE)
