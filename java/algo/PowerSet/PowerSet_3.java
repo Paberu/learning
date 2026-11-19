@@ -3,6 +3,8 @@ package PowerSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PowerSet_3 {
@@ -180,8 +182,18 @@ public class PowerSet_3 {
     }
 
     @Test
-    void testSpeed() {
-
+    void testSpeed() {      // на 10000 за 16 миллисекунд!?
+        Random random = new Random(0x9E3779B97F4A7C15L);
+        for (int i = 0; i < 10000; i++) {
+            set1.put("value_" + random.nextInt(Integer.MAX_VALUE));
+        }
     }
 
+    @Test
+    void testSpeedOnFullSize() {      // на 20000 за 88 миллисекунд!!!!
+        Random random = new Random(0x9E3779B97F4A7C15L);
+        for (int i = 0; i < 20000; i++) {
+            set1.put("value_" + random.nextInt(Integer.MAX_VALUE));
+        }
+    }
 }
