@@ -73,4 +73,115 @@ public class PowerSet_3 {
         }
         assertEquals(90, set4.size());
     }
+
+    @Test
+    void testIntersection() {
+        PowerSet set = new PowerSet();
+        for (int i = 4; i < 8; i++) {
+            set.put("Little" + i);
+        }
+        PowerSet resultSet = set.intersection(set3);
+        assertEquals(4, resultSet.size());
+        for (int i = 0; i < 4; i++) {
+            assertFalse(resultSet.get("Little" + i));
+        }
+        for (int i = 4; i < 8; i++) {
+            assertTrue(resultSet.get("Little" + i));
+        }
+    }
+
+    @Test
+    void testIntersectionWithEmpty() {
+        PowerSet resultSet = set1.intersection(set2);
+        assertEquals(0, resultSet.size());
+        assertFalse(resultSet.get("One and only"));
+    }
+
+    @Test
+    void testIntersection2() {
+        PowerSet resultSet = set3.intersection(set4);
+        assertEquals(0, resultSet.size());
+        assertFalse(resultSet.get("Little9"));
+    }
+
+    @Test
+    void testUnionWithEmpty() {
+        PowerSet resultSet = set1.union(set2);
+        assertEquals(1, resultSet.size());
+        assertTrue(resultSet.get("One and only"));
+    }
+
+    @Test
+    void testUnion() {
+        PowerSet resultSet = set3.union(set4);
+        assertEquals(110, resultSet.size());
+        assertTrue(resultSet.get("Little9"));
+        assertTrue(resultSet.get("Big23"));
+        assertFalse(resultSet.get("Little11"));
+    }
+
+    @Test
+    void testDifferenceWithEmpty() {
+        PowerSet resultSet = set2.difference(set1);
+        assertEquals(1, resultSet.size());
+        assertTrue(resultSet.get("One and only"));
+    }
+
+    @Test
+    void testDifference() {
+        PowerSet set = new PowerSet();
+        for (int i = 0; i < 5; i++) {
+            set.put("Little" + i);
+        }
+        PowerSet resultSet = set3.difference(set);
+        assertEquals(5, resultSet.size());
+        for (int i = 0; i < 5; i++) {
+            assertFalse(resultSet.get("Little" + i));
+        }
+        for (int i = 5; i < 10; i++) {
+            assertTrue(resultSet.get("Little" + i));
+        }
+    }
+
+    @Test
+    void testIsSubsetEmpty() {
+        assertTrue(set2.isSubset(set1));
+    }
+
+    @Test
+    void testIsSubset() {
+        assertFalse(set4.isSubset(set3));
+    }
+
+    @Test
+    void testIsSubsetWithSemisub() {
+        PowerSet set = new PowerSet();
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                set.put("Big" + i + j);
+            }
+        }
+        set.put("Big!");
+        assertFalse(set4.isSubset(set));
+    }
+
+    @Test
+    void testEqualsSetYes() {
+        PowerSet set = new PowerSet();
+        for (int i = 0; i < 10; i++) {
+            set.put("Little" + i);
+        }
+        assertTrue(set.equals(set3));
+    }
+
+    @Test
+    void testEqualsSetNot() {
+        assertFalse(set3.equals(set4));
+    }
+
+    @Test
+    void testSpeed() {
+
+    }
+
 }
