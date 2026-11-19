@@ -18,29 +18,29 @@ public class PowerSet_2 {
     }
 
     public static PowerSet multiIntersect(ArrayList<PowerSet> listOfSets) {
-        PowerSet result = listOfSets.getFirst();
-        for (PowerSet nextSet : listOfSets) {
-            result = result.intersection(nextSet);
+        if (listOfSets == null || listOfSets.isEmpty()) {
+            return new PowerSet();
+        }
+        PowerSet result = listOfSets.get(0);
+        for (int i = 1; i < listOfSets.size(); i++) {
+            result = result.intersection(listOfSets.get(i));
         }
         return result;
     }
+
 }
 
 class Bag {
-    // Курс "Практика в программировании на АСД. Задание 10.
-    // Задача 1. Создайте реализующий множество класс PowerSet... поэтому для внутреннего хранения множества можно взять
-    // даже стандартный список. Попробуем.
+
     private int length;
     private HashTable hashTable;
 
     public Bag() {
         length = 0;
         hashTable = new HashTable(20000, 13);
-        // ваша реализация хранилища
     }
 
     public int size() {
-        // количество элементов в множестве
         return length;
     }
 
@@ -49,22 +49,17 @@ class Bag {
     }
 
     public void put(String value) {
-        // всегда срабатывает
         int index = hashTable.put(value);
         if (index != -1)
             length++;
     }
 
     public boolean get(String value) {
-        // возвращает true если value имеется в множестве,
-        // иначе false
         int index = hashTable.find(value);
         return index != -1;
     }
 
     public boolean remove(String value) {
-        // возвращает true если value удалено
-        // иначе false
         int index = hashTable.remove(value);
         if (index == -1)
             return false;
@@ -79,4 +74,5 @@ class Bag {
         }
         return values;
     }
+    
 }
