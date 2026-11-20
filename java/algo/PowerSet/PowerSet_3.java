@@ -196,4 +196,11 @@ public class PowerSet_3 {
             set1.put("value_" + random.nextInt(Integer.MAX_VALUE));
         }
     }
+
+    @Test
+    void testCartesianMultiply() {
+        PowerSet result = PowerSet_2.cartesianMultiply(set3, set4);
+        assertEquals(1000, result.size());
+
+    }
 }
