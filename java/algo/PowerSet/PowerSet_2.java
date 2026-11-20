@@ -9,7 +9,7 @@ public class PowerSet_2 {
     // Задача 4. Добавьте метод, реализующий декартово произведение множеств.
     // Сложность решения по времени - О(n+m). Пробегается содержимое обоих множеств.
     // Сложность решения по пространству - О(n*m) = O(n^2). Цикл, вложенный в цикл - имхо, проще не сделать.
-    public static PowerSet decartMultiply(PowerSet first, PowerSet second) {
+    public static PowerSet cartesianMultiply(PowerSet first, PowerSet second) {
         PowerSet result = new PowerSet();
         for (String key1 : first.values()) {
             for (String key2 : second.values()) {
