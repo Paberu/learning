@@ -3,6 +3,8 @@ package PowerSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,6 +15,7 @@ public class PowerSet_3 {
     PowerSet set2;
     PowerSet set3;
     PowerSet set4;
+    Bag bag;
 
     @BeforeEach
     void setUp() {
@@ -20,6 +23,7 @@ public class PowerSet_3 {
         set2 = new PowerSet();
         set3 = new PowerSet();
         set4 = new PowerSet();
+        bag = new Bag();
 
         set2.put("One and only");
 
@@ -30,6 +34,16 @@ public class PowerSet_3 {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 set4.put("Big" + i + j);
+            }
+        }
+
+        for (int i = 0; i < 10; i++) {
+            bag.put("Bag0" + i);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                bag.put("Bag" + i + j);
             }
         }
     }
@@ -208,5 +222,25 @@ public class PowerSet_3 {
         PowerSet result = PowerSet_2.cartesianMultiply(set1, set4);
         assertEquals(0, result.size());
         assertTrue(result.equals(new PowerSet()));
+    }
+
+    @Test
+    void testMultyPulty() {
+        ArrayList<PowerSet> sets = new ArrayList<PowerSet>();
+        sets.add(set1);
+        sets.add(set2);
+        sets.add(set3);
+        PowerSet result = PowerSet_2.multiIntersect(sets);
+        assertTrue(result.equals(new PowerSet()));
+    }
+
+    @Test
+    void testBag() {
+        HashMap<String, Integer> values = bag.getAll();
+        assertEquals(2, values.get("Bag02"));
+        assertEquals(2, values.get("Bag05"));
+        assertEquals(2, values.get("Bag09"));
+        assertEquals(1, values.get("Bag12"));
+        assertEquals(1, values.get("Bag27"));
     }
 }
