@@ -201,6 +201,12 @@ public class PowerSet_3 {
     void testCartesianMultiply() {
         PowerSet result = PowerSet_2.cartesianMultiply(set3, set4);
         assertEquals(1000, result.size());
+    }
 
+    @Test
+    void testCartesianWithEmpty() {
+        PowerSet result = PowerSet_2.cartesianMultiply(set1, set4);
+        assertEquals(0, result.size());
+        assertTrue(result.equals(new PowerSet()));
     }
 }
