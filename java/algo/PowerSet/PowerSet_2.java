@@ -6,17 +6,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PowerSet_2 {
-
+    // Задача 4. Добавьте метод, реализующий декартово произведение множеств.
+    // Сложность решения по времени - О(n+m). Пробегается содержимое обоих множеств.
+    // Сложность решения по пространству - О(n*m) = O(n^2). Цикл, вложенный в цикл - имхо, проще не сделать.
     public static PowerSet decartMultiply(PowerSet first, PowerSet second) {
         PowerSet result = new PowerSet();
         for (String key1 : first.values()) {
             for (String key2 : second.values()) {
-                result.put(key1+","+key2);
+                result.put(key1+";"+key2);
             }
         }
         return result;
     }
 
+    // Задача 5. Напишите функцию, которая находит пересечение любых трёх и более множеств.
+    // Сложность решения по времени - О(n*m). Пробегается содержимое (n) всех (m) множеств.
+    // Сложность решения по пространству - О(n). В самом негативном случае (получили пачку дубликатов) получим ещё один.
     public static PowerSet multiIntersect(ArrayList<PowerSet> listOfSets) {
         if (listOfSets == null || listOfSets.isEmpty()) {
             return new PowerSet();
@@ -30,6 +35,7 @@ public class PowerSet_2 {
 
 }
 
+// Задача 6. Реализуйте мульти-множество (Bag), в котором каждый элемент может присутствовать несколько раз.
 class Bag {
 
     private int length;
@@ -48,6 +54,9 @@ class Bag {
         return hashTable.values();
     }
 
+    // Добавьте методы добавления элементов...
+    // Сложность решения по времени - О(1). Эквивалентно базовому PowerSet.
+    // Сложность решения по пространству - О(1). Добавляется в массив ещё одно значение.
     public void put(String value) {
         int index = hashTable.put(value);
         if (index != -1)
@@ -59,6 +68,9 @@ class Bag {
         return index != -1;
     }
 
+    // ...удаления одного экземпляра элемента...
+    // Сложность решения по времени - О(1). Эквивалентно базовому PowerSet.
+    // Сложность решения по пространству - О(1). Ничего нового не создаётся.
     public boolean remove(String value) {
         int index = hashTable.remove(value);
         if (index == -1)
@@ -67,6 +79,9 @@ class Bag {
         return true;
     }
 
+    // ...и получения списка всех элементов с их частотами.
+    // Сложность решения по времени - О(n). Пробегается содержимое всего множества.
+    // Сложность решения по пространству - О(n). Создаётся словарь размером с исходное множество.
     public HashMap<String, Integer> getAll() {
         HashMap<String, Integer> values = new HashMap<>();
         for (String value : hashTable.values()) {
