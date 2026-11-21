@@ -1,8 +1,7 @@
 package PowerSet;
 
-import HashTable.HashTable;
-
 import java.util.ArrayList;
+import java.util.Random;
 
 public class PowerSet {
     // Курс "Практика в программировании на АСД. Задание 10.
@@ -130,5 +129,100 @@ public class PowerSet {
                 return false;
         }
         return true;
+    }
+}
+
+class HashTable {
+    private static final String TOMBSTONE = new String("<deleted>");
+
+    public int size;
+    public int step;
+    public String [] slots;
+    public int salt;
+    private int tombstoneCount;
+
+    public HashTable(int sz, int stp) {
+        size = sz;
+        step = stp;
+        slots = new String[size];
+        for(int i = 0; i < size; i++)
+            slots[i] = null;
+        salt = 1 + new Random().nextInt(Integer.MAX_VALUE - 1);
+        tombstoneCount = 0;
+    }
+
+    public ArrayList<String> values() {     // выдать все элементы хэш-таблицы
+        ArrayList<String> r = new ArrayList<>();
+        for (String s : slots)
+            if (s != null && s != TOMBSTONE)
+                r.add(s);
+        return r;
+    }
+
+    public int hashFun(String value) {
+        // Соль участвует в каждом символе. Прибавлять её к сумме один раз бесполезно:
+        // ключи с одинаковой суммой кодов всё равно попадали бы в один слот.
+        int hash = salt;
+        for (int i = 0; i < value.length(); i++) {
+            hash = 31 * hash + value.charAt(i);
+        }
+        return (hash & 0x7fffffff) % size;
+    }
+
+    public int seekSlot(String value) {
+        int index = hashFun(value);
+        int firstTomb = -1;
+        for (int i = 0; i < size; i++) {
+            if (slots[index] == null)
+                return firstTomb != -1 ? firstTomb : index;
+            if (slots[index] == TOMBSTONE && firstTomb == -1)
+                firstTomb = index;
+            index = (index + step) % size;
+        }
+        return firstTomb;
+    }
+
+    public int put(String value) {
+        int index = seekSlot(value);
+        if (index > -1) {
+            if (slots[index] == TOMBSTONE)
+                tombstoneCount--;
+            slots[index] = value;
+            return index;
+        }
+        return -1;
+    }
+
+    public int find(String value) {
+        int index = hashFun(value);
+        for (int i = 0; i < size; i++) {
+            if (slots[index] == null)
+                return -1;
+            if (slots[index] != TOMBSTONE && slots[index].equals(value))
+                return index;
+            index = (index + step) % size;
+        }
+        return -1;
+    }
+
+    public int remove(String value) {
+        int index = find(value);
+        if (index == -1)
+            return -1;
+        slots[index] = TOMBSTONE;
+        tombstoneCount++;
+        if (tombstoneCount > size / 4)
+            rehash();
+        return index;
+    }
+
+    private void rehash() {
+        String[] oldSlots = slots;
+        slots = new String[size];
+        tombstoneCount = 0;
+        for (String key : oldSlots) {
+            if (key != null && key != TOMBSTONE)
+                put(key);
+        }
     }
 }
