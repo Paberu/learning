@@ -59,4 +59,10 @@ public class BloomFilter_3 {
         assertTrue(bloomFilter.isValue("8901234567"));
     }
 
+    @Test
+    void recover(){
+        System.out.println(BloomFilter_2.recoverValues(bloomFilter));
+    }
+
+
 }
